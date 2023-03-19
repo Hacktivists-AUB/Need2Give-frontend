@@ -23,19 +23,16 @@ class InputBox extends StatelessWidget {
         filled: true,
         fillColor: Global.white,
         hintText: hintText,
-        border: const OutlineInputBorder(
-          borderSide: BorderSide(
+        hintStyle: const TextStyle(fontSize: 14),
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(
             color: Colors.black38,
           ),
-        ),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.black38,
-          ),
+          borderRadius: BorderRadius.circular(10),
         ),
       ),
       validator: (value) {
-        if(value==null || value.isEmpty){
+        if (value == null || value.isEmpty) {
           return 'Enter your $hintText';
         }
         return null;

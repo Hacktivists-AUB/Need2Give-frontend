@@ -7,5 +7,6 @@ class Global {
   static const lightGreen = Color.fromARGB(255, 190, 216, 146);
   static const white = Colors.white;
   static const lightGrey = Color.fromARGB(255, 224, 227, 214);
+  static const mediumGrey = Colors.black54;
   static const darkGrey = Color.fromARGB(255, 32, 32, 31);
 }
