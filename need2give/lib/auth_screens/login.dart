@@ -71,7 +71,7 @@ class _LoginState extends State<Login> {
                             ),
                           ],
                         ),
-                        InputBox(
+                        Input(
                             controller: _emailController, hintText: 'Email'),
                         const SizedBox(height: 10),
                         Row(
@@ -90,9 +90,9 @@ class _LoginState extends State<Login> {
                             ),
                           ],
                         ),
-                        InputBox(
+                        Input(
                             controller: _passwordController,
-                            hintText: 'Password'),
+                            hintText: 'Password', secret: true,),
                         const SizedBox(height: 20),
                         Button(text: 'Log in', onPressed: () {}),
                         Row(
