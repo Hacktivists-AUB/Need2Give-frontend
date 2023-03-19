@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/widgets/button.dart';
 import 'package:need2give/widgets/textfield.dart';
 
 class Login extends StatefulWidget {
+  static const String routeName = '/login';
   const Login({super.key});
 
   @override
@@ -71,8 +74,7 @@ class _LoginState extends State<Login> {
                             ),
                           ],
                         ),
-                        Input(
-                            controller: _emailController, hintText: 'Email'),
+                        Input(controller: _emailController, hintText: 'Email'),
                         const SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -91,10 +93,22 @@ class _LoginState extends State<Login> {
                           ],
                         ),
                         Input(
-                            controller: _passwordController,
-                            hintText: 'Password', secret: true,),
+                          controller: _passwordController,
+                          hintText: 'Password',
+                          secret: true,
+                        ),
                         const SizedBox(height: 20),
                         Button(text: 'Log in', onPressed: () {}),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          width: double.infinity,
+                          child: SignInButton(
+                            Buttons.Google,
+                            text: "Log in with Google",
+                            onPressed: () {},
+                          ),
+                        ),
+                        const SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

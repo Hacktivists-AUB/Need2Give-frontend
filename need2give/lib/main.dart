@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:need2give/auth_screens/login.dart';
 import 'package:need2give/auth_screens/welcome.dart';
+import 'package:need2give/router.dart';
 import 'constants/global.dart';
 
 void main() {
@@ -26,7 +26,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const Login(),
+      onGenerateRoute: (settings) => generateRoute(settings),
+      home: const WelcomeScreen(),
     );
   }
 }

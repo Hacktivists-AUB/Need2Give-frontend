@@ -5,6 +5,7 @@ import 'package:need2give/widgets/button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class WelcomeScreen extends StatefulWidget {
+  static const String routeName = '/welcome';
   const WelcomeScreen({super.key});
 
   @override
@@ -106,16 +107,20 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           fontSize: 14,
                         ),
                       ),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          'Log in',
-                          style: TextStyle(
-                            color: Global.mediumGreen,
-                            fontSize: 14,
+                      Builder(builder: (context) {
+                        return TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/login');
+                          },
+                          child: const Text(
+                            'Log in',
+                            style: TextStyle(
+                              color: Global.mediumGreen,
+                              fontSize: 14,
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      }),
                     ],
                   ),
                 ],
