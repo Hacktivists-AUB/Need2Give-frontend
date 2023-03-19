@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:need2give/screens/auth/login.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/widgets/button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -110,7 +111,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       Builder(builder: (context) {
                         return TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/login');
+                            Navigator.pushNamed(context, Login.routeName);
                           },
                           child: const Text(
                             'Log in',

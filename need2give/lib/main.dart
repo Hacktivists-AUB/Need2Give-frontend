@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:need2give/auth_screens/welcome.dart';
+import 'package:need2give/screens/auth/welcome.dart';
 import 'package:need2give/router.dart';
 import 'constants/global.dart';
 
