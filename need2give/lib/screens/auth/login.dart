@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/services/auth_service.dart';
 import 'package:need2give/widgets/button.dart';
 import 'package:need2give/widgets/textfield.dart';
 
@@ -17,12 +18,21 @@ class _LoginState extends State<Login> {
   final _loginFormKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final AuthService authService = AuthService();
 
   @override
   void dispose() {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+  }
+
+  void login() {
+    authService.login(
+      context: context,
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
   }
 
   @override
@@ -98,7 +108,13 @@ class _LoginState extends State<Login> {
                           secret: true,
                         ),
                         const SizedBox(height: 20),
-                        Button(text: 'Log in', onPressed: () {}),
+                        Button(
+                            text: 'Log in',
+                            onPressed: () {
+                              if (_loginFormKey.currentState!.validate()) {
+                                login();
+                              }
+                            }),
                         const SizedBox(height: 10),
                         SizedBox(
                           width: double.infinity,
@@ -113,7 +129,7 @@ class _LoginState extends State<Login> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Text(
-                              'Dont have an account?',
+                              'Don\'t have an account?',
                               style: TextStyle(
                                 fontSize: 14,
                               ),

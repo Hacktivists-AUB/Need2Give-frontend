@@ -1,7 +1,9 @@
 import "package:flutter/material.dart";
+
 const uri = 'http://localhost:5000';
+
 class Global {
-  static const darkGreen =Color.fromARGB(255, 57, 122, 76);
+  static const darkGreen = Color.fromARGB(255, 57, 122, 76);
   static const mediumGreen = Color.fromARGB(255, 86, 147, 88);
   static const green = Color.fromARGB(255, 119, 192, 99);
   static const lightGreen = Color.fromARGB(255, 190, 216, 146);
