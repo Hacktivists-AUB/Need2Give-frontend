@@ -71,40 +71,10 @@ class _LoginState extends State<Login> {
                         const SizedBox(height: 10),
                         const Divider(),
                         const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: const [
-                            Padding(
-                              padding: EdgeInsets.all(8),
-                              child: Text(
-                                "Enter your email:",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Global.mediumGrey,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                        const Label(text: "Email: "),
                         Input(controller: _emailController, hintText: 'Email'),
                         const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: const [
-                            Padding(
-                              padding: EdgeInsets.all(8),
-                              child: Text(
-                                "Enter your password:",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Global.mediumGrey,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                        const Label(text: "Password: "),
                         Input(
                           controller: _passwordController,
                           hintText: 'Password',

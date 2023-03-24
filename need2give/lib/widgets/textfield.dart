@@ -110,3 +110,31 @@ class _PhoneInputState extends State<PhoneInput> {
     );
   }
 }
+
+class Label extends StatelessWidget {
+  final String text;
+  const Label({
+    super.key,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: Text(
+            text,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Global.mediumGrey,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

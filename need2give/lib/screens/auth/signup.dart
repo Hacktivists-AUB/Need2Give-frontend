@@ -74,22 +74,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                     const SizedBox(height: 10),
                     const Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        Padding(
-                          padding: EdgeInsets.all(8),
-                          child: Text(
-                            "Sign up as a: ",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Global.mediumGrey,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    const Label(text: "Sign up as a: "),
                     ListTile(
                       title: const Text(
                         "User",
@@ -121,368 +106,11 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
                     const Divider(),
-                    if (_userType == UserType.user)
-                      Form(
-                        key: _signUpFormKey,
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: Text(
-                                    "Email: ",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Global.mediumGrey,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Input(
-                                controller: _emailController,
-                                hintText: 'Email'),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: Text(
-                                    "Username: ",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Global.mediumGrey,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Input(
-                                controller: _usernameController,
-                                hintText: 'Username'),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: Text(
-                                    "Phone number*: ",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Global.mediumGrey,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            PhoneInput(controller: _phoneController),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: Text(
-                                    "Password:",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Global.mediumGrey,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Input(
-                              controller: _passwordController,
-                              hintText: "Password",
-                              secret: true,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: Text(
-                                    "Confirm password:",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Global.mediumGrey,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Input(
-                              controller: _confirmPassController,
-                              hintText: "Confirm password",
-                              secret: true,
-                            ),
-                            const SizedBox(height: 20),
-                            Button(
-                                text: 'Sign up',
-                                onPressed: () {
-                                  if (_signUpFormKey.currentState!
-                                      .validate()) {}
-                                }),
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              width: double.infinity,
-                              child: SignInButton(
-                                Buttons.Google,
-                                text: "Sign up with Google",
-                                onPressed: () {},
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  'Already have an account?',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                        context, Login.routeName);
-                                  },
-                                  child: const Text(
-                                    'Log in',
-                                    style: TextStyle(
-                                      color: Global.mediumGreen,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                    if (_userType == UserType.user) generateUserForm(),
                     if (_userType == UserType.donationCenter)
-                      Form(
-                        key: _signUpFormKey,
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: Text(
-                                    "Email: ",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Global.mediumGrey,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Input(
-                              controller: _emailController,
-                              hintText: 'Email',
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: Text(
-                                    "Username: ",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Global.mediumGrey,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Input(
-                              controller: _usernameController,
-                              hintText: 'Username',
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: Text(
-                                    "Phone number*: ",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Global.mediumGrey,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            PhoneInput(controller: _phoneController),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: Text(
-                                    "Description*: ",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Global.mediumGrey,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Input(
-                              controller: _descriptionController,
-                              hintText: "Description",
-                              numberOfLines: 4,
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: Text(
-                                    "Working hours*: ",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Global.mediumGrey,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.schedule),
-                                  onPressed: () {
-                                    generateScheduler(context);
-                                  },
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    generateScheduler(context);
-                                  },
-                                  child: const Text(
-                                    "Pick working days and hours",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Global.darkGreen,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: Text(
-                                    "Password:",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Global.mediumGrey,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Input(
-                              controller: _passwordController,
-                              hintText: "Password",
-                              secret: true,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: const [
-                                Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: Text(
-                                    "Confirm password:",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Global.mediumGrey,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Input(
-                              controller: _confirmPassController,
-                              hintText: "Confirm password",
-                              secret: true,
-                            ),
-                            const SizedBox(height: 20),
-                            Button(
-                                text: 'Sign up',
-                                onPressed: () {
-                                  if (_signUpFormKey.currentState!
-                                      .validate()) {}
-                                }),
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              width: double.infinity,
-                              child: SignInButton(
-                                Buttons.Google,
-                                text: "Sign up with Google",
-                                onPressed: () {},
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  'Already have an account?',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                        context, Login.routeName);
-                                  },
-                                  child: const Text(
-                                    'Log in',
-                                    style: TextStyle(
-                                      color: Global.mediumGreen,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                      generateDonationCenterForm(),
+                    if (_userType != UserType.notSelected)
+                      generateSignUpButtons(),
                   ],
                 ),
               ),
@@ -492,6 +120,144 @@ class _SignUpState extends State<SignUp> {
       ),
     );
   }
+
+  Widget generateUserForm() => Form(
+        key: _signUpFormKey,
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            const Label(text: "Email: "),
+            Input(controller: _emailController, hintText: 'Email'),
+            const SizedBox(height: 10),
+            const Label(text: "Username: "),
+            Input(controller: _usernameController, hintText: 'Username'),
+            const SizedBox(height: 10),
+            const Label(text: "Phone number*: "),
+            PhoneInput(controller: _phoneController),
+            const SizedBox(height: 10),
+            generateConfirmPasswordFields(),
+            const SizedBox(height: 20),
+          ],
+        ),
+      );
+
+  Widget generateDonationCenterForm() => Form(
+        key: _signUpFormKey,
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            const Label(text: "Email"),
+            Input(
+              controller: _emailController,
+              hintText: 'Email',
+            ),
+            const SizedBox(height: 10),
+            const Label(text: "Username"),
+            Input(
+              controller: _usernameController,
+              hintText: 'Username',
+            ),
+            const SizedBox(height: 10),
+            const Label(text: "Phone number*: "),
+            PhoneInput(controller: _phoneController),
+            const SizedBox(height: 10),
+            const Label(text: "Description*: "),
+            Input(
+              controller: _descriptionController,
+              hintText: "Description",
+              numberOfLines: 4,
+            ),
+            const SizedBox(height: 10),
+            const Label(text: "Working hours*: "),
+            Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.schedule),
+                  onPressed: () {
+                    generateScheduler(context);
+                  },
+                ),
+                TextButton(
+                  onPressed: () {
+                    generateScheduler(context);
+                  },
+                  child: const Text(
+                    "Pick working days and hours",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Global.darkGreen,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            generateConfirmPasswordFields(),
+            const SizedBox(height: 20),
+          ],
+        ),
+      );
+
+  Widget generateConfirmPasswordFields() => Column(
+        children: [
+          const Label(text: "Password: "),
+          Input(
+            controller: _passwordController,
+            hintText: "Password",
+            secret: true,
+          ),
+          const Label(text: "Confirm password: "),
+          Input(
+            controller: _confirmPassController,
+            hintText: "Confirm password",
+            secret: true,
+          ),
+        ],
+      );
+
+  Widget generateSignUpButtons() => Column(
+        children: [
+          Button(
+              text: 'Sign up',
+              onPressed: () {
+                if (_signUpFormKey.currentState!.validate()) {}
+              }),
+          const SizedBox(height: 10),
+          SizedBox(
+            width: double.infinity,
+            child: SignInButton(
+              Buttons.Google,
+              text: "Sign up with Google",
+              onPressed: () {},
+            ),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Already have an account?',
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, Login.routeName);
+                },
+                child: const Text(
+                  'Log in',
+                  style: TextStyle(
+                    color: Global.mediumGreen,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
 
   void generateScheduler(BuildContext context) => showModalBottomSheet(
         context: context,
