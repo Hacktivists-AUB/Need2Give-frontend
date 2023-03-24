@@ -7,12 +7,14 @@ class Input extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
   final bool secret;
+  final int? numberOfLines;
 
   const Input({
     super.key,
     required this.controller,
     required this.hintText,
     this.secret = false,
+    this.numberOfLines = 1,
   });
 
   @override
@@ -27,6 +29,7 @@ class _InputState extends State<Input> {
     return TextFormField(
       obscureText: widget.secret ? !_isVisible : false,
       controller: widget.controller,
+      maxLines: widget.numberOfLines,
       decoration: InputDecoration(
         filled: true,
         fillColor: Global.white,

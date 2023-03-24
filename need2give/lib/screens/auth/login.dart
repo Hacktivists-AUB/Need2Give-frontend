@@ -68,6 +68,7 @@ class _LoginState extends State<Login> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                        const SizedBox(height: 10),
                         const Divider(),
                         const SizedBox(height: 10),
                         Row(

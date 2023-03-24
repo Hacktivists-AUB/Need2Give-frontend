@@ -29,3 +29,40 @@ class Button extends StatelessWidget {
     );
   }
 }
+
+class CustomCheckbox extends StatefulWidget {
+  final String label;
+  const CustomCheckbox({
+    super.key,
+    required this.label,
+  });
+
+  @override
+  State<CustomCheckbox> createState() => _CustomCheckboxState();
+}
+
+class _CustomCheckboxState extends State<CustomCheckbox> {
+  bool _checked = false;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          widget.label,
+          style: const TextStyle(fontSize: 14),
+        ),
+        Checkbox(
+          activeColor: Global.darkGreen,
+          checkColor: Global.white,
+          value: _checked,
+          onChanged: (bool? val) {
+            setState(() {
+              _checked = !_checked;
+            });
+          },
+        ),
+      ],
+    );
+  }
+}
