@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:need2give/screens/auth/login.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/screens/auth/signup.dart';
 import 'package:need2give/widgets/button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -97,7 +98,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(vertical: 0, horizontal: 40),
-                    child: Button(text: 'Sign up', onPressed: () {}),
+                    child: Button(
+                      text: 'Sign up',
+                      onPressed: () {
+                        Navigator.pushNamed(context, SignUp.routeName);
+                      },
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

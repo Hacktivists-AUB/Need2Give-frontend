@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/screens/auth/signup.dart';
 import 'package:need2give/services/auth_service.dart';
 import 'package:need2give/widgets/button.dart';
 import 'package:need2give/widgets/textfield.dart';
@@ -67,6 +68,7 @@ class _LoginState extends State<Login> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                        const Divider(),
                         const SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -135,7 +137,9 @@ class _LoginState extends State<Login> {
                               ),
                             ),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushNamed(context, SignUp.routeName);
+                              },
                               child: const Text(
                                 'Sign up',
                                 style: TextStyle(
