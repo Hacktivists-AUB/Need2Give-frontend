@@ -14,7 +14,15 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  void onSuccess(BuildContext context, http.Response res) async {
+  static final AuthService _instance = AuthService._init();
+
+  factory AuthService() {
+    return _instance;
+  }
+
+  AuthService._init();
+
+  void _onSuccess(BuildContext context, http.Response res) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Provider.of<UserProvider>(context, listen: false)
         .setUser(jsonEncode(jsonDecode(res.body)['account']));
@@ -52,7 +60,7 @@ class AuthService {
         response: res,
         context: context,
         onSuccess: () async {
-          onSuccess(context, res);
+          _onSuccess(context, res);
         },
       );
     } catch (e) {
@@ -81,7 +89,7 @@ class AuthService {
         response: res,
         context: context,
         onSuccess: () async {
-          onSuccess(context, res);
+          _onSuccess(context, res);
         },
       );
     } catch (e) {
