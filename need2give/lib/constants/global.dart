@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
-
-const uri = 'http://localhost:5000';
+import "package:flutter_dotenv/flutter_dotenv.dart";
 
 class Global {
+  static final url = dotenv.env['BACKEND_URL'];
   static const darkGreen = Color.fromARGB(255, 57, 122, 76);
   static const mediumGreen = Color.fromARGB(255, 86, 147, 88);
   static const green = Color.fromARGB(255, 119, 192, 99);
