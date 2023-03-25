@@ -53,7 +53,7 @@ class _SignUpState extends State<SignUp> {
       username: _usernameController.text,
       email: _emailController.text,
       password: _passwordController.text,
-      phone: _phoneFieldKey.currentState?.number
+      phone: _phoneFieldKey.currentState?.number,
     );
   }
 
@@ -147,7 +147,11 @@ class _SignUpState extends State<SignUp> {
             Input(controller: _usernameController, hintText: 'Username'),
             const SizedBox(height: 10),
             const Label(text: "Phone number*: "),
-            PhoneInput(key: _phoneFieldKey, controller: _phoneController),
+            PhoneInput(
+              key: _phoneFieldKey,
+              controller: _phoneController,
+              required: false,
+            ),
             const SizedBox(height: 10),
             generateConfirmPasswordFields(),
             const SizedBox(height: 20),
@@ -173,13 +177,14 @@ class _SignUpState extends State<SignUp> {
             ),
             const SizedBox(height: 10),
             const Label(text: "Phone number*: "),
-            PhoneInput(controller: _phoneController),
+            PhoneInput(controller: _phoneController, required: false),
             const SizedBox(height: 10),
             const Label(text: "Description*: "),
             Input(
               controller: _descriptionController,
               hintText: "Description",
               numberOfLines: 4,
+              required: false,
             ),
             const SizedBox(height: 10),
             const Label(text: "Working hours*: "),
@@ -235,10 +240,9 @@ class _SignUpState extends State<SignUp> {
           Button(
               text: 'Sign up',
               onPressed: () {
-                // if (_signUpFormKey.currentState!.validate()) {
-
-                // }
-                signUp();
+                if (_signUpFormKey.currentState!.validate()) {
+                  signUp();
+                }
               }),
           const SizedBox(height: 10),
           SizedBox(

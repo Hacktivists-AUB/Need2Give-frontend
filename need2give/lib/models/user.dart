@@ -25,7 +25,7 @@ class UserDTO {
   factory UserDTO.fromMap(Map<String, dynamic> map) {
     return UserDTO(
       username: map['username'] ?? '',
-      phoneNumber: map['phone_number'] ?? '',
+      phoneNumber: map['phone_number'],
       email: map['email'] ?? '',
       password: map['password'] ?? '',
     );

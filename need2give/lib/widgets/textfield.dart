@@ -7,6 +7,7 @@ class Input extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
   final bool secret;
+  final bool required;
   final int? numberOfLines;
 
   const Input({
@@ -14,6 +15,7 @@ class Input extends StatefulWidget {
     required this.controller,
     required this.hintText,
     this.secret = false,
+    this.required = true,
     this.numberOfLines = 1,
   });
 
@@ -55,7 +57,7 @@ class _InputState extends State<Input> {
         ),
       ),
       validator: (value) {
-        if (value == null || value.isEmpty) {
+        if (widget.required && (value == null || value.isEmpty)) {
           return 'Enter your ${widget.hintText}';
         }
         return null;
@@ -66,9 +68,13 @@ class _InputState extends State<Input> {
 
 class PhoneInput extends StatefulWidget {
   final TextEditingController controller;
+  final String hintText;
+  final bool required;
   const PhoneInput({
     super.key,
     required this.controller,
+    this.required = false,
+    this.hintText = "Phone number",
   });
 
   @override
@@ -85,6 +91,12 @@ class PhoneInputState extends State<PhoneInput> {
         setState(() {
           number = value.phoneNumber;
         });
+      },
+      validator: (value) {
+        if (widget.required && (value == null || value.isEmpty)) {
+          return 'Enter your ${widget.hintText}';
+        }
+        return null;
       },
       selectorConfig: const SelectorConfig(
         selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
@@ -107,7 +119,7 @@ class PhoneInputState extends State<PhoneInput> {
           ),
           borderRadius: BorderRadius.circular(10),
         ),
-        hintText: 'Phone number',
+        hintText: widget.hintText,
         hintStyle: const TextStyle(fontSize: 14),
       ),
       searchBoxDecoration: InputDecoration(
