@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:need2give/constants/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -12,13 +14,16 @@ void httpErrorHandle({
       onSuccess();
       break;
     case 400:
-      showSnackBar(context, response.body);
+      showSnackBar(context, jsonDecode(response.body)["message"]);
+      break;
+    case 404:
+      showSnackBar(context, jsonDecode(response.body)["message"]);
       break;
     case 500:
-      showSnackBar(context, response.body);
+      showSnackBar(context, jsonDecode(response.body)["message"]);
       break;
     default:
-      showSnackBar(context, response.body);
+      showSnackBar(context, "Oops! Something went wrong.");
       break;
   }
 }
