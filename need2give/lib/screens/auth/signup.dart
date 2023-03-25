@@ -3,6 +3,7 @@ import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/screens/auth/login.dart';
+import 'package:need2give/services/auth_service.dart';
 import 'package:need2give/widgets/button.dart';
 import 'package:need2give/widgets/schedule.dart';
 import 'package:need2give/widgets/textfield.dart';
@@ -24,6 +25,7 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   UserType _userType = UserType.notSelected;
   final _signUpFormKey = GlobalKey<FormState>();
+  final _phoneFieldKey = GlobalKey<PhoneInputState>();
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
@@ -31,6 +33,8 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _confirmPassController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+
+  final AuthService authService = AuthService();
 
   @override
   void dispose() {
@@ -41,6 +45,16 @@ class _SignUpState extends State<SignUp> {
     _confirmPassController.dispose();
     _phoneController.dispose();
     _descriptionController.dispose();
+  }
+
+  void signUp() {
+    authService.signUp(
+      context: context,
+      username: _usernameController.text,
+      email: _emailController.text,
+      password: _passwordController.text,
+      phone: _phoneFieldKey.currentState?.number
+    );
   }
 
   @override
@@ -133,7 +147,7 @@ class _SignUpState extends State<SignUp> {
             Input(controller: _usernameController, hintText: 'Username'),
             const SizedBox(height: 10),
             const Label(text: "Phone number*: "),
-            PhoneInput(controller: _phoneController),
+            PhoneInput(key: _phoneFieldKey, controller: _phoneController),
             const SizedBox(height: 10),
             generateConfirmPasswordFields(),
             const SizedBox(height: 20),
@@ -221,7 +235,10 @@ class _SignUpState extends State<SignUp> {
           Button(
               text: 'Sign up',
               onPressed: () {
-                if (_signUpFormKey.currentState!.validate()) {}
+                // if (_signUpFormKey.currentState!.validate()) {
+
+                // }
+                signUp();
               }),
           const SizedBox(height: 10),
           SizedBox(

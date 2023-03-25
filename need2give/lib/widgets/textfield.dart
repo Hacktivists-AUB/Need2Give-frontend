@@ -66,29 +66,32 @@ class _InputState extends State<Input> {
 
 class PhoneInput extends StatefulWidget {
   final TextEditingController controller;
-
   const PhoneInput({
     super.key,
     required this.controller,
   });
 
   @override
-  State<PhoneInput> createState() => _PhoneInputState();
+  State<PhoneInput> createState() => PhoneInputState();
 }
 
-class _PhoneInputState extends State<PhoneInput> {
-  String initialCountry = 'LB';
-  PhoneNumber number = PhoneNumber(isoCode: 'LB');
+class PhoneInputState extends State<PhoneInput> {
+  String? number;
+
   @override
   Widget build(BuildContext context) {
     return InternationalPhoneNumberInput(
-      onInputChanged: (PhoneNumber number) {},
+      onInputChanged: (PhoneNumber value) {
+        setState(() {
+          number = value.phoneNumber;
+        });
+      },
       selectorConfig: const SelectorConfig(
         selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
       ),
       autoValidateMode: AutovalidateMode.disabled,
       selectorTextStyle: const TextStyle(color: Colors.black),
-      initialValue: number,
+      initialValue: PhoneNumber(isoCode: "LB"),
       textFieldController: widget.controller,
       formatInput: true,
       keyboardType: const TextInputType.numberWithOptions(
@@ -106,6 +109,15 @@ class _PhoneInputState extends State<PhoneInput> {
         ),
         hintText: 'Phone number',
         hintStyle: const TextStyle(fontSize: 14),
+      ),
+      searchBoxDecoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Colors.black38,
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        hintText: 'Search',
       ),
     );
   }

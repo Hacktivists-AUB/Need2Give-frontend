@@ -1,22 +1,61 @@
 import 'dart:convert';
 
-class User {
-  final String id;
-  final String username;
+class UserDTO {
+  String username;
   String? phoneNumber;
-  final String email;
-  final String password;
+  String email;
+  String password;
+
+  UserDTO({
+    required this.username,
+    this.phoneNumber,
+    required this.email,
+    required this.password,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'username': username,
+      'phone_number': phoneNumber,
+      'email': email,
+      'password': password,
+    };
+  }
+
+  factory UserDTO.fromMap(Map<String, dynamic> map) {
+    return UserDTO(
+      username: map['username'] ?? '',
+      phoneNumber: map['phone_number'] ?? '',
+      email: map['email'] ?? '',
+      password: map['password'] ?? '',
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory UserDTO.fromJson(String source) =>
+      UserDTO.fromMap(json.decode(source));
+}
+
+class User extends UserDTO {
+  final int id;
   final String token;
 
   User({
     required this.id,
-    required this.username,
-    required this.email,
-    this.phoneNumber = '',
-    required this.password,
     required this.token,
-  });
+    required String username,
+    required String? phoneNumber,
+    required String email,
+    required String password,
+  }) : super(
+          username: username,
+          phoneNumber: phoneNumber,
+          email: email,
+          password: "",
+        );
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -28,9 +67,10 @@ class User {
     };
   }
 
+  @override
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      id: map['id'] ?? '',
+      id: map['id'] ?? -1,
       username: map['username'] ?? '',
       phoneNumber: map['phone_number'] ?? '',
       email: map['email'] ?? '',
@@ -39,7 +79,9 @@ class User {
     );
   }
 
+  @override
   String toJson() => json.encode(toMap());
 
+  @override
   factory User.fromJson(String source) => User.fromMap(json.decode(source));
 }
