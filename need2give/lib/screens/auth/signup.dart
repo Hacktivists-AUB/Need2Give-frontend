@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/constants/utils.dart';
 import 'package:need2give/screens/auth/login.dart';
 import 'package:need2give/services/auth_service.dart';
 import 'package:need2give/widgets/button.dart';
@@ -241,10 +242,7 @@ class _SignUpState extends State<SignUp> {
               text: 'Sign up',
               onPressed: () {
                 if (_passwordController.text != _confirmPassController.text) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text('Passwords dont match. Try again.')),
-                  );
+                  showSnackBar(context, "Passwords don't match. Try again.");
                   return;
                 }
                 if (_signUpFormKey.currentState!.validate()) {
