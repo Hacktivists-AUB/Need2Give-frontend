@@ -24,9 +24,12 @@ class AuthService {
 
   void _onSuccess(BuildContext context, http.Response res) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final acc = jsonDecode(res.body)['account'];
+    final token = jsonDecode(res.body)['token'];
+    final merged = {...acc, "token": token};
     Provider.of<UserProvider>(context, listen: false)
-        .setUser(jsonEncode(jsonDecode(res.body)['account']));
-    await prefs.setString('token', jsonDecode(res.body)['token']);
+        .setUser(jsonEncode(merged));
+    await prefs.setString('token', token);
     Navigator.pushNamedAndRemoveUntil(
       context,
       Home.routeName,

@@ -47,7 +47,6 @@ class User extends UserDTO {
     required String username,
     required String? phoneNumber,
     required String email,
-    required String password,
   }) : super(
           username: username,
           phoneNumber: phoneNumber,
@@ -74,7 +73,6 @@ class User extends UserDTO {
       username: map['username'] ?? '',
       phoneNumber: map['phone_number'] ?? '',
       email: map['email'] ?? '',
-      password: map['password'] ?? '',
       token: map['token'] ?? '',
     );
   }
