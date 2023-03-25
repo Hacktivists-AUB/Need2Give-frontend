@@ -240,6 +240,13 @@ class _SignUpState extends State<SignUp> {
           Button(
               text: 'Sign up',
               onPressed: () {
+                if (_passwordController.text != _confirmPassController.text) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text('Passwords dont match. Try again.')),
+                  );
+                  return;
+                }
                 if (_signUpFormKey.currentState!.validate()) {
                   signUp();
                 }

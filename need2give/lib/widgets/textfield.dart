@@ -83,6 +83,7 @@ class PhoneInput extends StatefulWidget {
 
 class PhoneInputState extends State<PhoneInput> {
   String? number;
+  PhoneNumber initialNumber = PhoneNumber(isoCode: 'LB');
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +104,7 @@ class PhoneInputState extends State<PhoneInput> {
       ),
       autoValidateMode: AutovalidateMode.disabled,
       selectorTextStyle: const TextStyle(color: Colors.black),
-      initialValue: PhoneNumber(isoCode: "LB"),
+      initialValue: initialNumber,
       textFieldController: widget.controller,
       formatInput: true,
       keyboardType: const TextInputType.numberWithOptions(
