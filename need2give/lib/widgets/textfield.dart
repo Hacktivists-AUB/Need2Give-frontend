@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:need2give/screens/user/search.dart';
 
 import '../constants/global.dart';
 
@@ -160,6 +161,36 @@ class Label extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class SearchBar extends StatelessWidget {
+  final List<String> data;
+  const SearchBar({
+    super.key,
+    required this.data,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Global.white,
+        hintText: "Search",
+        hintStyle: const TextStyle(fontSize: 14),
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Colors.black38,
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        prefixIcon: const Icon(Icons.search),
+      ),
+      onTap: () {
+        Navigator.pushNamed(context, Search.routeName);
+      },
     );
   }
 }

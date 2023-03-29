@@ -9,7 +9,7 @@ import 'package:need2give/constants/utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:need2give/models/user.dart';
 import 'package:need2give/provider/user_provider.dart';
-import 'package:need2give/screens/home.dart';
+import 'package:need2give/screens/user/home.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
