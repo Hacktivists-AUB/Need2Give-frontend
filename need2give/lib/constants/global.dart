@@ -11,4 +11,5 @@ class Global {
   static const lightGrey = Color.fromARGB(255, 224, 227, 214);
   static const mediumGrey = Colors.black54;
   static const darkGrey = Color.fromARGB(255, 32, 32, 31);
+  static const markerColor = Color.fromARGB(255, 185, 20, 20);
 }

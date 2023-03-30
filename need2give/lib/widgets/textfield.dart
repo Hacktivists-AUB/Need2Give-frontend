@@ -166,10 +166,8 @@ class Label extends StatelessWidget {
 }
 
 class SearchBar extends StatelessWidget {
-  final List<String> data;
   const SearchBar({
     super.key,
-    required this.data,
   });
 
   @override

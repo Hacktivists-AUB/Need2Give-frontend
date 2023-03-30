@@ -10,23 +10,34 @@ class Explore extends StatefulWidget {
 }
 
 class _ExploreState extends State<Explore> {
-  final data = ['blob1', 'blob2', 'blob3'];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Global.lightGrey,
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [Text("Explore")],
-        ),
+        title: const Text("Explore"),
+        centerTitle: true,
       ),
       body: Container(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            SearchBar(data: data),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Expanded(child: SearchBar()),
+                IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/map");
+                  },
+                  icon: const Icon(
+                    Icons.location_on_sharp,
+                    size: 36,
+                    color: Global.darkGreen,
+                  ),
+                )
+              ],
+            ),
           ],
         ),
       ),

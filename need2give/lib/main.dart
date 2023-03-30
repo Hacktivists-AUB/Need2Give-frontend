@@ -25,6 +25,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Need2Give',
       theme: ThemeData(
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Global.green,
+        ),
         colorScheme: const ColorScheme.light(
           primary: Global.green,
         ),

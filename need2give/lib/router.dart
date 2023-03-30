@@ -4,6 +4,7 @@ import 'package:need2give/screens/auth/signup.dart';
 import 'package:need2give/screens/auth/welcome.dart';
 import 'package:need2give/screens/user/home.dart';
 import 'package:need2give/screens/user/search.dart';
+import 'package:need2give/screens/user/map.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -31,6 +32,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         settings: settings,
         builder: (_) => const Search(),
+      );
+    case Map.routeName:
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const Map(),
       );
     default:
       return MaterialPageRoute(

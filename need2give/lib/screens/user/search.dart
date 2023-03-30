@@ -108,7 +108,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
 
   void _filter(String enteredKeyword) {
     List<Map<String, dynamic>> results = [];
-    if (enteredKeyword.isEmpty) {
+    if (enteredKeyword.isEmpty || enteredKeyword == "") {
       results = _currentTabIndex == 0 ? _items : _donationCenters;
     } else {
       results = _currentTabIndex == 0
@@ -153,6 +153,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
                 ),
                 onPressed: () {
                   _searchController.clear();
+                  _filter(_searchController.text);
                 },
               ),
               hintText: 'Search',
