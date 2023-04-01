@@ -3,8 +3,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:need2give/provider/user_provider.dart';
 import 'package:need2give/screens/auth/welcome.dart';
 import 'package:need2give/router.dart';
-import 'package:need2give/screens/main_pages_navbar/ButtonNavbar.dart';
-import 'package:need2give/widgets/button.dart';
 import 'package:provider/provider.dart';
 import 'constants/global.dart';
 
@@ -29,10 +27,6 @@ class MyApp extends StatelessWidget {
         colorScheme: const ColorScheme.light(
           primary: Global.green,
         ),
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(fontSize: 20),
-          bodyMedium: TextStyle(fontSize: 20)
-        ),
         scaffoldBackgroundColor: Global.white,
         appBarTheme: const AppBarTheme(
           elevation: 0,
@@ -42,7 +36,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       onGenerateRoute: (settings) => generateRoute(settings),
-      home:  ButtonNavbar(),
+      home: const WelcomeScreen(),
     );
   }
 }
