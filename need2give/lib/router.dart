@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:need2give/screens/auth/login.dart';
 import 'package:need2give/screens/auth/signup.dart';
 import 'package:need2give/screens/auth/welcome.dart';
-import 'package:need2give/screens/main_pages_navbar/ButtonNavbar.dart';
+import 'package:need2give/screens/home.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -21,10 +21,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         settings: settings,
         builder: (_) => const SignUp(),
       );
-    case ButtonNavbar.routeName:
+    case Home.routeName:
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => const ButtonNavbar(),
+        builder: (_) => const Home(),
       );
     default:
       return MaterialPageRoute(
