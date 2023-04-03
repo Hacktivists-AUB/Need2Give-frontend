@@ -1,13 +1,13 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:need2give/screens/common/EditProfile.dart';
-import 'package:need2give/screens/common/changePassword.dart';
-import 'package:need2give/screens/common/contactUs.dart';
-import 'package:need2give/screens/common/forgetPassword.dart';
-import 'package:need2give/screens/common/notificationSettings.dart';
+import 'package:need2give/screens/common/edit_Profile.dart';
+import 'package:need2give/screens/common/change_Password.dart';
+import 'package:need2give/screens/common/contact_Us.dart';
+import 'package:need2give/screens/common/forget_Password.dart';
+import 'package:need2give/screens/common/notification_Settings.dart';
 import 'package:need2give/screens/common/terms.dart';
-import 'package:need2give/widgets/backButton.dart';
+import 'package:need2give/widgets/back_Button.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -83,7 +83,7 @@ class SettingsPage extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => changePassword()));
+                                      builder: (context) => ChangePassword()));
                             },
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -109,7 +109,7 @@ class SettingsPage extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => forgetPassword()));
+                                      builder: (context) => ForgetPassword()));
                             },
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -135,7 +135,7 @@ class SettingsPage extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => terms()));
+                                      builder: (context) => Terms()));
                             },
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -161,7 +161,7 @@ class SettingsPage extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => contactUs()));
+                                      builder: (context) => ContactUs()));
                             },
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,

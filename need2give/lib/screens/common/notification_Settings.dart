@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
 
-import '../../../widgets/backButton.dart';
+import '../../widgets/back_Button.dart';
 import '../../../widgets/custom_switch.dart';
 
 class NotificationSettingsScreen extends StatelessWidget {
+  const NotificationSettingsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
             appBar: AppBar(
-              leading: backButton(),
-              title: Text("Notifications"),
+              leading: BackButton(),
+              title: const Text("Notifications"),
               centerTitle: true,
             ),
             body: Container(
                 width: double.maxFinite,
-                padding: EdgeInsets.fromLTRB(24, 32, 24, 32),
+                padding: const EdgeInsets.fromLTRB(24, 32, 24, 32),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
+                          children: const [
                             Padding(
                                 padding: EdgeInsets.only(bottom: 1),
                                 child: Text(
@@ -32,10 +34,10 @@ class NotificationSettingsScreen extends StatelessWidget {
                             custom_switch()
                           ]),
                       Padding(
-                          padding: EdgeInsets.only(top: 31),
+                          padding: const EdgeInsets.only(top: 31),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
+                              children: const [
                                 Padding(
                                     padding: EdgeInsets.only(bottom: 1),
                                     child: Text(
@@ -43,14 +45,13 @@ class NotificationSettingsScreen extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.left,
                                     )),
-                                custom_switch(
-                                   )
+                                custom_switch()
                               ])),
                       Padding(
-                          padding: EdgeInsets.only(top: 31),
+                          padding: const EdgeInsets.only(top: 31),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
+                              children: const [
                                 Padding(
                                     padding: EdgeInsets.only(bottom: 1),
                                     child: Text(
@@ -58,14 +59,13 @@ class NotificationSettingsScreen extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.left,
                                     )),
-                                custom_switch(
-                                    )
+                                custom_switch()
                               ])),
                       Padding(
-                          padding: EdgeInsets.only(top: 31),
+                          padding: const EdgeInsets.only(top: 31),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
+                              children: const [
                                 Padding(
                                     padding: EdgeInsets.only(top: 3),
                                     child: Text(
@@ -73,14 +73,13 @@ class NotificationSettingsScreen extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.left,
                                     )),
-                                custom_switch(
-                                    )
+                                custom_switch()
                               ])),
                       Padding(
-                          padding: EdgeInsets.only(top: 30),
+                          padding: const EdgeInsets.only(top: 30),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
+                              children: const [
                                 Padding(
                                     padding: EdgeInsets.only(bottom: 1),
                                     child: Text(
@@ -88,14 +87,13 @@ class NotificationSettingsScreen extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.left,
                                     )),
-                                custom_switch(
-                                    )
+                                custom_switch()
                               ])),
                       Padding(
-                          padding: EdgeInsets.only(top: 31, bottom: 5),
+                          padding: const EdgeInsets.only(top: 31, bottom: 5),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
+                              children: const [
                                 Padding(
                                     padding: EdgeInsets.only(top: 3),
                                     child: Text(
@@ -103,8 +101,7 @@ class NotificationSettingsScreen extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.left,
                                     )),
-                                custom_switch(
-                                    )
+                                custom_switch()
                               ]))
                     ]))));
   }

@@ -1,19 +1,19 @@
-// ignore_for_file: avoid_print, camel_case_types, library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, file_names
 
 import 'package:flutter/material.dart';
 import 'package:need2give/widgets/button.dart';
 import 'package:need2give/widgets/textfield.dart';
 
-import '../../../widgets/backButton.dart';
+import '../../widgets/back_Button.dart';
 
-class changePassword extends StatefulWidget {
-  const changePassword({super.key});
+class ChangePassword extends StatefulWidget {
+  const ChangePassword({super.key});
 
   @override
   _ChangePasswordPageState createState() => _ChangePasswordPageState();
 }
 
-class _ChangePasswordPageState extends State<changePassword> {
+class _ChangePasswordPageState extends State<ChangePassword> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _oldPasswordController = TextEditingController();
@@ -25,8 +25,8 @@ class _ChangePasswordPageState extends State<changePassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: backButton(),
-        title: Text('Change Password'),
+        leading: const BackButton(),
+        title: const Text('Change Password'),
         centerTitle: true,
       ),
       body: Padding(
@@ -37,25 +37,25 @@ class _ChangePasswordPageState extends State<changePassword> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 10),
                 child: Input(controller: _emailController, hintText: "Email"),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 20),
+                padding: const EdgeInsets.only(top: 20),
                 child: Input(
                     controller: _oldPasswordController,
                     hintText: "Old Password ",
                     secret: true),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 20),
+                padding: const EdgeInsets.only(top: 20),
                 child: Input(
                     controller: _newPasswordController,
                     hintText: "New Password ",
                     secret: true),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 20, bottom: 20),
+                padding: const EdgeInsets.only(top: 20, bottom: 20),
                 child: Input(
                   controller: _confirmPasswordController,
                   hintText: "Confirm New Password",

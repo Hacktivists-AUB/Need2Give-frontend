@@ -1,11 +1,11 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 import 'package:need2give/screens/user/profile.dart';
 
-import 'HomePage.dart';
-import "SearchPage.dart";
-import "SettingsPage.dart";
+import 'home_Page.dart';
+import 'search_Page.dart';
+import 'settings_Page.dart';
 
 class ButtonNavbar extends StatefulWidget {
   static const String routeName = '/Home';
@@ -20,8 +20,8 @@ class _ButtonNavbarState extends State<ButtonNavbar> {
   int _currentIndex = 0;
 
   final List<Widget> _children = [
-    HomePage(),
-    SearchPage(),
+    const HomePage(),
+    const SearchPage(),
     profile(),
     SettingsPage(),
   ];
@@ -43,7 +43,7 @@ class _ButtonNavbarState extends State<ButtonNavbar> {
         unselectedItemColor: Colors.grey,
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',

@@ -1,46 +1,36 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
+import 'package:need2give/constants/global.dart';
 import 'package:need2give/widgets/button.dart';
 import 'package:need2give/widgets/textfield.dart';
 
-import '../../../widgets/backButton.dart';
-// ignore_for_file: must_be_immutable
 
-// ignore_for_file: must_be_immutable
-
-// ignore_for_file: must_be_immutable
-
-// ignore_for_file: must_be_immutable
-
-// ignore_for_file: must_be_immutable
-
-// ignore_for_file: must_be_immutable
 class EditProfile extends StatelessWidget {
-  TextEditingController myController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
 
-  TextEditingController emailController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
-  TextEditingController mobileNoController = TextEditingController();
+  final TextEditingController _mobileNoController = TextEditingController();
 
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  EditProfile({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-            backgroundColor: Color.fromRGBO(249, 251, 255, 1),
+            backgroundColor: Global.white,
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
-              leading: backButton(),
-              title: Text("Edit Profile"),
+              leading: const BackButton(),
+              title: const Text("Edit Profile"),
               centerTitle: true,
             ),
             body: Form(
                 key: _formKey,
                 child: Container(
                     width: double.maxFinite,
-                    padding: EdgeInsets.fromLTRB(15, 25, 15, 25),
+                    padding: const EdgeInsets.fromLTRB(15, 25, 15, 25),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -49,18 +39,20 @@ class EditProfile extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 16),
                             child: Input(
-                                controller: myController, hintText: "Username"),
+                                controller: _usernameController,
+                                hintText: "Username"),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 16),
                             child: Input(
-                                controller: emailController, hintText: "Email"),
+                                controller: _emailController,
+                                hintText: "Email"),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 16),
-                            child: PhoneInput(controller: mobileNoController),
+                            child: PhoneInput(controller: _mobileNoController),
                           ),
                           Button(text: 'Save', onPressed: () {})
                         ])))));
