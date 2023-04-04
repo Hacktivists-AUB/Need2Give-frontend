@@ -33,10 +33,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         settings: settings,
         builder: (_) => const Search(),
       );
-    case Map.routeName:
+    case MapScreen.routeName:
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => const Map(),
+        builder: (_) => const MapScreen(),
       );
     default:
       return MaterialPageRoute(

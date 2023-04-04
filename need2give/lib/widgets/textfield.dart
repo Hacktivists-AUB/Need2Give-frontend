@@ -173,6 +173,7 @@ class SearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      readOnly: true,
       decoration: InputDecoration(
         filled: true,
         fillColor: Global.white,

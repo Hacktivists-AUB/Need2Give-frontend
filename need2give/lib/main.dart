@@ -7,6 +7,15 @@ import 'package:need2give/screens/user/explore.dart';
 import 'package:provider/provider.dart';
 import 'constants/global.dart';
 
+
+mixin Smart {}
+mixin Strong {}
+
+class Human {}
+abstract class IStudent {}
+
+class Me extends Human with Smart, Strong implements IStudent {}
+
 Future<void> main() async {
   await dotenv.load();
   runApp(MultiProvider(
