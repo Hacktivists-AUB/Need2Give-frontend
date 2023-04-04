@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:need2give/constants/global.dart';
 
+enum SearchMode {
+  all,
+  onlyItems,
+  onlyDonationCenters,
+}
+
 class Search extends StatefulWidget {
   static const String routeName = '/searchbar';
   const Search({super.key});
@@ -11,8 +17,42 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> with TickerProviderStateMixin {
+  final SearchMode _searchMode = SearchMode.all;
   final TextEditingController _searchController = TextEditingController();
   late final TabController _tabController;
+
+  final _tabsAll = const [
+    Tab(
+      icon: FaIcon(
+        FontAwesomeIcons.box,
+        size: 20,
+      ),
+    ),
+    Tab(
+      icon: Icon(
+        Icons.account_balance,
+        size: 20,
+      ),
+    ),
+  ];
+
+  final _tabsItems = const [
+    Tab(
+      icon: FaIcon(
+        FontAwesomeIcons.box,
+        size: 20,
+      ),
+    ),
+  ];
+
+  final _tabsDonationCenters = const [
+    Tab(
+      icon: Icon(
+        Icons.account_balance,
+        size: 20,
+      ),
+    ),
+  ];
 
   final List<Map<String, dynamic>> _items = [
     {"id": 1, "name": "Panadol", "description": "very gud item"},
@@ -86,10 +126,15 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    _foundItems = _items;
-    _foundDonationCenters = _donationCenters;
+    if (_searchMode == SearchMode.all || _searchMode == SearchMode.onlyItems) {
+      _foundItems = _items;
+    }
+    if (_searchMode == SearchMode.all ||
+        _searchMode == SearchMode.onlyDonationCenters) {
+      _foundDonationCenters = _donationCenters;
+    }
     _tabController = TabController(
-      length: 2,
+      length: _searchMode == SearchMode.all ? 2 : 1,
       vsync: this,
       initialIndex: 0,
     );
@@ -109,26 +154,50 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
   void _filter(String enteredKeyword) {
     List<Map<String, dynamic>> results = [];
     if (enteredKeyword.isEmpty || enteredKeyword == "") {
-      results = _currentTabIndex == 0 ? _items : _donationCenters;
+      if (_searchMode == SearchMode.onlyItems) {
+        results = _items;
+      } else if (_searchMode == SearchMode.onlyDonationCenters) {
+        results = _donationCenters;
+      } else {
+        results = _currentTabIndex == 0 ? _items : _donationCenters;
+      }
     } else {
-      results = _currentTabIndex == 0
-          ? _items
-              .where((object) => object["name"]
-                  .toLowerCase()
-                  .contains(enteredKeyword.toLowerCase()))
-              .toList()
-          : _donationCenters
-              .where((object) => object["name"]
-                  .toLowerCase()
-                  .contains(enteredKeyword.toLowerCase()))
-              .toList();
+      if (_searchMode == SearchMode.onlyItems) {
+        results = _items
+            .where((object) => object["name"]
+                .toLowerCase()
+                .contains(enteredKeyword.toLowerCase()))
+            .toList();
+      } else if (_searchMode == SearchMode.onlyDonationCenters) {
+        results = _donationCenters
+            .where((object) => object["name"]
+                .toLowerCase()
+                .contains(enteredKeyword.toLowerCase()))
+            .toList();
+      } else {
+        results = _currentTabIndex == 0
+            ? _items
+                .where((object) => object["name"]
+                    .toLowerCase()
+                    .contains(enteredKeyword.toLowerCase()))
+                .toList()
+            : _donationCenters
+                .where((object) => object["name"]
+                    .toLowerCase()
+                    .contains(enteredKeyword.toLowerCase()))
+                .toList();
+      }
     }
 
     setState(() {
-      if (_currentTabIndex == 0) {
+      if (_searchMode == SearchMode.onlyItems) {
         _foundItems = results;
-      } else {
+      } else if (_searchMode == SearchMode.onlyDonationCenters) {
         _foundDonationCenters = results;
+      } else {
+        _currentTabIndex == 0
+            ? _foundItems = results
+            : _foundDonationCenters = results;
       }
     });
   }
@@ -172,33 +241,28 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: Global.darkGreen,
-          tabs: const [
-            Tab(
-              icon: FaIcon(
-                FontAwesomeIcons.box,
-                size: 20,
-              ),
-            ),
-            Tab(
-              icon: Icon(
-                Icons.account_balance,
-                size: 20,
-              ),
-            ),
-          ],
+          tabs: _searchMode == SearchMode.all
+              ? _tabsAll
+              : _searchMode == SearchMode.onlyItems
+                  ? _tabsItems
+                  : _tabsDonationCenters,
         ),
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [
-          buildListView(_foundItems),
-          buildListView(_foundDonationCenters)
-        ],
+        children: _searchMode == SearchMode.all
+            ? [
+                _buildListView(_foundItems),
+                _buildListView(_foundDonationCenters),
+              ]
+            : _searchMode == SearchMode.onlyItems
+                ? [_buildListView(_foundItems)]
+                : [_buildListView(_foundDonationCenters)],
       ),
     );
   }
 
-  Widget buildListView(List<Map<String, dynamic>> objects) => ListView.builder(
+  Widget _buildListView(List<Map<String, dynamic>> objects) => ListView.builder(
         itemCount: objects.length,
         itemBuilder: (BuildContext context, int index) => Card(
           margin: const EdgeInsets.symmetric(vertical: 4),
