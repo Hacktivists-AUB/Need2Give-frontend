@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/constants/utils.dart';
+import 'package:need2give/screens/user/search.dart';
 import 'package:need2give/widgets/textfield.dart';
 
 class MapScreen extends StatefulWidget {
@@ -122,12 +123,10 @@ class _MapScreenState extends State<MapScreen> {
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Input(
-              controller: _searchController,
-              hintText: "Find a donation center",
-              required: false,
+          const Padding(
+            padding: EdgeInsets.all(12),
+            child: SearchBar(
+              searchMode: SearchMode.onlyDonationCenters,
             ),
           )
         ],

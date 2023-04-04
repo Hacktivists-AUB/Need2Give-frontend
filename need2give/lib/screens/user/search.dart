@@ -17,7 +17,7 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> with TickerProviderStateMixin {
-  final SearchMode _searchMode = SearchMode.all;
+  SearchMode _searchMode = SearchMode.all;
   final TextEditingController _searchController = TextEditingController();
   late final TabController _tabController;
 
@@ -126,6 +126,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    super.initState();
     if (_searchMode == SearchMode.all || _searchMode == SearchMode.onlyItems) {
       _foundItems = _items;
     }
@@ -141,7 +142,6 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
     _tabController.addListener(() {
       _currentTabIndex = _tabController.index;
     });
-    super.initState();
   }
 
   @override
@@ -204,6 +204,9 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final arguments =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    _searchMode = arguments['searchMode'];
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 8,

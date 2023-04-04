@@ -166,8 +166,10 @@ class Label extends StatelessWidget {
 }
 
 class SearchBar extends StatelessWidget {
+  final SearchMode searchMode;
   const SearchBar({
     super.key,
+    required this.searchMode,
   });
 
   @override
@@ -188,7 +190,11 @@ class SearchBar extends StatelessWidget {
         prefixIcon: const Icon(Icons.search),
       ),
       onTap: () {
-        Navigator.pushNamed(context, Search.routeName);
+        Navigator.pushNamed(
+          context,
+          Search.routeName,
+          arguments: {'searchMode': searchMode},
+        );
       },
     );
   }

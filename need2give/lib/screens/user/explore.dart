@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/screens/user/search.dart';
 import 'package:need2give/widgets/textfield.dart';
 
 class Explore extends StatefulWidget {
@@ -25,7 +26,11 @@ class _ExploreState extends State<Explore> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Expanded(child: SearchBar()),
+                const Expanded(
+                  child: SearchBar(
+                    searchMode: SearchMode.all,
+                  ),
+                ),
                 IconButton(
                   onPressed: () {
                     Navigator.pushNamed(context, "/map");
