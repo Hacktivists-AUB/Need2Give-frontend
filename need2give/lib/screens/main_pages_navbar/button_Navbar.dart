@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:need2give/screens/user/profile.dart';
 
 import 'home_Page.dart';
-import 'search_Page.dart';
 import 'settings_Page.dart';
+import 'search_page.dart';
 
 class ButtonNavbar extends StatefulWidget {
   static const String routeName = '/Home';
