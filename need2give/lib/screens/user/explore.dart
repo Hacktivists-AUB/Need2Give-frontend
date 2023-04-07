@@ -14,7 +14,7 @@ class _ExploreState extends State<Explore> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Global.lightGrey,
+      backgroundColor: Global.backgroundColor,
       appBar: AppBar(
         title: const Text("Explore"),
         centerTitle: true,

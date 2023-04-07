@@ -18,8 +18,8 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   final MapController _mapController = MapController();
-  final TextEditingController _searchController = TextEditingController();
   final LatLng _initialPosition = LatLng(33.9009165, 35.4793445);
+  bool _currentPositionActivated = false;
   late final List<Marker> _markers = [
     Marker(
       point: _initialPosition,
@@ -113,7 +113,7 @@ class _MapScreenState extends State<MapScreen> {
             children: [
               TileLayer(
                 minZoom: 8,
-                maxZoom: 18,
+                maxZoom: 18.0,
                 urlTemplate:
                     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 subdomains: const ['a', 'b', 'c'],
@@ -142,6 +142,7 @@ class _MapScreenState extends State<MapScreen> {
                 final LatLng coords = LatLng(value.latitude, value.longitude);
                 _mapController.move(coords, 17.0);
                 setState(() {
+                  _currentPositionActivated = true;
                   _markers.add(
                     Marker(
                       point: coords,
@@ -163,7 +164,11 @@ class _MapScreenState extends State<MapScreen> {
             heroTag: "btn2",
             backgroundColor: Global.mediumGreen,
             onPressed: () {
-              _addNearbyDonationCenters();
+              if (_currentPositionActivated) {
+                _addNearbyDonationCenters();
+              } else {
+                showSnackBar(context, 'Select your current location');
+              }
             },
             child: const FaIcon(
               FontAwesomeIcons.angleUp,

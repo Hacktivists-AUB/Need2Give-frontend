@@ -1,19 +1,16 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
+import 'package:need2give/screens/main_pages_navbar/home_page.dart';
+import 'package:need2give/screens/main_pages_navbar/settings_page.dart';
+import 'package:need2give/screens/user/explore.dart';
 import 'package:need2give/screens/user/profile.dart';
 
-import 'home_Page.dart';
-import 'settings_Page.dart';
-import 'search_page.dart';
-
 class ButtonNavbar extends StatefulWidget {
-  static const String routeName = '/Home';
+  static const String routeName = '/main';
 
-  const ButtonNavbar({Key? key}) : super(key: key);
+  const ButtonNavbar({super.key});
 
   @override
-  _ButtonNavbarState createState() => _ButtonNavbarState();
+  State<ButtonNavbar> createState() => _ButtonNavbarState();
 }
 
 class _ButtonNavbarState extends State<ButtonNavbar> {
@@ -21,9 +18,9 @@ class _ButtonNavbarState extends State<ButtonNavbar> {
 
   final List<Widget> _children = [
     const HomePage(),
-    const SearchPage(),
-    profile(),
-    SettingsPage(),
+    const Explore(),
+    const Profile(),
+    const SettingsPage(),
   ];
 
   void onTabTapped(int index) {

@@ -3,7 +3,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:need2give/provider/user_provider.dart';
 // import 'package:need2give/screens/auth/welcome.dart';
 import 'package:need2give/router.dart';
-import 'package:need2give/screens/user/explore.dart';
+import 'package:need2give/screens/main_pages_navbar/button_navbar.dart';
+// import 'package:need2give/screens/user/explore.dart';
 import 'package:provider/provider.dart';
 import 'constants/global.dart';
 
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         colorScheme: const ColorScheme.light(
           primary: Global.green,
         ),
-        scaffoldBackgroundColor: Global.white,
+        scaffoldBackgroundColor: Global.backgroundColor,
         appBarTheme: const AppBarTheme(
           elevation: 0,
           iconTheme: IconThemeData(
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       onGenerateRoute: (settings) => generateRoute(settings),
-      home: const Explore(),
+      home: const ButtonNavbar(),
     );
   }
 }

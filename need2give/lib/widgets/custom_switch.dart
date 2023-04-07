@@ -1,40 +1,38 @@
-// ignore_for_file: use_key_in_widget_constructors, unnecessary_new, camel_case_types
-
 import 'package:flutter/material.dart';
+import 'package:need2give/constants/global.dart';
 
-class custom_switch extends StatefulWidget {
-  @override
-  // ignore: overridden_fields
-  final Key? key;
-
-  const custom_switch({this.key}) : super(key: key);
+class CustomSwitch extends StatefulWidget {
+  const CustomSwitch({super.key});
 
   @override
-  SwitchClass createState() => new SwitchClass();
+  State<CustomSwitch> createState() => _CustomSwitchState();
 }
 
-
-class SwitchClass extends State {
-  bool isSwitched = false;
+class _CustomSwitchState extends State<CustomSwitch> {
+  bool _isSwitched = false;
   void toggleSwitch(bool value) {
     setState(() {
-      isSwitched = !isSwitched;
+      _isSwitched = !_isSwitched;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-      Transform.scale(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Transform.scale(
           scale: 2,
           child: Switch(
             onChanged: toggleSwitch,
-            value: isSwitched,
-            activeColor: Colors.green,
-            activeTrackColor: Colors.lightGreen,
-            inactiveThumbColor: Colors.grey.shade700,
-            inactiveTrackColor: Colors.grey,
-          )),
-    ]);
+            value: _isSwitched,
+            activeColor: Global.green,
+            activeTrackColor: Global.green,
+            inactiveThumbColor: Global.mediumGrey,
+            inactiveTrackColor: Global.mediumGrey,
+          ),
+        ),
+      ],
+    );
   }
 }
