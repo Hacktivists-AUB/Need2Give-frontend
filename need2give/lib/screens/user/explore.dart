@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/screens/user/category.dart';
 import 'package:need2give/screens/user/search.dart';
 import 'package:need2give/widgets/textfield.dart';
 
@@ -85,7 +86,13 @@ class _ExploreState extends State<Explore> {
                         margin: const EdgeInsets.only(right: 12),
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              Category.routeName,
+                              arguments: e,
+                            );
+                          },
                           child: Text(
                             e["name"],
                             style: const TextStyle(color: Global.white),

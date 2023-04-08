@@ -204,9 +204,8 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final arguments =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    _searchMode = arguments['searchMode'];
+    _searchMode = (ModalRoute.of(context)!.settings.arguments
+        as Map<String, dynamic>)['searchMode'];
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 8,
