@@ -48,7 +48,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case Category.routeName:
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => const Category(),
+        builder: (_) => Category(),
       );
     default:
       return MaterialPageRoute(
