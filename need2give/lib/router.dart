@@ -3,6 +3,7 @@ import 'package:need2give/screens/auth/login.dart';
 import 'package:need2give/screens/auth/signup.dart';
 import 'package:need2give/screens/auth/welcome.dart';
 import 'package:need2give/screens/user/home.dart';
+import 'package:need2give/screens/user/item.dart';
 import 'package:need2give/screens/user/search.dart';
 import 'package:need2give/screens/user/map.dart';
 import 'package:need2give/screens/user/category.dart';
@@ -49,6 +50,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         settings: settings,
         builder: (_) => Category(),
+      );
+    case ItemPage.routeName:
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const ItemPage(),
       );
     default:
       return MaterialPageRoute(

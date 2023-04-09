@@ -146,21 +146,19 @@ class Label extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: Text(
-            text,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Global.mediumGrey,
-            ),
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 12),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Global.mediumGrey,
           ),
         ),
-      ],
+      ),
     );
   }
 }

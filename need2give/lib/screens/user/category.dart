@@ -107,7 +107,18 @@ class Category extends StatelessWidget {
           child: Column(
             children: [
               const SearchBar(searchMode: SearchMode.onlyItems),
-              const SizedBox(height: 20),
+              const SizedBox(height: 18),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Found ${_items.length} items",
+                  style: const TextStyle(
+                      color: Global.mediumGrey,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              const SizedBox(height: 18),
               Column(
                 children: _items
                     .map(
@@ -115,8 +126,8 @@ class Category extends StatelessWidget {
                         children: [
                           ItemListTile(item: e),
                           Positioned(
-                            top: 0,
-                            right: 0,
+                            top: 12,
+                            right: 12,
                             child: Container(
                               width: 36,
                               height: 36,

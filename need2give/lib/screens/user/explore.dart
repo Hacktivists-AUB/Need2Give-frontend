@@ -82,7 +82,7 @@ class _ExploreState extends State<Explore> {
     {
       "id": 1,
       "name": "Panadol",
-      "description": "very gud item",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor luctus urna, a efficitur neque placerat eu. Integer dictum tellus id tellus sollicitudin, eu varius nunc auctor.",
       "center": "Sweet tooth pharmacy",
       "quantity": 10,
       "category": "Medicine",
@@ -90,7 +90,7 @@ class _ExploreState extends State<Explore> {
     {
       "id": 2,
       "name": "Rice",
-      "description": "very gud item",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor luctus urna, a efficitur neque placerat eu. Integer dictum tellus id tellus sollicitudin, eu varius nunc auctor.",
       "center": "Ubi's charity",
       "quantity": 11,
       "category": "Food",
@@ -98,7 +98,7 @@ class _ExploreState extends State<Explore> {
     {
       "id": 3,
       "name": "Noodles",
-      "description": "very gud item",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor luctus urna, a efficitur neque placerat eu. Integer dictum tellus id tellus sollicitudin, eu varius nunc auctor.",
       "center": "Ubi's charity",
       "quantity": 2,
       "category": "Food",
@@ -106,7 +106,7 @@ class _ExploreState extends State<Explore> {
     {
       "id": 4,
       "name": "Shirt",
-      "description": "very gud item",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor luctus urna, a efficitur neque placerat eu. Integer dictum tellus id tellus sollicitudin, eu varius nunc auctor.",
       "center": "Ubi's charity",
       "quantity": 100,
       "category": "Clothing",
@@ -114,7 +114,7 @@ class _ExploreState extends State<Explore> {
     {
       "id": 5,
       "name": "Candy",
-      "description": "very gud item",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor luctus urna, a efficitur neque placerat eu. Integer dictum tellus id tellus sollicitudin, eu varius nunc auctor.",
       "center": "Ubi's charity",
       "quantity": 31,
       "category": "Food",
