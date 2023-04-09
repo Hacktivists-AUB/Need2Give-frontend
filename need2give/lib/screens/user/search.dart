@@ -8,6 +8,12 @@ enum SearchMode {
   onlyDonationCenters,
 }
 
+enum TabType {
+  item,
+  donationCenter,
+  category,
+}
+
 class Search extends StatefulWidget {
   static const String routeName = '/searchbar';
   const Search({super.key});
@@ -17,41 +23,35 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> with TickerProviderStateMixin {
-  SearchMode _searchMode = SearchMode.all;
   final TextEditingController _searchController = TextEditingController();
+  SearchMode _searchMode = SearchMode.all;
   late TabController _tabController;
 
-  final _tabsAll = const [
-    Tab(
-      icon: FaIcon(
-        FontAwesomeIcons.box,
-        size: 20,
-      ),
-    ),
-    Tab(
-      icon: Icon(
-        Icons.account_balance,
-        size: 20,
-      ),
-    ),
-  ];
-
-  final _tabsItems = const [
-    Tab(
-      icon: FaIcon(
-        FontAwesomeIcons.box,
-        size: 20,
-      ),
-    ),
-  ];
-
-  final _tabsDonationCenters = const [
-    Tab(
-      icon: Icon(
-        Icons.account_balance,
-        size: 20,
-      ),
-    ),
+  final List<Map<String, dynamic>> _categories = [
+    {
+      "id": 1,
+      "name": "All",
+    },
+    {
+      "id": 2,
+      "name": "Food",
+    },
+    {
+      "id": 3,
+      "name": "Medicine",
+    },
+    {
+      "id": 4,
+      "name": "Clothing",
+    },
+    {
+      "id": 5,
+      "name": "Electronics",
+    },
+    {
+      "id": 6,
+      "name": "Other",
+    }
   ];
 
   final List<Map<String, dynamic>> _items = [
@@ -122,23 +122,33 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
 
   List<Map<String, dynamic>> _foundItems = [];
   List<Map<String, dynamic>> _foundDonationCenters = [];
+  List<Map<String, dynamic>> _foundCategories = [];
   int _currentTabIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    if (_searchMode == SearchMode.all || _searchMode == SearchMode.onlyItems) {
-      _foundItems = _items;
-    }
-    if (_searchMode == SearchMode.all ||
-        _searchMode == SearchMode.onlyDonationCenters) {
-      _foundDonationCenters = _donationCenters;
+    switch (_searchMode) {
+      case SearchMode.onlyItems:
+        _foundItems = _items;
+        break;
+      case SearchMode.onlyDonationCenters:
+        _foundDonationCenters = _donationCenters;
+        break;
+      case SearchMode.all:
+        _foundItems = _items;
+        _foundDonationCenters = _donationCenters;
+        _foundCategories = _categories;
+        break;
     }
     _tabController = TabController(
-      length: 2,
+      length: _searchMode == SearchMode.all ? 3 : 1,
       vsync: this,
       initialIndex: 0,
     );
+    _tabController.addListener(() {
+      _currentTabIndex = _tabController.index;
+    });
   }
 
   @override
@@ -148,41 +158,57 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  List<Map<String, dynamic>> _getSimilarResults(
+      List<Map<String, dynamic>> list, String keyword) {
+    return list
+        .where((object) =>
+            object["name"].toLowerCase().contains(keyword.toLowerCase()))
+        .toList();
+  }
+
   void _filter(String enteredKeyword) {
     List<Map<String, dynamic>> results = [];
     if (enteredKeyword.isEmpty || enteredKeyword == "") {
-      if (_searchMode == SearchMode.onlyItems) {
-        results = _items;
-      } else if (_searchMode == SearchMode.onlyDonationCenters) {
-        results = _donationCenters;
-      } else {
-        results = _currentTabIndex == 0 ? _items : _donationCenters;
+      switch (_searchMode) {
+        case SearchMode.onlyItems:
+          results = _items;
+          break;
+        case SearchMode.onlyDonationCenters:
+          results = _donationCenters;
+          break;
+        case SearchMode.all:
+          switch (_currentTabIndex) {
+            case 0:
+              results = _items;
+              break;
+            case 1:
+              results = _donationCenters;
+              break;
+            case 2:
+              results = _categories;
+              break;
+          }
       }
     } else {
-      if (_searchMode == SearchMode.onlyItems) {
-        results = _items
-            .where((object) => object["name"]
-                .toLowerCase()
-                .contains(enteredKeyword.toLowerCase()))
-            .toList();
-      } else if (_searchMode == SearchMode.onlyDonationCenters) {
-        results = _donationCenters
-            .where((object) => object["name"]
-                .toLowerCase()
-                .contains(enteredKeyword.toLowerCase()))
-            .toList();
-      } else {
-        results = _currentTabIndex == 0
-            ? _items
-                .where((object) => object["name"]
-                    .toLowerCase()
-                    .contains(enteredKeyword.toLowerCase()))
-                .toList()
-            : _donationCenters
-                .where((object) => object["name"]
-                    .toLowerCase()
-                    .contains(enteredKeyword.toLowerCase()))
-                .toList();
+      switch (_searchMode) {
+        case SearchMode.onlyItems:
+          results = _getSimilarResults(_items, enteredKeyword);
+          break;
+        case SearchMode.onlyDonationCenters:
+          results = _getSimilarResults(_donationCenters, enteredKeyword);
+          break;
+        case SearchMode.all:
+          switch (_currentTabIndex) {
+            case 0:
+              results = _getSimilarResults(_items, enteredKeyword);
+              break;
+            case 1:
+              results = _getSimilarResults(_donationCenters, enteredKeyword);
+              break;
+            case 2:
+              results = _getSimilarResults(_categories, enteredKeyword);
+              break;
+          }
       }
     }
 
@@ -192,9 +218,17 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
       } else if (_searchMode == SearchMode.onlyDonationCenters) {
         _foundDonationCenters = results;
       } else {
-        _currentTabIndex == 0
-            ? _foundItems = results
-            : _foundDonationCenters = results;
+        switch (_currentTabIndex) {
+          case 0:
+            _foundItems = results;
+            break;
+          case 1:
+            _foundDonationCenters = results;
+            break;
+          case 2:
+            _foundCategories = results;
+            break;
+        }
       }
     });
   }
@@ -203,14 +237,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     _searchMode = (ModalRoute.of(context)!.settings.arguments
         as Map<String, dynamic>)['searchMode'];
-    _tabController = TabController(
-      length: _searchMode == SearchMode.all ? 2 : 1,
-      vsync: this,
-      initialIndex: 0,
-    );
-    _tabController.addListener(() {
-      _currentTabIndex = _tabController.index;
-    });
+
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 8,
@@ -248,35 +275,94 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: Global.darkGreen,
-          tabs: _searchMode == SearchMode.all
-              ? _tabsAll
-              : _searchMode == SearchMode.onlyItems
-                  ? _tabsItems
-                  : _tabsDonationCenters,
+          tabs: _generateTabs(_searchMode),
         ),
       ),
       body: TabBarView(
         controller: _tabController,
-        children: _searchMode == SearchMode.all
-            ? [
-                _buildListView(_foundItems),
-                _buildListView(_foundDonationCenters),
-              ]
-            : _searchMode == SearchMode.onlyItems
-                ? [_buildListView(_foundItems)]
-                : [_buildListView(_foundDonationCenters)],
+        children: _generateTabView(_searchMode),
       ),
     );
   }
 
-  Widget _buildListView(List<Map<String, dynamic>> objects) => ListView.builder(
+  List<Widget> _generateTabView(SearchMode mode) {
+    switch (mode) {
+      case SearchMode.all:
+        return [
+          _buildListView(_foundItems),
+          _buildListView(_foundDonationCenters),
+          _buildListView(_foundCategories, withSubtitle: false),
+        ];
+      case SearchMode.onlyDonationCenters:
+        return [
+          _buildListView(_foundDonationCenters),
+        ];
+      case SearchMode.onlyItems:
+        return [
+          _buildListView(_foundItems),
+        ];
+    }
+  }
+
+  Tab _generateTab(TabType type) {
+    switch (type) {
+      case TabType.item:
+        return const Tab(
+          icon: FaIcon(
+            FontAwesomeIcons.box,
+            size: 20,
+          ),
+        );
+      case TabType.donationCenter:
+        return const Tab(
+          icon: Icon(
+            Icons.account_balance,
+            size: 20,
+          ),
+        );
+      case TabType.category:
+        return const Tab(
+          icon: Icon(
+            Icons.category,
+            size: 20,
+          ),
+        );
+    }
+  }
+
+  List<Tab> _generateTabs(SearchMode mode) {
+    switch (mode) {
+      case SearchMode.all:
+        return [
+          _generateTab(TabType.item),
+          _generateTab(TabType.donationCenter),
+          _generateTab(TabType.category),
+        ];
+      case SearchMode.onlyDonationCenters:
+        return [
+          _generateTab(TabType.donationCenter),
+        ];
+      case SearchMode.onlyItems:
+        return [
+          _generateTab(TabType.item),
+        ];
+    }
+  }
+
+  Widget _buildListView(List<Map<String, dynamic>> objects,
+          {bool withSubtitle = true}) =>
+      ListView.builder(
         itemCount: objects.length,
         itemBuilder: (BuildContext context, int index) => Card(
           margin: const EdgeInsets.symmetric(vertical: 4),
-          child: ListTile(
-            title: Text(objects[index]['name']),
-            subtitle: Text(objects[index]["description"].toString()),
-          ),
+          child: withSubtitle
+              ? ListTile(
+                  title: Text(objects[index]["name"]),
+                  subtitle: Text(objects[index]["description"]),
+                )
+              : ListTile(
+                  title: Text(objects[index]["name"]),
+                ),
         ),
       );
 }
