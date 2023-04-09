@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:need2give/constants/global.dart';
 import 'package:need2give/screens/main_pages_navbar/home_page.dart';
 import 'package:need2give/screens/main_pages_navbar/settings_page.dart';
 import 'package:need2give/screens/user/explore.dart';
@@ -34,10 +35,11 @@ class _ButtonNavbarState extends State<ButtonNavbar> {
     return Scaffold(
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         onTap: onTabTapped,
         currentIndex: _currentIndex,
-        selectedItemColor: Colors.green,
-        unselectedItemColor: Colors.grey,
+        selectedItemColor: Global.green,
+        unselectedItemColor: Global.mediumGrey,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         items: const [
