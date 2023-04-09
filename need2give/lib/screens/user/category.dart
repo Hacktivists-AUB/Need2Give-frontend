@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/screens/user/search.dart';
+import 'package:need2give/widgets/item.dart';
 import 'package:need2give/widgets/textfield.dart';
 
 class Category extends StatelessWidget {
@@ -100,138 +101,52 @@ class Category extends StatelessWidget {
         title: Text(category["name"]),
         centerTitle: true,
       ),
-      body: Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            const SearchBar(searchMode: SearchMode.onlyItems),
-            Expanded(
-              child: CustomScrollView(
-                slivers: [
-                  SliverGrid(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 8,
-                      childAspectRatio: 0.6,
-                      mainAxisSpacing: 8,
-                    ),
-                    delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                        return _buildItemCard(_items[index]);
-                      },
-                      childCount: _items.length,
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: TextButton(
-                      onPressed: () {},
-                      child: const Text("See more"),
-                    ),
-                  ),
-                ],
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              const SearchBar(searchMode: SearchMode.onlyItems),
+              const SizedBox(height: 20),
+              Column(
+                children: _items
+                    .map(
+                      (e) => Stack(
+                        children: [
+                          ItemListTile(item: e),
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            child: Container(
+                              width: 36,
+                              height: 36,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Global.green,
+                              ),
+                              child: IconButton(
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons.add,
+                                  size: 20,
+                                  color: Global.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                    .toList(),
               ),
-            ),
-          ],
+              TextButton(
+                onPressed: () {},
+                child: const Text("See more"),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
-
-  Widget _buildItemCard(Map<String, dynamic> item) => Hero(
-        tag: item["id"],
-        child: GestureDetector(
-          onTap: () {},
-          child: GridTile(
-            child: Container(
-              padding: const EdgeInsets.all(16.0),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20),
-                ),
-              ),
-              child: Stack(
-                children: [
-                  Column(
-                    children: [
-                      Image.asset("assets/cart.png"),
-                      const SizedBox(height: 16),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          item["name"],
-                          style: const TextStyle(
-                            color: Global.darkGrey,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          item["center"],
-                          style: const TextStyle(
-                            color: Global.mediumGrey,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Quantity: ${item["quantity"]}",
-                          style: const TextStyle(
-                            color: Global.mediumGrey,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6),
-                              color: Global.lightGreen,
-                            ),
-                            padding: const EdgeInsets.all(6),
-                            child: Text(
-                              item["category"],
-                              style: const TextStyle(
-                                color: Global.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: Container(
-                      width: 36,
-                      height: 36,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Global.green,
-                      ),
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.add,
-                          size: 20,
-                          color: Global.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
 }
