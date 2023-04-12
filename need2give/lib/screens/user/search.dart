@@ -11,7 +11,6 @@ enum SearchMode {
 enum TabType {
   item,
   donationCenter,
-  category,
 }
 
 class Search extends StatefulWidget {
@@ -26,33 +25,6 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
   SearchMode _searchMode = SearchMode.all;
   late TabController _tabController;
-
-  final List<Map<String, dynamic>> _categories = [
-    {
-      "id": 1,
-      "name": "All",
-    },
-    {
-      "id": 2,
-      "name": "Food",
-    },
-    {
-      "id": 3,
-      "name": "Medicine",
-    },
-    {
-      "id": 4,
-      "name": "Clothing",
-    },
-    {
-      "id": 5,
-      "name": "Electronics",
-    },
-    {
-      "id": 6,
-      "name": "Other",
-    }
-  ];
 
   final List<Map<String, dynamic>> _items = [
     {"id": 1, "name": "Panadol", "description": "very gud item"},
@@ -122,7 +94,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
 
   List<Map<String, dynamic>> _foundItems = [];
   List<Map<String, dynamic>> _foundDonationCenters = [];
-  List<Map<String, dynamic>> _foundCategories = [];
+
   int _currentTabIndex = 0;
 
   @override
@@ -138,11 +110,10 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
       case SearchMode.all:
         _foundItems = _items;
         _foundDonationCenters = _donationCenters;
-        _foundCategories = _categories;
         break;
     }
     _tabController = TabController(
-      length: _searchMode == SearchMode.all ? 3 : 1,
+      length: _searchMode == SearchMode.all ? 2 : 1,
       vsync: this,
       initialIndex: 0,
     );
@@ -184,9 +155,6 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
             case 1:
               results = _donationCenters;
               break;
-            case 2:
-              results = _categories;
-              break;
           }
       }
     } else {
@@ -205,9 +173,6 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
             case 1:
               results = _getSimilarResults(_donationCenters, enteredKeyword);
               break;
-            case 2:
-              results = _getSimilarResults(_categories, enteredKeyword);
-              break;
           }
       }
     }
@@ -224,9 +189,6 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
             break;
           case 1:
             _foundDonationCenters = results;
-            break;
-          case 2:
-            _foundCategories = results;
             break;
         }
       }
@@ -291,7 +253,6 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
         return [
           _buildListView(_foundItems),
           _buildListView(_foundDonationCenters),
-          _buildListView(_foundCategories, withSubtitle: false),
         ];
       case SearchMode.onlyDonationCenters:
         return [
@@ -320,13 +281,6 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
             size: 20,
           ),
         );
-      case TabType.category:
-        return const Tab(
-          icon: Icon(
-            Icons.category,
-            size: 20,
-          ),
-        );
     }
   }
 
@@ -336,7 +290,6 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
         return [
           _generateTab(TabType.item),
           _generateTab(TabType.donationCenter),
-          _generateTab(TabType.category),
         ];
       case SearchMode.onlyDonationCenters:
         return [
