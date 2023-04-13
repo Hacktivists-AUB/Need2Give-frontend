@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
 
-class backButton extends StatefulWidget {
-  const backButton({super.key});
+class BackButton extends StatefulWidget {
+  const BackButton({super.key});
 
   @override
-  ButtonBack createState() =>  ButtonBack();
+  State<BackButton> createState() => _BackButtonState();
 }
 
-class ButtonBack extends State {
+class _BackButtonState extends State<BackButton> {
   @override
   Widget build(BuildContext context) {
     return IconButton(

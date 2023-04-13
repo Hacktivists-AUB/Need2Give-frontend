@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:need2give/screens/user/search.dart';
 
 import '../constants/global.dart';
 
@@ -145,21 +146,54 @@ class Label extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: Text(
-            text,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Global.mediumGrey,
-            ),
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 12),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Global.mediumGrey,
           ),
         ),
-      ],
+      ),
+    );
+  }
+}
+
+class SearchBar extends StatelessWidget {
+  final SearchMode searchMode;
+  const SearchBar({
+    super.key,
+    required this.searchMode,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      readOnly: true,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Global.white,
+        hintText: "Search",
+        hintStyle: const TextStyle(fontSize: 14),
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Colors.black38,
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        prefixIcon: const Icon(Icons.search),
+      ),
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          Search.routeName,
+          arguments: {'searchMode': searchMode},
+        );
+      },
     );
   }
 }

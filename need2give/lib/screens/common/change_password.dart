@@ -1,16 +1,12 @@
-// ignore_for_file: library_private_types_in_public_api, file_names
-
 import 'package:flutter/material.dart';
 import 'package:need2give/widgets/button.dart';
 import 'package:need2give/widgets/textfield.dart';
-
-import '../../widgets/back_Button.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
 
   @override
-  _ChangePasswordPageState createState() => _ChangePasswordPageState();
+  State<ChangePassword> createState() => _ChangePasswordPageState();
 }
 
 class _ChangePasswordPageState extends State<ChangePassword> {
@@ -43,16 +39,18 @@ class _ChangePasswordPageState extends State<ChangePassword> {
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Input(
-                    controller: _oldPasswordController,
-                    hintText: "Old Password ",
-                    secret: true),
+                  controller: _oldPasswordController,
+                  hintText: "Old Password ",
+                  secret: true,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Input(
-                    controller: _newPasswordController,
-                    hintText: "New Password ",
-                    secret: true),
+                  controller: _newPasswordController,
+                  hintText: "New Password ",
+                  secret: true,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20, bottom: 20),
