@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
-import 'package:need2give/widgets/button.dart';
 import 'package:need2give/widgets/textfield.dart';
 
 class ItemPage extends StatelessWidget {
@@ -116,11 +115,6 @@ class ItemPage extends StatelessWidget {
                           color: Global.mediumGrey,
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    Button(
-                      text: "Reserve now",
-                      onPressed: () {},
                     ),
                   ],
                 ),

@@ -120,35 +120,7 @@ class Category extends StatelessWidget {
               ),
               const SizedBox(height: 18),
               Column(
-                children: _items
-                    .map(
-                      (e) => Stack(
-                        children: [
-                          ItemListTile(item: e),
-                          Positioned(
-                            top: 12,
-                            right: 12,
-                            child: Container(
-                              width: 36,
-                              height: 36,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Global.green,
-                              ),
-                              child: IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  Icons.add,
-                                  size: 20,
-                                  color: Global.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                    .toList(),
+                children: _items.map((e) => ItemListTile(item: e)).toList(),
               ),
               TextButton(
                 onPressed: () {},
