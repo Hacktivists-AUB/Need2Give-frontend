@@ -10,7 +10,7 @@ class Global {
   static const white = Colors.white;
   static const backgroundColor = Color.fromRGBO(249, 251, 255, 1);
   static const lightGrey = Color.fromARGB(255, 226, 228, 229);
-  static const mediumGrey = Color.fromARGB(122, 0, 0, 0);
+  static const mediumGrey = Color.fromARGB(255, 121, 121, 121);
   static const darkGrey = Color.fromARGB(255, 32, 32, 31);
   static const markerColor = Color.fromARGB(255, 185, 20, 20);
 }

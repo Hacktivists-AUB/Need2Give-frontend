@@ -28,6 +28,9 @@ class _SignUpState extends State<SignUp> {
   final _signUpFormKey = GlobalKey<FormState>();
   final _phoneFieldKey = GlobalKey<PhoneInputState>();
 
+  final ScrollController _scrollController = ScrollController();
+  bool _isPageScrolled = false;
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -36,6 +39,18 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _descriptionController = TextEditingController();
 
   final AuthService authService = AuthService();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    setState(() {
+      _isPageScrolled = _scrollController.offset > 360;
+    });
+  }
 
   @override
   void dispose() {
@@ -62,81 +77,96 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Global.lightGrey,
-      body: Container(
-        color: Global.white,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Image.asset('assets/image5.jpg'),
-              Container(
-                decoration: const BoxDecoration(
-                  color: Global.lightGrey,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
+      appBar: AppBar(
+        backgroundColor: _isPageScrolled ? Colors.transparent : Global.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Global.darkGrey,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: CustomScrollView(
+        controller: _scrollController,
+        slivers: [
+          SliverToBoxAdapter(
+            child: Column(
+              children: [
+                Image.asset('assets/image5.jpg'),
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Global.lightGrey,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+                  child: Column(
+                    children: [
+                      const Text(
+                        "Let's get started",
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      const Divider(),
+                      const Label(text: "Sign up as a: "),
+                      ListTile(
+                        title: const Text(
+                          "User",
+                        ),
+                        leading: Radio(
+                          activeColor: Global.darkGreen,
+                          value: UserType.user,
+                          groupValue: _userType,
+                          onChanged: (UserType? val) {
+                            setState(() {
+                              _userType = val!;
+                            });
+                          },
+                        ),
+                      ),
+                      ListTile(
+                        title: const Text(
+                          "Donation center",
+                        ),
+                        leading: Radio(
+                          activeColor: Global.darkGreen,
+                          value: UserType.donationCenter,
+                          groupValue: _userType,
+                          onChanged: (UserType? val) {
+                            setState(() {
+                              _userType = val!;
+                            });
+                          },
+                        ),
+                      ),
+                      const Divider(),
+                      if (_userType == UserType.user) _generateUserForm(),
+                      if (_userType == UserType.donationCenter)
+                        _generateDonationCenterForm(),
+                      if (_userType != UserType.notSelected)
+                        _generateSignUpButtons(),
+                    ],
                   ),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
-                child: Column(
-                  children: [
-                    const Text(
-                      "Let's get started",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    const Divider(),
-                    const Label(text: "Sign up as a: "),
-                    ListTile(
-                      title: const Text(
-                        "User",
-                      ),
-                      leading: Radio(
-                        activeColor: Global.darkGreen,
-                        value: UserType.user,
-                        groupValue: _userType,
-                        onChanged: (UserType? val) {
-                          setState(() {
-                            _userType = val!;
-                          });
-                        },
-                      ),
-                    ),
-                    ListTile(
-                      title: const Text(
-                        "Donation center",
-                      ),
-                      leading: Radio(
-                        activeColor: Global.darkGreen,
-                        value: UserType.donationCenter,
-                        groupValue: _userType,
-                        onChanged: (UserType? val) {
-                          setState(() {
-                            _userType = val!;
-                          });
-                        },
-                      ),
-                    ),
-                    const Divider(),
-                    if (_userType == UserType.user) generateUserForm(),
-                    if (_userType == UserType.donationCenter)
-                      generateDonationCenterForm(),
-                    if (_userType != UserType.notSelected)
-                      generateSignUpButtons(),
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
 
-  Widget generateUserForm() => Form(
+  Widget _generateUserForm() => Form(
         key: _signUpFormKey,
         child: Column(
           children: [
@@ -154,13 +184,13 @@ class _SignUpState extends State<SignUp> {
               required: false,
             ),
             const SizedBox(height: 10),
-            generateConfirmPasswordFields(),
+            _generateConfirmPasswordFields(),
             const SizedBox(height: 20),
           ],
         ),
       );
 
-  Widget generateDonationCenterForm() => Form(
+  Widget _generateDonationCenterForm() => Form(
         key: _signUpFormKey,
         child: Column(
           children: [
@@ -213,13 +243,13 @@ class _SignUpState extends State<SignUp> {
               ],
             ),
             const SizedBox(height: 10),
-            generateConfirmPasswordFields(),
+            _generateConfirmPasswordFields(),
             const SizedBox(height: 20),
           ],
         ),
       );
 
-  Widget generateConfirmPasswordFields() => Column(
+  Widget _generateConfirmPasswordFields() => Column(
         children: [
           const Label(text: "Password: "),
           Input(
@@ -236,7 +266,7 @@ class _SignUpState extends State<SignUp> {
         ],
       );
 
-  Widget generateSignUpButtons() => Column(
+  Widget _generateSignUpButtons() => Column(
         children: [
           Button(
               text: 'Sign up',
