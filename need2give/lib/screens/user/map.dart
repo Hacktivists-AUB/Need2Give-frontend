@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/constants/utils.dart';
@@ -67,33 +66,6 @@ class _MapScreenState extends State<MapScreen> {
     },
   ];
 
-  Future<Position> _determinePosition(BuildContext context) async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      // ignore: use_build_context_synchronously
-      showSnackBar(context, "Please enable location services");
-      return Future.error('Location services are disabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    return await Geolocator.getCurrentPosition();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -138,21 +110,23 @@ class _MapScreenState extends State<MapScreen> {
             heroTag: "btn1",
             backgroundColor: Global.white,
             onPressed: () {
-              _determinePosition(context).then((value) {
-                final LatLng coords = LatLng(value.latitude, value.longitude);
-                _mapController.move(coords, 17.0);
-                setState(() {
-                  _currentPositionActivated = true;
-                  _markers.add(
-                    Marker(
-                      point: coords,
-                      width: 80.0,
-                      height: 80.0,
-                      builder: (context) => _buildMarkerIcon(),
-                    ),
-                  );
-                });
-              });
+              determinePosition(context).then(
+                (value) {
+                  final LatLng coords = LatLng(value.latitude, value.longitude);
+                  _mapController.move(coords, 17.0);
+                  setState(() {
+                    _currentPositionActivated = true;
+                    _markers.add(
+                      Marker(
+                        point: coords,
+                        width: 80.0,
+                        height: 80.0,
+                        builder: (context) => _buildMarkerIcon(),
+                      ),
+                    );
+                  });
+                },
+              );
             },
             child: const Icon(
               Icons.my_location,

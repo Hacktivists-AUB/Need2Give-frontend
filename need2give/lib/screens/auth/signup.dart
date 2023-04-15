@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/constants/utils.dart';
 import 'package:need2give/screens/auth/login.dart';
 import 'package:need2give/services/auth_service.dart';
 import 'package:need2give/widgets/button.dart';
+import 'package:need2give/widgets/location_picker.dart';
 import 'package:need2give/widgets/schedule.dart';
 import 'package:need2give/widgets/textfield.dart';
 
@@ -32,6 +34,7 @@ class _SignUpState extends State<SignUp> {
   bool _isPageScrolled = false;
 
   late DateTime _selectedDate;
+  late LatLng _selectedLocation;
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -55,9 +58,16 @@ class _SignUpState extends State<SignUp> {
     });
   }
 
+  void _onLocationSelected(LatLng loc) {
+    setState(() {
+      _selectedLocation = loc;
+    });
+  }
+
   @override
   void dispose() {
     super.dispose();
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _usernameController.dispose();
@@ -205,7 +215,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   Text(
-                    "Select your birthday*",
+                    "Select your birthday",
                     style: TextStyle(
                       fontSize: 16,
                       color: Global.darkGreen,
@@ -228,30 +238,27 @@ class _SignUpState extends State<SignUp> {
         child: Column(
           children: [
             const SizedBox(height: 10),
-            const Label(text: "Email"),
+            const Label(text: "Email : "),
             Input(
               controller: _emailController,
               hintText: 'Email',
             ),
             const SizedBox(height: 10),
-            const Label(text: "Username"),
+            const Label(text: "Username : "),
             Input(
               controller: _usernameController,
               hintText: 'Username',
             ),
             const SizedBox(height: 10),
-            const Label(text: "Phone number*: "),
-            PhoneInput(controller: _phoneController, required: false),
-            const SizedBox(height: 10),
-            const Label(text: "Description*: "),
+            const Label(text: "Name : "),
             Input(
-              controller: _descriptionController,
-              hintText: "Description",
-              numberOfLines: 4,
-              required: false,
+              controller: _nameController,
+              hintText: 'Name',
             ),
             const SizedBox(height: 10),
-            const Label(text: "Working hours*: "),
+            const Label(text: "Phone number* : "),
+            PhoneInput(controller: _phoneController, required: false),
+            const SizedBox(height: 10),
             TextButton(
               onPressed: () {
                 _generateScheduler(context);
@@ -278,6 +285,53 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ],
               ),
+            ),
+            const SizedBox(height: 10),
+            TextButton(
+              onPressed: () {
+                showGeneralDialog(
+                  context: context,
+                  barrierDismissible: true,
+                  barrierLabel: MaterialLocalizations.of(context)
+                      .modalBarrierDismissLabel,
+                  barrierColor: Colors.black45,
+                  transitionDuration: const Duration(milliseconds: 200),
+                  pageBuilder: (BuildContext buildContext, Animation animation,
+                      Animation secondaryAnimation) {
+                    return LocationPicker(onConfirm: _onLocationSelected);
+                  },
+                );
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.only(right: 8),
+                    child: Icon(
+                      Icons.location_pin,
+                      color: Global.mediumGrey,
+                      size: 32,
+                    ),
+                  ),
+                  Text(
+                    "Select your location",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Global.darkGreen,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Label(text: "Description* : "),
+            Input(
+              controller: _descriptionController,
+              hintText: "Description",
+              numberOfLines: 4,
+              required: false,
             ),
             const SizedBox(height: 10),
             _generateConfirmPasswordFields(),
