@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/screens/user/donation%20center/profile_screen.dart';
 import 'package:need2give/widgets/post.dart';
 
 class Feed extends StatelessWidget {
@@ -96,6 +97,9 @@ class Feed extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   final post = posts[index];
                   return PostComponent(
+                    pageRoute: MaterialPageRoute(
+                      builder: (context) => const DonationScreen(),
+                    ),
                     name: post["name"],
                     pfpUrl: post["pfpUrl"],
                     body: post["body"],
