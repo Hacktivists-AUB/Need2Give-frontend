@@ -8,52 +8,104 @@ class Feed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> posts = [
-    {
-      "id": 1,
-      "name": "All",
-    },
-    {
-      "id": 2,
-      "name": "Food",
-    },
-    {
-      "id": 3,
-      "name": "Medicine",
-    },
-    {
-      "id": 4,
-      "name": "Clothing",
-    },
-    {
-      "id": 5,
-      "name": "Electronics",
-    },
-    {
-      "id": 6,
-      "name": "Other",
-    }
-  ];
+      {
+        "name": "Donation center 1",
+        "body": "has just added this cool item to its inventory",
+        "imageUrl": "assets/cart.png",
+        "pfpUrl": "assets/donation_center.png",
+        "date": "15/04/2023"
+      },
+      {
+        "name": "Donation center 2",
+        "body": "has just added this cool item to its inventory",
+        "imageUrl": "assets/cart.png",
+        "pfpUrl": "assets/donation_center.png",
+        "date": "14/04/2023"
+      },
+      {
+        "name": "Donation center 3",
+        "body": "has just added this cool item to its inventory",
+        "imageUrl": "assets/cart.png",
+        "pfpUrl": "assets/donation_center.png",
+        "date": "13/04/2023"
+      },
+      {
+        "name": "Donation center 4",
+        "body": "has just added this cool item to its inventory",
+        "imageUrl": "assets/cart.png",
+        "pfpUrl": "assets/donation_center.png",
+        "date": "12/04/2023"
+      },
+      {
+        "name": "Donation center 5",
+        "body": "has just added this cool item to its inventory",
+        "imageUrl": "assets/cart.png",
+        "pfpUrl": "assets/donation_center.png",
+        "date": "11/04/2023"
+      },
+      {
+        "name": "Donation center 6",
+        "body": "has just added this cool item to its inventory",
+        "imageUrl": "assets/cart.png",
+        "pfpUrl": "assets/donation_center.png",
+        "date": "10/04/2023"
+      },
+      {
+        "name": "Donation center 7",
+        "body": "has just added this cool item to its inventory",
+        "imageUrl": "assets/cart.png",
+        "pfpUrl": "assets/donation_center.png",
+        "date": "09/04/2023"
+      },
+      {
+        "name": "Donation center 8",
+        "body": "has just added this cool item to its inventory",
+        "imageUrl": "assets/cart.png",
+        "pfpUrl": "assets/donation_center.png",
+        "date": "08/04/2023"
+      },
+      {
+        "name": "Donation center 9",
+        "body": "has just added this cool item to its inventory",
+        "imageUrl": "assets/cart.png",
+        "pfpUrl": "assets/donation_center.png",
+        "date": "07/04/2023"
+      },
+      {
+        "name": "Donation center 10",
+        "body": "has just added this cool item to its inventory",
+        "imageUrl": "assets/cart.png",
+        "pfpUrl": "assets/donation_center.png",
+        "date": "06/04/2023"
+      }
+    ];
+
     return SafeArea(
       child: Scaffold(
           backgroundColor: Global.backgroundColor,
           appBar: AppBar(
-            title: const Text("Profile"),
+            title: const Text("Feed"),
             centerTitle: true,
           ),
-          body: ListView(children: const [
-            PostComponent(
-              title: 'Donation center name',
-              body: 'has just added this cool item to its inventory',
-              imageUrl: 'assets/cart.png',
-              date: "8/9/2003",
-            ),
-            PostComponent(
-              title: 'Donation center name',
-              body: 'has just added this cool item to its inventory',
-              imageUrl: 'assets/cart.png',
-              date: "19/9/2003",
-            ),
-          ])),
+          body: ListView(
+            children: [
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: posts.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final post = posts[index];
+                  return PostComponent(
+                    name: post["name"],
+                    pfpUrl: post["pfpUrl"],
+                    body: post["body"],
+                    imageUrl: post["imageUrl"],
+                    date: post["date"],
+                  );
+                },
+              ),
+            ],
+          )),
     );
   }
 }
