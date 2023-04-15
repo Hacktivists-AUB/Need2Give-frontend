@@ -1,4 +1,5 @@
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/widgets/about_us_donation_center.dart';
 import 'package:need2give/widgets/button.dart';
 
 import 'package:flutter/material.dart';
@@ -79,7 +80,11 @@ class _DonationScreen extends State<DonationScreen>
             child: TabBarView(
               controller: _tabController,
               children: const [
-                Center(child: Text('Tab 1 content')),
+                Center(
+                    child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: AboutUs(),
+                )),
                 Center(child: Text('Tab 2 content')),
               ],
             ),
