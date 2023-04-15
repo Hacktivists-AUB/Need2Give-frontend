@@ -29,6 +29,7 @@ class _DonationScreen extends State<DonationScreen>
         child: Scaffold(
       backgroundColor: Global.backgroundColor,
       appBar: AppBar(
+        leading: const BackButton(),
         title: const Text("Donation center"),
         centerTitle: true,
       ),

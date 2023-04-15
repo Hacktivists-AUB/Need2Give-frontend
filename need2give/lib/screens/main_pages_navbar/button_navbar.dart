@@ -5,6 +5,7 @@ import 'package:need2give/screens/user/donation%20center/profile_screen.dart';
 import 'package:need2give/screens/main_pages_navbar/home_page.dart';
 import 'package:need2give/screens/main_pages_navbar/settings_page.dart';
 import 'package:need2give/screens/user/explore.dart';
+import 'package:need2give/screens/user/feed.dart';
 import 'package:need2give/screens/user/profile.dart';
 
 class ButtonNavbar extends StatefulWidget {
@@ -20,7 +21,7 @@ class _ButtonNavbarState extends State<ButtonNavbar> {
   int _currentIndex = 0;
 
   final List<Widget> _children = [
-    const HomePage(),
+    const Feed(),
     const Explore(),
     const Profile(),
     const SettingsPage(),
