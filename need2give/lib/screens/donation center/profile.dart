@@ -1,19 +1,18 @@
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/screens/user/donation%20center/about_us_donation_center.dart';
 import 'package:need2give/screens/user/donation%20center/inventory.dart';
-import 'package:need2give/widgets/button.dart';
 
 import 'package:flutter/material.dart';
 
-class donationCenterProfile extends StatefulWidget {
-  const donationCenterProfile({Key? key}) : super(key: key);
+class DonationCenterProfile extends StatefulWidget {
+  const DonationCenterProfile({Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
-  _donationCenterProfile createState() => _donationCenterProfile();
+  _DonationCenterProfile createState() => _DonationCenterProfile();
 }
 
-class _donationCenterProfile extends State<donationCenterProfile>
+class _DonationCenterProfile extends State<DonationCenterProfile>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/screens/donation%20center/profile.dart';
 import 'package:need2give/screens/user/donation%20center/profile_screen.dart';
 import 'package:need2give/screens/main_pages_navbar/home_page.dart';
 import 'package:need2give/screens/main_pages_navbar/settings_page.dart';
@@ -19,7 +20,7 @@ class _ButtonNavbarState extends State<ButtonNavbar> {
   int _currentIndex = 0;
 
   final List<Widget> _children = [
-    const DonationScreen(),
+    const DonationCenterProfile(),
     const Explore(),
     const Profile(),
     const SettingsPage(),
