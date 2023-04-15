@@ -20,7 +20,7 @@ class _ButtonNavbarState extends State<ButtonNavbar> {
   int _currentIndex = 0;
 
   final List<Widget> _children = [
-    const DonationCenterProfile(),
+    const HomePage(),
     const Explore(),
     const Profile(),
     const SettingsPage(),
