@@ -31,6 +31,9 @@ class _SignUpState extends State<SignUp> {
   final ScrollController _scrollController = ScrollController();
   bool _isPageScrolled = false;
 
+  late DateTime _selectedDate;
+
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -170,18 +173,48 @@ class _SignUpState extends State<SignUp> {
         key: _signUpFormKey,
         child: Column(
           children: [
+            const Label(text: "Full name : "),
+            Input(controller: _nameController, hintText: 'Full name'),
             const SizedBox(height: 10),
-            const Label(text: "Email: "),
+            const Label(text: "Email : "),
             Input(controller: _emailController, hintText: 'Email'),
             const SizedBox(height: 10),
-            const Label(text: "Username: "),
+            const Label(text: "Username : "),
             Input(controller: _usernameController, hintText: 'Username'),
             const SizedBox(height: 10),
-            const Label(text: "Phone number*: "),
+            const Label(text: "Phone number* : "),
             PhoneInput(
               key: _phoneFieldKey,
               controller: _phoneController,
               required: false,
+            ),
+            const SizedBox(height: 10),
+            TextButton(
+              onPressed: () async {
+                await _generateCalendar(context);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.only(right: 8),
+                    child: Icon(
+                      Icons.calendar_month,
+                      color: Global.mediumGrey,
+                      size: 32,
+                    ),
+                  ),
+                  Text(
+                    "Select your birthday*",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Global.darkGreen,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 10),
             _generateConfirmPasswordFields(),
@@ -219,28 +252,32 @@ class _SignUpState extends State<SignUp> {
             ),
             const SizedBox(height: 10),
             const Label(text: "Working hours*: "),
-            Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.schedule),
-                  onPressed: () {
-                    generateScheduler(context);
-                  },
-                ),
-                TextButton(
-                  onPressed: () {
-                    generateScheduler(context);
-                  },
-                  child: const Text(
-                    "Pick working days and hours",
+            TextButton(
+              onPressed: () {
+                _generateScheduler(context);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.only(right: 8),
+                    child: Icon(
+                      Icons.schedule,
+                      color: Global.mediumGrey,
+                      size: 32,
+                    ),
+                  ),
+                  Text(
+                    "Select working hours",
                     style: TextStyle(
                       fontSize: 16,
                       color: Global.darkGreen,
                       fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             const SizedBox(height: 10),
             _generateConfirmPasswordFields(),
@@ -249,15 +286,32 @@ class _SignUpState extends State<SignUp> {
         ),
       );
 
+  Future<void> _generateCalendar(BuildContext context) async {
+    final initialDate = DateTime.now();
+    final newDate = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: DateTime(initialDate.year - 100),
+      lastDate: initialDate,
+      initialEntryMode: DatePickerEntryMode.calendarOnly,
+    );
+
+    if (newDate != null) {
+      setState(() {
+        _selectedDate = newDate;
+      });
+    }
+  }
+
   Widget _generateConfirmPasswordFields() => Column(
         children: [
-          const Label(text: "Password: "),
+          const Label(text: "Password : "),
           Input(
             controller: _passwordController,
             hintText: "Password",
             secret: true,
           ),
-          const Label(text: "Confirm password: "),
+          const Label(text: "Confirm password : "),
           Input(
             controller: _confirmPassController,
             hintText: "Confirm password",
@@ -315,7 +369,7 @@ class _SignUpState extends State<SignUp> {
         ],
       );
 
-  void generateScheduler(BuildContext context) => showModalBottomSheet(
+  void _generateScheduler(BuildContext context) => showModalBottomSheet(
         context: context,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
