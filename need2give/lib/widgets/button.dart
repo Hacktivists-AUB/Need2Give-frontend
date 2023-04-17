@@ -32,9 +32,11 @@ class Button extends StatelessWidget {
 
 class CustomCheckbox extends StatefulWidget {
   final String label;
+  final Function(bool?) onChanged;
   const CustomCheckbox({
     super.key,
     required this.label,
+    required this.onChanged,
   });
 
   @override
@@ -57,6 +59,7 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
           checkColor: Global.white,
           value: _checked,
           onChanged: (bool? val) {
+            widget.onChanged(val);
             setState(() {
               _checked = !_checked;
             });

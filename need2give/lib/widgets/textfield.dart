@@ -101,7 +101,7 @@ class PhoneInputState extends State<PhoneInput> {
         return null;
       },
       selectorConfig: const SelectorConfig(
-        selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+        selectorType: PhoneInputSelectorType.DIALOG,
       ),
       autoValidateMode: AutovalidateMode.disabled,
       selectorTextStyle: const TextStyle(color: Colors.black),

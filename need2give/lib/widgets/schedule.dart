@@ -1,40 +1,107 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:need2give/widgets/button.dart';
+import "package:flutter/material.dart";
+import "package:flutter/services.dart";
+import "package:need2give/widgets/button.dart";
 
-class WeekdayPicker extends StatefulWidget {
-  const WeekdayPicker({super.key});
+class Schedule extends StatefulWidget {
+  final Function(Map<String, dynamic>) onConfirm;
+  const Schedule({super.key, required this.onConfirm});
 
   @override
-  State<WeekdayPicker> createState() => _WeekdayPickerState();
+  State<Schedule> createState() => _ScheduleState();
 }
 
-class _WeekdayPickerState extends State<WeekdayPicker> {
-  final List<String> _checkboxLabels = [
-    "MON",
-    "TUE",
-    "WED",
-    "THR",
-    "FRI",
-    "SAT",
-    "SUN"
-  ];
+class _ScheduleState extends State<Schedule> {
+  final Map<String, dynamic> _selectedHours = {
+    "opening_time": "12:00",
+    "closing_time": "12:00",
+  };
+
+  final Map<String, bool?> _weekdays = {
+    "monday": false,
+    "tuesday": false,
+    "wednesday": false,
+    "thursday": false,
+    "friday": false,
+    "saturday": false,
+    "sunday": false,
+  };
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: _checkboxLabels.map((String s) {
-        return CustomCheckbox(label: s);
-      }).toList(),
+    return AlertDialog(
+      title: const Text(
+        "Select opening hours",
+        style: TextStyle(fontSize: 18),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: 90.0,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: _weekdays.length,
+              itemBuilder: (BuildContext context, int index) {
+                String key = _weekdays.keys.elementAt(index);
+                return CustomCheckbox(
+                  label: key.substring(0, 3).toUpperCase(),
+                  onChanged: (bool? value) {
+                    setState(() {
+                      _weekdays[key] = value;
+                    });
+                  },
+                );
+              },
+            ),
+          ),
+          TimePicker(
+            label: "Open: ",
+            onTimeChanged: (text) {
+              setState(() {
+                _selectedHours["opening_time"] = text;
+              });
+            },
+          ),
+          const SizedBox(height: 16),
+          TimePicker(
+            label: "Close: ",
+            onTimeChanged: (text) {
+              setState(() {
+                _selectedHours["closing_time"] = text;
+              });
+            },
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          child: const Text("Cancel"),
+          onPressed: () {
+            Navigator.of(context).pop(false);
+          },
+        ),
+        TextButton(
+          child: const Text("Confirm"),
+          onPressed: () {
+            widget.onConfirm({
+              ..._selectedHours,
+              "opening_days": _weekdays,
+            });
+            Navigator.of(context).pop(true);
+          },
+        ),
+      ],
     );
   }
 }
 
 class TimePicker extends StatefulWidget {
   final String label;
+  final Function(String) onTimeChanged;
   const TimePicker({
     super.key,
     required this.label,
+    required this.onTimeChanged,
   });
 
   @override
@@ -42,8 +109,10 @@ class TimePicker extends StatefulWidget {
 }
 
 class _TimePickerState extends State<TimePicker> {
-  final TextEditingController _timeController = TextEditingController();
+  final TextEditingController _hourController = TextEditingController();
   final TextEditingController _minuteController = TextEditingController();
+
+  String _timeString = "12:00";
 
   @override
   Widget build(BuildContext context) {
@@ -55,15 +124,22 @@ class _TimePickerState extends State<TimePicker> {
         ),
         Expanded(
           child: SizedBox(
-            height: 40,
             child: TextFormField(
-              controller: _timeController,
+              controller: _hourController,
+              onChanged: (text) {
+                setState(() {
+                  _timeString =
+                      "${_hourController.text}:${_minuteController.text}";
+                });
+                widget.onTimeChanged(_timeString);
+              },
               keyboardType: TextInputType.number,
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.digitsOnly
               ],
               decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 14),
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 14, horizontal: 14),
                 hintText: "12",
                 border: OutlineInputBorder(
                   borderSide: const BorderSide(
@@ -77,19 +153,29 @@ class _TimePickerState extends State<TimePicker> {
         ),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 8),
-          child: Text(":", style: TextStyle(fontWeight: FontWeight.bold)),
+          child: Text(
+            ":",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
         Expanded(
           child: SizedBox(
-            height: 40,
             child: TextFormField(
               controller: _minuteController,
+              onChanged: (text) {
+                setState(() {
+                  _timeString =
+                      "${_hourController.text}:${_minuteController.text}";
+                });
+                widget.onTimeChanged(_timeString);
+              },
               keyboardType: TextInputType.number,
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.digitsOnly
               ],
               decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
                 hintText: "00",
                 border: OutlineInputBorder(
                   borderSide: const BorderSide(

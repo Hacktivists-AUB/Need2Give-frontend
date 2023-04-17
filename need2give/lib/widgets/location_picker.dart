@@ -122,7 +122,7 @@ class _LocationPickerState extends State<LocationPicker> {
           ],
         ),
       ),
-      actions: <Widget>[
+      actions: [
         TextButton(
           child: const Text('Cancel'),
           onPressed: () {

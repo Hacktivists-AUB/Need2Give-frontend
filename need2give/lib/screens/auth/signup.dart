@@ -35,6 +35,7 @@ class _SignUpState extends State<SignUp> {
 
   late DateTime _selectedDate;
   late LatLng _selectedLocation;
+  late Map<String, dynamic> _selectedSchedule;
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -61,6 +62,12 @@ class _SignUpState extends State<SignUp> {
   void _onLocationSelected(LatLng loc) {
     setState(() {
       _selectedLocation = loc;
+    });
+  }
+
+  void _onScheduleSelected(Map<String, dynamic> schedule) {
+    setState(() {
+      _selectedSchedule = schedule;
     });
   }
 
@@ -261,7 +268,12 @@ class _SignUpState extends State<SignUp> {
             const SizedBox(height: 10),
             TextButton(
               onPressed: () {
-                _generateScheduler(context);
+                showDialog(
+                  context: context,
+                  builder: (BuildContext buildContext) {
+                    return Schedule(onConfirm: _onScheduleSelected);
+                  },
+                );
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -421,61 +433,5 @@ class _SignUpState extends State<SignUp> {
             ],
           ),
         ],
-      );
-
-  void _generateScheduler(BuildContext context) => showModalBottomSheet(
-        context: context,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-        ),
-        builder: (BuildContext context) {
-          return SingleChildScrollView(
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Select working hours',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Global.mediumGrey,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  const Divider(),
-                  const SizedBox(height: 16),
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: Global.lightGrey,
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
-                    ),
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: const [
-                        WeekdayPicker(),
-                        SizedBox(height: 10),
-                        TimePicker(label: "Start time "),
-                        SizedBox(height: 10),
-                        TimePicker(label: "  End time "),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Button(
-                    text: "Submit",
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
       );
 }
