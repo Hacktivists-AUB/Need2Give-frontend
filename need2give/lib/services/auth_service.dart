@@ -24,12 +24,10 @@ class AuthService {
 
   void _onSuccess(BuildContext context, http.Response res) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final acc = jsonDecode(res.body)['account'];
-    final token = jsonDecode(res.body)['token'];
-    final merged = {...acc, "token": token};
-    Provider.of<UserProvider>(context, listen: false)
-        .setUser(jsonEncode(merged));
-    await prefs.setString('token', token);
+    final resBody = jsonDecode(res.body);
+    Provider.of<UserProvider>(context, listen: false).setUser(
+        jsonEncode({...resBody["profile"], "token": resBody["token"]}));
+    await prefs.setString("token", resBody["token"]);
     Navigator.pushNamedAndRemoveUntil(
       context,
       Home.routeName,
@@ -42,6 +40,8 @@ class AuthService {
     required String email,
     required String username,
     required String password,
+    required String birthDate,
+    required String fullName,
     String? phone,
   }) async {
     try {
@@ -50,13 +50,14 @@ class AuthService {
         email: email,
         password: password,
         phoneNumber: phone,
+        birthDate: birthDate,
+        fullName: fullName,
       );
-
       http.Response res = await http.post(
-        Uri.parse('${Global.url}/auth/signup'),
+        Uri.parse("${Global.url}/auth/signup?role=user"),
         body: user.toJson(),
         headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
+          "Content-Type": "application/json; charset=UTF-8",
         },
       );
       httpErrorHandle(
@@ -78,13 +79,13 @@ class AuthService {
   }) async {
     try {
       http.Response res = await http.post(
-        Uri.parse('${Global.url}/auth/login'),
+        Uri.parse("${Global.url}/auth/login"),
         body: jsonEncode({
-          'email': email,
-          'password': password,
+          "email": email,
+          "password": password,
         }),
         headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
+          "Content-Type": "application/json; charset=UTF-8",
         },
       );
 
@@ -96,7 +97,6 @@ class AuthService {
         },
       );
     } catch (e) {
-      print(e);
       showSnackBar(context, e.toString());
     }
   }

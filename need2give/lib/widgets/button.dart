@@ -69,3 +69,39 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
     );
   }
 }
+
+class IconTextButton extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  const IconTextButton({
+    super.key,
+    required this.label,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(right: 8),
+          child: Icon(
+            icon,
+            color: Global.mediumGrey,
+            size: 32,
+          ),
+        ),
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 16,
+            color: Global.darkGreen,
+            fontWeight: FontWeight.bold,
+            decoration: TextDecoration.underline,
+          ),
+        ),
+      ],
+    );
+  }
+}

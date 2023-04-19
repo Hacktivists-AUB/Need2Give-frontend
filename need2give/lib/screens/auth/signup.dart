@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:latlong2/latlong.dart';
@@ -12,7 +13,7 @@ import 'package:need2give/widgets/schedule.dart';
 import 'package:need2give/widgets/textfield.dart';
 
 enum UserType {
-  notSelected,
+  none,
   user,
   donationCenter,
 }
@@ -26,7 +27,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  UserType _userType = UserType.notSelected;
+  UserType _userType = UserType.none;
   final _signUpFormKey = GlobalKey<FormState>();
   final _phoneFieldKey = GlobalKey<PhoneInputState>();
 
@@ -89,7 +90,9 @@ class _SignUpState extends State<SignUp> {
       username: _usernameController.text,
       email: _emailController.text,
       password: _passwordController.text,
+      fullName: _nameController.text,
       phone: _phoneFieldKey.currentState?.number,
+      birthDate: DateFormat('yyyy/MM/dd').format(_selectedDate),
     );
   }
 
@@ -173,7 +176,7 @@ class _SignUpState extends State<SignUp> {
                       if (_userType == UserType.user) _generateUserForm(),
                       if (_userType == UserType.donationCenter)
                         _generateDonationCenterForm(),
-                      if (_userType != UserType.notSelected)
+                      if (_userType != UserType.none)
                         _generateSignUpButtons(),
                     ],
                   ),
@@ -210,27 +213,9 @@ class _SignUpState extends State<SignUp> {
               onPressed: () async {
                 await _generateCalendar(context);
               },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  Padding(
-                    padding: EdgeInsets.only(right: 8),
-                    child: Icon(
-                      Icons.calendar_month,
-                      color: Global.mediumGrey,
-                      size: 32,
-                    ),
-                  ),
-                  Text(
-                    "Select your birthday",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Global.darkGreen,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ],
+              child: const IconTextButton(
+                icon: Icons.calendar_month,
+                label: "Select your birthday",
               ),
             ),
             const SizedBox(height: 10),
@@ -275,27 +260,9 @@ class _SignUpState extends State<SignUp> {
                   },
                 );
               },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  Padding(
-                    padding: EdgeInsets.only(right: 8),
-                    child: Icon(
-                      Icons.schedule,
-                      color: Global.mediumGrey,
-                      size: 32,
-                    ),
-                  ),
-                  Text(
-                    "Select working hours",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Global.darkGreen,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ],
+              child: const IconTextButton(
+                icon: Icons.schedule,
+                label: "Select working hours",
               ),
             ),
             const SizedBox(height: 10),
@@ -314,27 +281,9 @@ class _SignUpState extends State<SignUp> {
                   },
                 );
               },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  Padding(
-                    padding: EdgeInsets.only(right: 8),
-                    child: Icon(
-                      Icons.location_pin,
-                      color: Global.mediumGrey,
-                      size: 32,
-                    ),
-                  ),
-                  Text(
-                    "Select your location",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Global.darkGreen,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ],
+              child: const IconTextButton(
+                icon: Icons.location_pin,
+                label: "Select your location",
               ),
             ),
             const SizedBox(height: 10),
@@ -389,16 +338,17 @@ class _SignUpState extends State<SignUp> {
   Widget _generateSignUpButtons() => Column(
         children: [
           Button(
-              text: 'Sign up',
-              onPressed: () {
-                if (_passwordController.text != _confirmPassController.text) {
-                  showSnackBar(context, "Passwords don't match. Try again.");
-                  return;
-                }
-                if (_signUpFormKey.currentState!.validate()) {
-                  signUp();
-                }
-              }),
+            text: 'Sign up',
+            onPressed: () {
+              if (_passwordController.text != _confirmPassController.text) {
+                showSnackBar(context, "Passwords don't match. Try again.");
+                return;
+              }
+              if (_signUpFormKey.currentState!.validate()) {
+                signUp();
+              }
+            },
+          ),
           const SizedBox(height: 10),
           SizedBox(
             width: double.infinity,
