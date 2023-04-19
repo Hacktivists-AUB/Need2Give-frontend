@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:need2give/provider/user_provider.dart';
+import 'package:need2give/provider/auth_provider.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
@@ -13,10 +13,10 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserProvider>(context).user;
+    final user = Provider.of<AuthProvider>(context).profile;
     return Scaffold(
       body: Center(
-        child: Text(user.toJson()),
+        child: Text(user!.toJson()),
       ),
     );
   }

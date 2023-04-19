@@ -7,11 +7,17 @@ import 'package:need2give/constants/error_handling.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/constants/utils.dart';
 import 'package:http/http.dart' as http;
-import 'package:need2give/models/user.dart';
-import 'package:need2give/provider/user_provider.dart';
+import 'package:need2give/models/profile.dart';
+import 'package:need2give/provider/auth_provider.dart';
 import 'package:need2give/screens/user/home.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+enum AccountType {
+  none,
+  user,
+  donationCenter,
+}
 
 class AuthService {
   static final AuthService _instance = AuthService._init();
@@ -22,40 +28,15 @@ class AuthService {
 
   AuthService._init();
 
-  void _onSuccess(BuildContext context, http.Response res) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final resBody = jsonDecode(res.body);
-    Provider.of<UserProvider>(context, listen: false).setUser(
-        jsonEncode({...resBody["profile"], "token": resBody["token"]}));
-    await prefs.setString("token", resBody["token"]);
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      Home.routeName,
-      (route) => false,
-    );
-  }
-
   void signUp({
     required BuildContext context,
-    required String email,
-    required String username,
-    required String password,
-    required String birthDate,
-    required String fullName,
-    String? phone,
+    required Profile profile,
   }) async {
     try {
-      UserDTO user = UserDTO(
-        username: username,
-        email: email,
-        password: password,
-        phoneNumber: phone,
-        birthDate: birthDate,
-        fullName: fullName,
-      );
       http.Response res = await http.post(
-        Uri.parse("${Global.url}/auth/signup?role=user"),
-        body: user.toJson(),
+        Uri.parse(
+            "${Global.url}/auth/signup?role=${(profile.type == AccountType.user ? 'user' : 'donation_center')}"),
+        body: profile.toJson(),
         headers: <String, String>{
           "Content-Type": "application/json; charset=UTF-8",
         },
@@ -64,7 +45,17 @@ class AuthService {
         response: res,
         context: context,
         onSuccess: () async {
-          _onSuccess(context, res);
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          final resBody = jsonDecode(res.body);
+          Provider.of<AuthProvider>(context, listen: false).setAccount(
+              jsonEncode({...resBody["profile"], "token": resBody["token"]}),
+              profile.type);
+          await prefs.setString("token", resBody["token"]);
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            Home.routeName,
+            (route) => false,
+          );
         },
       );
     } catch (e) {
@@ -93,7 +84,17 @@ class AuthService {
         response: res,
         context: context,
         onSuccess: () async {
-          _onSuccess(context, res);
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          final resBody = jsonDecode(res.body);
+          Provider.of<AuthProvider>(context, listen: false).setAccount(
+              jsonEncode({...resBody["account"], "token": resBody["token"]}),
+              AccountType.none);
+          await prefs.setString("token", resBody["token"]);
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            Home.routeName,
+            (route) => false,
+          );
         },
       );
     } catch (e) {

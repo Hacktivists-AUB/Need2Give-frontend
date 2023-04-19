@@ -5,18 +5,15 @@ import 'package:flutter_signin_button/button_view.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/constants/utils.dart';
+import 'package:need2give/models/donation_center.dart';
+import 'package:need2give/models/profile.dart';
+import 'package:need2give/models/user.dart';
 import 'package:need2give/screens/auth/login.dart';
 import 'package:need2give/services/auth_service.dart';
 import 'package:need2give/widgets/button.dart';
 import 'package:need2give/widgets/location_picker.dart';
 import 'package:need2give/widgets/schedule.dart';
 import 'package:need2give/widgets/textfield.dart';
-
-enum UserType {
-  none,
-  user,
-  donationCenter,
-}
 
 class SignUp extends StatefulWidget {
   static const String routeName = '/signup';
@@ -27,7 +24,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  UserType _userType = UserType.none;
+  AccountType _accountType = AccountType.none;
   final _signUpFormKey = GlobalKey<FormState>();
   final _phoneFieldKey = GlobalKey<PhoneInputState>();
 
@@ -47,6 +44,8 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _descriptionController = TextEditingController();
 
   final AuthService authService = AuthService();
+
+  late Profile _profile;
 
   @override
   void initState() {
@@ -87,12 +86,7 @@ class _SignUpState extends State<SignUp> {
   void signUp() {
     authService.signUp(
       context: context,
-      username: _usernameController.text,
-      email: _emailController.text,
-      password: _passwordController.text,
-      fullName: _nameController.text,
-      phone: _phoneFieldKey.currentState?.number,
-      birthDate: DateFormat('yyyy/MM/dd').format(_selectedDate),
+      profile: _profile,
     );
   }
 
@@ -148,11 +142,11 @@ class _SignUpState extends State<SignUp> {
                         ),
                         leading: Radio(
                           activeColor: Global.darkGreen,
-                          value: UserType.user,
-                          groupValue: _userType,
-                          onChanged: (UserType? val) {
+                          value: AccountType.user,
+                          groupValue: _accountType,
+                          onChanged: (AccountType? val) {
                             setState(() {
-                              _userType = val!;
+                              _accountType = val!;
                             });
                           },
                         ),
@@ -163,20 +157,20 @@ class _SignUpState extends State<SignUp> {
                         ),
                         leading: Radio(
                           activeColor: Global.darkGreen,
-                          value: UserType.donationCenter,
-                          groupValue: _userType,
-                          onChanged: (UserType? val) {
+                          value: AccountType.donationCenter,
+                          groupValue: _accountType,
+                          onChanged: (AccountType? val) {
                             setState(() {
-                              _userType = val!;
+                              _accountType = val!;
                             });
                           },
                         ),
                       ),
                       const Divider(),
-                      if (_userType == UserType.user) _generateUserForm(),
-                      if (_userType == UserType.donationCenter)
+                      if (_accountType == AccountType.user) _generateUserForm(),
+                      if (_accountType == AccountType.donationCenter)
                         _generateDonationCenterForm(),
-                      if (_userType != UserType.none)
+                      if (_accountType != AccountType.none)
                         _generateSignUpButtons(),
                     ],
                   ),
@@ -345,6 +339,27 @@ class _SignUpState extends State<SignUp> {
                 return;
               }
               if (_signUpFormKey.currentState!.validate()) {
+                _profile = _accountType == AccountType.user
+                    ? UserDTO(
+                        username: _usernameController.text,
+                        email: _emailController.text,
+                        fullName: _nameController.text,
+                        password: _passwordController.text,
+                        birthDate:
+                            DateFormat('yyyy/MM/dd').format(_selectedDate),
+                      )
+                    : DonationCenterDTO(
+                        username: _usernameController.text,
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                        name: _nameController.text,
+                        latitude: _selectedLocation.latitude,
+                        longitude: _selectedLocation.longitude,
+                        openingTime: _selectedSchedule["opening_time"],
+                        closingTime: _selectedSchedule["closing_time"],
+                        description: _descriptionController.text,
+                        openingDays: _selectedSchedule["opening_days"],
+                      );
                 signUp();
               }
             },
