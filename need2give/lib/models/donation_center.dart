@@ -106,7 +106,6 @@ class DonationCenter extends DonationCenterDTO {
       "email": email,
       "phone_number": phoneNumber,
       "created_at": createdAt,
-      "password": password,
       "name": name,
       "latitude": latitude,
       "longitude": longitude,

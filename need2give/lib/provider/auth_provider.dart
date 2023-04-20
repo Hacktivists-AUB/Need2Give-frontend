@@ -18,7 +18,6 @@ class AuthProvider extends ChangeNotifier {
         _profile = User.fromJson(user);
         break;
       case AccountType.none:
-        _profile = ProfileData.fromJson(user);
         break;
     }
     notifyListeners();

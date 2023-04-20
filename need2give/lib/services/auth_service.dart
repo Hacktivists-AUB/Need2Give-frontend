@@ -28,7 +28,7 @@ class AuthService {
 
   AuthService._init();
 
-  void signUp({
+  Future<void> signUp({
     required BuildContext context,
     required Profile profile,
   }) async {
@@ -63,7 +63,7 @@ class AuthService {
     }
   }
 
-  void login({
+  Future<void> login({
     required BuildContext context,
     required String email,
     required String password,
@@ -84,12 +84,13 @@ class AuthService {
         response: res,
         context: context,
         onSuccess: () async {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
           final resBody = jsonDecode(res.body);
-          Provider.of<AuthProvider>(context, listen: false).setAccount(
-              jsonEncode({...resBody["account"], "token": resBody["token"]}),
-              AccountType.none);
+
+          SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString("token", resBody["token"]);
+
+          await setProfileFromToken(context, resBody["token"]);
+
           Navigator.pushNamedAndRemoveUntil(
             context,
             Home.routeName,
@@ -100,5 +101,41 @@ class AuthService {
     } catch (e) {
       showSnackBar(context, e.toString());
     }
+  }
+
+  Future<void> setProfileFromToken(BuildContext context, String token) async {
+    try {
+      http.Response res = await http.get(
+        Uri.parse("${Global.url}/auth/test"),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization": token
+        },
+      );
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () async {
+          final resBody = jsonDecode(res.body);
+
+          Provider.of<AuthProvider>(context, listen: false).setAccount(
+              jsonEncode({...resBody["profile"], "token": token}),
+              _inferAccountType({...resBody["profile"]}));
+
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            Home.routeName,
+            (route) => false,
+          );
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  AccountType _inferAccountType(Map<String, dynamic> obj) {
+    return obj.length > 7 ? AccountType.donationCenter : AccountType.user;
   }
 }

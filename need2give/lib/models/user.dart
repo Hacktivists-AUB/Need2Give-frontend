@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:need2give/models/profile.dart';
 import 'package:need2give/services/auth_service.dart';
 
-class UserDTO extends Profile{
+class UserDTO extends Profile {
   final String fullName;
   final String birthDate;
 
@@ -64,7 +64,7 @@ class User extends UserDTO {
           phoneNumber: phoneNumber,
           email: email,
           fullName: fullName,
-          password: '',
+          password: "",
           birthDate: birthDate,
         );
 
@@ -73,10 +73,10 @@ class User extends UserDTO {
     return {
       "id": id,
       "username": username,
+      "email": email,
       "phone_number": phoneNumber,
       "created_at": createdAt,
-      "email": email,
-      "password": password,
+      "birth_date": birthDate,
       "token": token,
     };
   }
