@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/provider/auth_provider.dart';
+import 'package:need2give/screens/auth/welcome.dart';
 import 'package:need2give/screens/common/edit_Profile.dart';
 import 'package:need2give/screens/common/change_Password.dart';
 import 'package:need2give/screens/common/contact_Us.dart';
 import 'package:need2give/screens/common/forget_Password.dart';
 import 'package:need2give/screens/common/notification_Settings.dart';
 import 'package:need2give/screens/common/terms.dart';
+import 'package:need2give/services/auth_service.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -207,6 +212,18 @@ class SettingsPage extends StatelessWidget {
                     ],
                   ),
                 ),
+              ),
+              TextButton(
+                onPressed: () async {
+                  Provider.of<AuthProvider>(context, listen: false)
+                      .setAccount("", AccountType.none);
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setString("token", "");
+                  // ignore: use_build_context_synchronously
+                  Navigator.pushNamed(context, WelcomeScreen.routeName);
+                },
+                child: const Text("Log out"),
               ),
             ],
           ),

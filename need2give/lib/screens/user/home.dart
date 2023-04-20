@@ -16,7 +16,7 @@ class _HomeState extends State<Home> {
     final user = Provider.of<AuthProvider>(context).profile;
     return Scaffold(
       body: Center(
-        child: Text(user!.toJson()),
+        child: Text(user.toJson()),
       ),
     );
   }

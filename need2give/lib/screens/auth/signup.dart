@@ -6,7 +6,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/constants/utils.dart';
 import 'package:need2give/models/donation_center.dart';
-import 'package:need2give/models/profile.dart';
+import 'package:need2give/models/account.dart';
 import 'package:need2give/models/user.dart';
 import 'package:need2give/screens/auth/login.dart';
 import 'package:need2give/services/auth_service.dart';
@@ -45,7 +45,7 @@ class _SignUpState extends State<SignUp> {
 
   final AuthService authService = AuthService();
 
-  late Profile _profile;
+  late Account _profile;
 
   @override
   void initState() {

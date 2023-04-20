@@ -1,13 +1,17 @@
 import 'package:need2give/models/donation_center.dart';
-import 'package:need2give/models/profile.dart';
+import 'package:need2give/models/account.dart';
 import 'package:need2give/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:need2give/services/auth_service.dart';
 
 class AuthProvider extends ChangeNotifier {
-  Profile? _profile;
+  Account _profile = Account(
+    username: '',
+    email: '',
+    password: '',
+  );
 
-  Profile? get profile => _profile;
+  Account get profile => _profile;
 
   void setAccount(String user, AccountType type) {
     switch (type) {

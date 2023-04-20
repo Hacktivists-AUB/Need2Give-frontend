@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:need2give/models/profile.dart';
+import 'package:need2give/models/account.dart';
 import 'package:need2give/services/auth_service.dart';
 
-class UserDTO extends Profile {
+class UserDTO extends Account {
   final String fullName;
   final String birthDate;
 
@@ -14,6 +14,7 @@ class UserDTO extends Profile {
     required super.password,
     required this.birthDate,
     super.type = AccountType.user,
+    super.token = "",
   });
 
   @override
@@ -47,12 +48,11 @@ class UserDTO extends Profile {
 
 class User extends UserDTO {
   final int id;
-  final String token;
   final String createdAt;
 
   User({
     required this.id,
-    required this.token,
+    required super.token,
     required this.createdAt,
     required String username,
     required String? phoneNumber,

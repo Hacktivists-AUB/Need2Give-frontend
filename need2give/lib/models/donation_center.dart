@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:need2give/models/profile.dart';
+import 'package:need2give/models/account.dart';
 import 'package:need2give/services/auth_service.dart';
 
-class DonationCenterDTO extends Profile {
+class DonationCenterDTO extends Account {
   final String name;
   final double latitude;
   final double longitude;
@@ -24,6 +24,7 @@ class DonationCenterDTO extends Profile {
     required this.description,
     required this.openingDays,
     super.type = AccountType.donationCenter,
+    super.token = "",
   });
 
   @override
@@ -67,12 +68,11 @@ class DonationCenterDTO extends Profile {
 
 class DonationCenter extends DonationCenterDTO {
   final int id;
-  final String token;
   final String createdAt;
 
   DonationCenter({
     required this.id,
-    required this.token,
+    required super.token,
     required this.createdAt,
     required String username,
     required String? phoneNumber,

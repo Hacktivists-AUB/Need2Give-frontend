@@ -7,9 +7,9 @@ import 'package:need2give/constants/error_handling.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/constants/utils.dart';
 import 'package:http/http.dart' as http;
-import 'package:need2give/models/profile.dart';
+import 'package:need2give/models/account.dart';
 import 'package:need2give/provider/auth_provider.dart';
-import 'package:need2give/screens/user/home.dart';
+import 'package:need2give/screens/main_pages_navbar/button_navbar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,7 +30,7 @@ class AuthService {
 
   Future<void> signUp({
     required BuildContext context,
-    required Profile profile,
+    required Account profile,
   }) async {
     try {
       http.Response res = await http.post(
@@ -53,7 +53,7 @@ class AuthService {
           await prefs.setString("token", resBody["token"]);
           Navigator.pushNamedAndRemoveUntil(
             context,
-            Home.routeName,
+            ButtonNavbar.routeName,
             (route) => false,
           );
         },
@@ -89,11 +89,11 @@ class AuthService {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString("token", resBody["token"]);
 
-          await setProfileFromToken(context, resBody["token"]);
+          await _setAccountFromToken(context, resBody["token"]);
 
           Navigator.pushNamedAndRemoveUntil(
             context,
-            Home.routeName,
+            ButtonNavbar.routeName,
             (route) => false,
           );
         },
@@ -103,7 +103,23 @@ class AuthService {
     }
   }
 
-  Future<void> setProfileFromToken(BuildContext context, String token) async {
+  Future<void> getUserData(BuildContext context) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString("token");
+
+      if (token == null) {
+        prefs.setString("token", "");
+        return;
+      }
+
+      await _setAccountFromToken(context, token);
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  Future<void> _setAccountFromToken(BuildContext context, String token) async {
     try {
       http.Response res = await http.get(
         Uri.parse("${Global.url}/auth/test"),
@@ -113,23 +129,14 @@ class AuthService {
         },
       );
 
-      httpErrorHandle(
-        response: res,
-        context: context,
-        onSuccess: () async {
-          final resBody = jsonDecode(res.body);
+      if (res.statusCode == 200) {
+        final resBody = jsonDecode(res.body);
 
-          Provider.of<AuthProvider>(context, listen: false).setAccount(
-              jsonEncode({...resBody["profile"], "token": token}),
-              _inferAccountType({...resBody["profile"]}));
-
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            Home.routeName,
-            (route) => false,
-          );
-        },
-      );
+        Provider.of<AuthProvider>(context, listen: false).setAccount(
+          jsonEncode({...resBody["profile"], "token": token}),
+          _inferAccountType({...resBody["profile"]}),
+        );
+      }
     } catch (e) {
       showSnackBar(context, e.toString());
     }
