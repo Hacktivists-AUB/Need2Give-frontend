@@ -101,7 +101,16 @@ class _DashboardDonation extends State<DashboardDonation> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(20),
-                    child: RedButton(text: "Remove item", onPressed: () {}),
+                    child: RedButton(
+                        text: "Remove item",
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AddItem(),
+                            ),
+                          );
+                        }),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(20),
