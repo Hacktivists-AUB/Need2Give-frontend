@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/models/item.dart';
 import 'package:need2give/screens/user/category.dart';
 import 'package:need2give/screens/user/search.dart';
 import 'package:need2give/widgets/item.dart';
@@ -13,31 +14,13 @@ class Explore extends StatefulWidget {
 }
 
 class _ExploreState extends State<Explore> {
-  final List<Map<String, dynamic>> _categories = [
-    {
-      "id": 1,
-      "name": "All",
-    },
-    {
-      "id": 2,
-      "name": "Food",
-    },
-    {
-      "id": 3,
-      "name": "Medicine",
-    },
-    {
-      "id": 4,
-      "name": "Clothing",
-    },
-    {
-      "id": 5,
-      "name": "Electronics",
-    },
-    {
-      "id": 6,
-      "name": "Other",
-    }
+  final List<String> _categories = [
+    "All",
+    "Food",
+    "Medication",
+    "Clothes",
+    "Electronics",
+    "Other",
   ];
 
   final List<Map<String, dynamic>> _centers = [
@@ -78,48 +61,7 @@ class _ExploreState extends State<Explore> {
     },
   ];
 
-  final List<Map<String, dynamic>> _items = [
-    {
-      "id": 1,
-      "name": "Panadol",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor luctus urna, a efficitur neque placerat eu. Integer dictum tellus id tellus sollicitudin, eu varius nunc auctor.",
-      "center": "Sweet tooth pharmacy",
-      "quantity": 10,
-      "category": "Medicine",
-    },
-    {
-      "id": 2,
-      "name": "Rice",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor luctus urna, a efficitur neque placerat eu. Integer dictum tellus id tellus sollicitudin, eu varius nunc auctor.",
-      "center": "Ubi's charity",
-      "quantity": 11,
-      "category": "Food",
-    },
-    {
-      "id": 3,
-      "name": "Noodles",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor luctus urna, a efficitur neque placerat eu. Integer dictum tellus id tellus sollicitudin, eu varius nunc auctor.",
-      "center": "Ubi's charity",
-      "quantity": 2,
-      "category": "Food",
-    },
-    {
-      "id": 4,
-      "name": "Shirt",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor luctus urna, a efficitur neque placerat eu. Integer dictum tellus id tellus sollicitudin, eu varius nunc auctor.",
-      "center": "Ubi's charity",
-      "quantity": 100,
-      "category": "Clothing",
-    },
-    {
-      "id": 5,
-      "name": "Candy",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor luctus urna, a efficitur neque placerat eu. Integer dictum tellus id tellus sollicitudin, eu varius nunc auctor.",
-      "center": "Ubi's charity",
-      "quantity": 31,
-      "category": "Food",
-    },
-  ];
+  final List<Item> _items = [];
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +148,7 @@ class _ExploreState extends State<Explore> {
     );
   }
 
-  Widget _buildCategoryTag(Map<String, dynamic> category) => Container(
+  Widget _buildCategoryTag(String category) => Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Global.lightGreen,
@@ -222,7 +164,7 @@ class _ExploreState extends State<Explore> {
             );
           },
           child: Text(
-            category["name"],
+            category,
             style: const TextStyle(color: Global.white),
           ),
         ),

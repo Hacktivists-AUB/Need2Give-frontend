@@ -2,10 +2,10 @@ import 'dart:convert';
 
 class ItemDTO {
   final String name;
-  final String description;
+  final String? description;
   final String category;
   final int quantity;
-  final int donorID;
+  final int? donorID;
   final int donationCenterID;
 
   const ItemDTO({
@@ -31,7 +31,7 @@ class ItemDTO {
   factory ItemDTO.fromMap(Map<String, dynamic> map) {
     return ItemDTO(
       name: map["name"] ?? "",
-      description: map["description"],
+      description: map["description"] ?? "",
       category: map["category"] ?? "",
       quantity: map["quantity"] ?? 0,
       donorID: map["donor_id"] ?? 0,
@@ -73,7 +73,7 @@ class Item extends ItemDTO {
     return Item(
       id: map["id"] ?? 0,
       name: map["name"] ?? "",
-      description: map["description"],
+      description: map["description"] ?? "",
       category: map["category"] ?? "",
       quantity: map["quantity"] ?? 0,
       donorID: map["donor_id"] ?? 0,

@@ -83,7 +83,7 @@ class _DonationCenterProfile extends State<DonationCenterProfile>
                 )),
                 Center(child: Padding(
                   padding: EdgeInsets.all(10),
-                  child: inventory(),
+                  child: Inventory(),
                 )),
               ],
             ),

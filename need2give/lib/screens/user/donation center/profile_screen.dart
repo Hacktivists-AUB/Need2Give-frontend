@@ -89,7 +89,7 @@ class _DonationScreen extends State<DonationScreen>
                 )),
                 Center(child: Padding(
                   padding: EdgeInsets.all(10),
-                  child: inventory(),
+                  child: Inventory(),
                 )),
               ],
             ),

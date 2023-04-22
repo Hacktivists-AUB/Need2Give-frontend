@@ -47,9 +47,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         builder: (_) => const ButtonNavbar(),
       );
     case Category.routeName:
+      var category = settings.arguments as String;
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => Category(),
+        builder: (_) => Category(category: category),
       );
     case ItemPage.routeName:
       return MaterialPageRoute(

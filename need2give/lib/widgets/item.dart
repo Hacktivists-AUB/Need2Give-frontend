@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/models/item.dart';
 import 'package:need2give/screens/user/item.dart';
 
 class ItemListTile extends StatelessWidget {
-  final Map<String, dynamic> item;
+  final Item item;
   const ItemListTile({super.key, required this.item});
 
   @override
@@ -36,7 +37,7 @@ class ItemListTile extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      item["name"],
+                      item.name,
                       style: const TextStyle(
                         fontSize: 16,
                         color: Global.darkGrey,
@@ -54,7 +55,7 @@ class ItemListTile extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        item["center"],
+                        "${item.donationCenterID}",
                         style: const TextStyle(
                           fontSize: 12,
                           color: Global.mediumGrey,
@@ -66,9 +67,9 @@ class ItemListTile extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      item["description"].length < 24
-                          ? item["description"]
-                          : "${item["description"].toString().substring(0, 24)}...",
+                      item.description!.length < 24
+                          ? item.description!
+                          : "${item.description!.substring(0, 24)}...",
                       style: const TextStyle(
                         color: Global.mediumGrey,
                       ),
@@ -85,14 +86,14 @@ class ItemListTile extends StatelessWidget {
                         ),
                         padding: const EdgeInsets.all(6),
                         child: Text(
-                          item["category"],
+                          item.category,
                           style: const TextStyle(
                             color: Global.white,
                           ),
                         ),
                       ),
                       Text(
-                        "Quantity: ${item["quantity"]}",
+                        "Quantity: ${item.quantity}",
                         style: const TextStyle(
                           color: Global.mediumGrey,
                           fontSize: 12,
