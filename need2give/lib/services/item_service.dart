@@ -22,7 +22,7 @@ class ItemService {
     List<Item> items = [];
     try {
       http.Response res = await http.get(
-        Uri.parse("${Global.url}/items${_parseParams(params)}"),
+        Uri.parse("${Global.url}/items${parseParams(params)}"),
         headers: <String, String>{
           "Content-Type": "application/json; charset=UTF-8",
           "Authorization":
@@ -113,9 +113,5 @@ class ItemService {
     } catch (e) {
       showSnackBar(ctx, e.toString());
     }
-  }
-
-  String _parseParams(Map<String, dynamic> params) {
-    return "?${params.entries.map((entry) => "${entry.key}=${entry.value}").join("&")}";
   }
 }

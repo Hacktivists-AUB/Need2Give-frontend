@@ -69,6 +69,7 @@ class DonationCenterDTO extends Account {
 class DonationCenter extends DonationCenterDTO {
   final int id;
   final String createdAt;
+  final double? distance;
 
   DonationCenter({
     required this.id,
@@ -84,6 +85,7 @@ class DonationCenter extends DonationCenterDTO {
     required String closingTime,
     required String description,
     required Map<String, dynamic> openingDays,
+    required this.distance,
   }) : super(
           username: username,
           email: email,
@@ -114,6 +116,7 @@ class DonationCenter extends DonationCenterDTO {
       "closing_time": closingTime,
       "opening_days": openingDays,
       "token": token,
+      "distance": distance,
     };
   }
 
@@ -133,6 +136,7 @@ class DonationCenter extends DonationCenterDTO {
       closingTime: map["closing_time"] ?? "",
       openingDays: map["opening_days"] ?? {},
       token: map["token"] ?? "",
+      distance: map["distance"] ?? -1.0,
     );
   }
 

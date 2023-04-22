@@ -1,8 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/models/donation_center.dart';
 import 'package:need2give/models/item.dart';
 import 'package:need2give/screens/user/category.dart';
 import 'package:need2give/screens/user/search.dart';
+import 'package:need2give/services/donation_center_service.dart';
 import 'package:need2give/services/item_service.dart';
 import 'package:need2give/widgets/item.dart';
 import 'package:need2give/widgets/textfield.dart';
@@ -16,6 +19,7 @@ class Explore extends StatefulWidget {
 
 class _ExploreState extends State<Explore> {
   final ItemService _itemService = ItemService();
+  final DonationCenterService _donationCenterService = DonationCenterService();
   final List<String> _categories = [
     "All",
     "Food",
@@ -25,54 +29,18 @@ class _ExploreState extends State<Explore> {
     "Other",
   ];
 
-  final List<Map<String, dynamic>> _centers = [
-    {
-      "id": 1,
-      "lat": 33.9301140,
-      "long": 35.5914950,
-      "name": "Sweet tooth pharmacy",
-      "description": "very gud donation center"
-    },
-    {
-      "id": 2,
-      "lat": 33.9302450,
-      "long": 35.5911975,
-      "name": "Ubi's nice donation center",
-      "description": "very gud donation center"
-    },
-    {
-      "id": 3,
-      "lat": 33.9302241,
-      "long": 35.5912971,
-      "name": "Buni's nice donation center",
-      "description": "very gud donation center"
-    },
-    {
-      "id": 4,
-      "lat": 33.9301241,
-      "long": 35.5812971,
-      "name": "Dummy donation center",
-      "description": "very gud donation center"
-    },
-    {
-      "id": 5,
-      "lat": 33.9302541,
-      "long": 35.5902971,
-      "name": "Donation center dummy",
-      "description": "very gud donation center"
-    },
-  ];
-
+  List<DonationCenter> _donationCenters = [];
   List<Item> _items = [];
 
   @override
   void initState() {
     super.initState();
-    _loadItems();
+    _loadData();
   }
 
-  _loadItems() async {
+  _loadData() async {
     _items = await _itemService.get(context, {});
+    _donationCenters = await _donationCenterService.get(context, {});
     setState(() {});
   }
 
@@ -134,8 +102,9 @@ class _ExploreState extends State<Explore> {
                 height: 300.0,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
-                  children:
-                      _centers.map((e) => _buildDonationCenterCard(e)).toList(),
+                  children: _donationCenters
+                      .map((e) => _buildDonationCenterCard(e))
+                      .toList(),
                 ),
               ),
               const SizedBox(height: 20),
@@ -183,8 +152,8 @@ class _ExploreState extends State<Explore> {
         ),
       );
 
-  Widget _buildDonationCenterCard(Map<String, dynamic> center) => Hero(
-        tag: "center/${center["id"]}",
+  Widget _buildDonationCenterCard(DonationCenter center) => Hero(
+        tag: "center/${center.id}",
         child: GestureDetector(
           onTap: () {},
           child: Container(
@@ -206,7 +175,7 @@ class _ExploreState extends State<Explore> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    center["name"],
+                    center.name,
                     style: const TextStyle(
                       fontSize: 16,
                       color: Global.mediumGrey,
@@ -219,7 +188,7 @@ class _ExploreState extends State<Explore> {
                 ),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(center["description"]),
+                  child: Text(center.description),
                 ),
                 Expanded(
                   child: TextButton(
