@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:need2give/models/donation_center.dart';
+
 class ItemDTO {
   final String name;
   final String? description;
@@ -48,6 +50,7 @@ class ItemDTO {
 class Item extends ItemDTO {
   final int id;
   final String createdAt;
+  final DonationCenter donationCenter;
 
   const Item({
     required this.id,
@@ -58,6 +61,7 @@ class Item extends ItemDTO {
     required super.donorID,
     required super.donationCenterID,
     required this.createdAt,
+    required this.donationCenter,
   });
 
   @override
@@ -66,6 +70,7 @@ class Item extends ItemDTO {
       "id": id,
       ...super.toMap(),
       "created_at": createdAt,
+      "donation_center": donationCenter.toMap(),
     };
   }
 
@@ -79,6 +84,7 @@ class Item extends ItemDTO {
       donorID: map["donor_id"] ?? 0,
       donationCenterID: map["donation_center_id"] ?? 0,
       createdAt: map["created_at"] ?? "",
+      donationCenter: DonationCenter.fromMap(map["donation_center"]),
     );
   }
 

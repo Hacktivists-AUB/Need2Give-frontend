@@ -44,9 +44,31 @@ class ItemService {
     return items;
   }
 
+  Future<void> add(BuildContext ctx, ItemDTO item) async {
+    try {
+      http.Response res = await http.post(
+        Uri.parse("${Global.url}/items/"),
+        body: item.toJson(),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization":
+              Provider.of<AuthProvider>(ctx, listen: false).profile.token,
+        },
+      );
+
+      httpErrorHandle(
+        response: res,
+        context: ctx,
+        onSuccess: () {
+          showSnackBar(ctx, "Item added successfully");
+        },
+      );
+    } catch (e) {
+      showSnackBar(ctx, e.toString());
+    }
+  }
+
   String _parseParams(Map<String, dynamic> params) {
-    final queryParams =
-        params.entries.map((entry) => "${entry.key}=${entry.value}").join("&");
-    return "?$queryParams";
+    return "?${params.entries.map((entry) => "${entry.key}=${entry.value}").join("&")}";
   }
 }

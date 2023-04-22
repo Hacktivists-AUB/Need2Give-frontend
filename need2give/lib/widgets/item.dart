@@ -55,7 +55,7 @@ class ItemListTile extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        "${item.donationCenterID}",
+                        item.donationCenter.name,
                         style: const TextStyle(
                           fontSize: 12,
                           color: Global.mediumGrey,
