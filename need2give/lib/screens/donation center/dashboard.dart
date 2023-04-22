@@ -98,7 +98,15 @@ class _DashboardDonation extends State<DashboardDonation> {
                   Padding(
                     padding: const EdgeInsets.all(20),
                     child: TransparentButton(
-                        text: "Update item", onPressed: () {}),
+                        text: "Update item",
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AddItem(),
+                            ),
+                          );
+                        }),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(20),
