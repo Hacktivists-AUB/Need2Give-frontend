@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/screens/donation%20center/add_item.dart';
 import 'package:need2give/screens/donation%20center/remove_item.dart';
+import 'package:need2give/screens/donation%20center/update_item.dart';
 import 'package:need2give/widgets/button.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -103,7 +104,7 @@ class _DashboardDonation extends State<DashboardDonation> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const AddItem(),
+                              builder: (context) => const UpdateItem(),
                             ),
                           );
                         }),

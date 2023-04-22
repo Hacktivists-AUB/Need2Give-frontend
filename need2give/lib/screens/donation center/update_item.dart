@@ -85,7 +85,7 @@ class _UpdateItemState extends State<UpdateItem> {
                           'Select an option'), 
                     )),
                 Button(
-                  text: 'Save',
+                  text: 'Update',
                   onPressed: () {},
                 )
               ],
