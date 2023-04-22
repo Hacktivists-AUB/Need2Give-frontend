@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/widgets/button.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -160,6 +161,9 @@ class Profile extends StatelessWidget {
                   ],
                 ),
               ),
+              Padding(
+                  padding: const EdgeInsets.only(left: 16, top: 24, right: 16),
+                  child: RedButton(text: "Logout", onPressed: () {})),
             ],
           ),
         ),
