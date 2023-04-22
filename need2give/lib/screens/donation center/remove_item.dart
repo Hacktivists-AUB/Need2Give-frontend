@@ -47,8 +47,8 @@ class _RemoveItemState extends State<RemoveItem> {
                     hintText: "name of item",
                   ),
                 ),
-                Button(
-                  text: 'Save',
+                RedButton(
+                  text: 'Remove',
                   onPressed: () {},
                 )
               ],
