@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/models/item.dart';
 import 'package:need2give/widgets/textfield.dart';
 
 class ItemPage extends StatelessWidget {
   static const String routeName = '/item';
-  const ItemPage({super.key});
+  final Item item;
+  const ItemPage({
+    super.key,
+    required this.item,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final item =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Item"),
@@ -43,7 +46,7 @@ class ItemPage extends StatelessWidget {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            item["name"],
+                            item.name,
                             style: const TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
@@ -57,7 +60,7 @@ class ItemPage extends StatelessWidget {
                           ),
                           padding: const EdgeInsets.all(8),
                           child: Text(
-                            item["category"],
+                            item.category[0].toUpperCase() + item.category.substring(1),
                             style: const TextStyle(
                               color: Global.white,
                             ),
@@ -78,7 +81,7 @@ class ItemPage extends StatelessWidget {
                         TextButton(
                           onPressed: () {},
                           child: Text(
-                            item["center"],
+                            item.donationCenter.name,
                             style: const TextStyle(
                               fontSize: 14,
                               color: Global.mediumGrey,
@@ -96,7 +99,7 @@ class ItemPage extends StatelessWidget {
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          "Quantity: ${item["quantity"]}",
+                          "Quantity: ${item.quantity}",
                           style: const TextStyle(
                             color: Global.mediumGrey,
                             fontSize: 14,
@@ -109,7 +112,7 @@ class ItemPage extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        item["description"],
+                        item.description!,
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                           color: Global.mediumGrey,

@@ -3,6 +3,7 @@ import 'package:need2give/constants/global.dart';
 import 'package:need2give/models/item.dart';
 import 'package:need2give/screens/user/category.dart';
 import 'package:need2give/screens/user/search.dart';
+import 'package:need2give/services/item_service.dart';
 import 'package:need2give/widgets/item.dart';
 import 'package:need2give/widgets/textfield.dart';
 
@@ -14,6 +15,7 @@ class Explore extends StatefulWidget {
 }
 
 class _ExploreState extends State<Explore> {
+  final ItemService _itemService = ItemService();
   final List<String> _categories = [
     "All",
     "Food",
@@ -61,7 +63,18 @@ class _ExploreState extends State<Explore> {
     },
   ];
 
-  final List<Item> _items = [];
+  List<Item> _items = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadItems();
+  }
+
+  _loadItems() async {
+    _items = await _itemService.get(context, {});
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +121,7 @@ class _ExploreState extends State<Explore> {
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Discover donation centers',
+                  "Discover donation centers",
                   style: TextStyle(
                     fontSize: 20,
                     color: Global.darkGrey,
@@ -129,7 +142,7 @@ class _ExploreState extends State<Explore> {
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'See our newest items',
+                  "See our newest items",
                   style: TextStyle(
                     fontSize: 20,
                     color: Global.darkGrey,

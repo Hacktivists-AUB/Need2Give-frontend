@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:need2give/models/item.dart';
 import 'package:need2give/screens/auth/login.dart';
 import 'package:need2give/screens/auth/signup.dart';
 import 'package:need2give/screens/auth/welcome.dart';
@@ -53,9 +54,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         builder: (_) => Category(category: category),
       );
     case ItemPage.routeName:
+      var item = settings.arguments as Item;
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => const ItemPage(),
+        builder: (_) => ItemPage(item: item),
       );
     default:
       return MaterialPageRoute(

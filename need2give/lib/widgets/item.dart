@@ -86,7 +86,7 @@ class ItemListTile extends StatelessWidget {
                         ),
                         padding: const EdgeInsets.all(6),
                         child: Text(
-                          item.category,
+                          item.category[0].toUpperCase() + item.category.substring(1),
                           style: const TextStyle(
                             color: Global.white,
                           ),
