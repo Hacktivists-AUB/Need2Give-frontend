@@ -24,7 +24,7 @@ class _ButtonNavbarState extends State<ButtonNavbar> {
   final List<Widget> _children = [
     const DashboardDonation(),
     const Explore(),
-    const DonationCenterProfile(),
+    const Profile(),
     const SettingsPage(),
   ];
 
