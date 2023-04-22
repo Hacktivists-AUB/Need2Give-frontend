@@ -68,6 +68,53 @@ class ItemService {
     }
   }
 
+  Future<void> edit(BuildContext ctx, ItemDTO item, int id) async {
+    try {
+      http.Response res = await http.patch(
+        Uri.parse("${Global.url}/items/$id"),
+        body: item.toJson(),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization":
+              Provider.of<AuthProvider>(ctx, listen: false).profile.token,
+        },
+      );
+
+      httpErrorHandle(
+        response: res,
+        context: ctx,
+        onSuccess: () {
+          showSnackBar(ctx, "Item edited successfully");
+        },
+      );
+    } catch (e) {
+      showSnackBar(ctx, e.toString());
+    }
+  }
+
+  Future<void> delete(BuildContext ctx, int id) async {
+    try {
+      http.Response res = await http.delete(
+        Uri.parse("${Global.url}/items/$id"),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization":
+              Provider.of<AuthProvider>(ctx, listen: false).profile.token,
+        },
+      );
+
+      httpErrorHandle(
+        response: res,
+        context: ctx,
+        onSuccess: () {
+          showSnackBar(ctx, "Item deleted successfully");
+        },
+      );
+    } catch (e) {
+      showSnackBar(ctx, e.toString());
+    }
+  }
+
   String _parseParams(Map<String, dynamic> params) {
     return "?${params.entries.map((entry) => "${entry.key}=${entry.value}").join("&")}";
   }
