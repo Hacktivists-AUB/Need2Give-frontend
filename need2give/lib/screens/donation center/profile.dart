@@ -3,6 +3,7 @@ import 'package:need2give/screens/user/donation%20center/about_us_donation_cente
 import 'package:need2give/screens/user/donation%20center/inventory.dart';
 
 import 'package:flutter/material.dart';
+import 'package:need2give/widgets/button.dart';
 
 class DonationCenterProfile extends StatefulWidget {
   const DonationCenterProfile({Key? key}) : super(key: key);
@@ -81,13 +82,17 @@ class _DonationCenterProfile extends State<DonationCenterProfile>
                   padding: EdgeInsets.all(10),
                   child: AboutUs(),
                 )),
-                Center(child: Padding(
+                Center(
+                    child: Padding(
                   padding: EdgeInsets.all(10),
                   child: Inventory(),
                 )),
               ],
             ),
           ),
+          Padding(
+              padding: const EdgeInsets.only(left: 16, top: 24, right: 16,bottom: 20),
+              child: RedButton(text: "Logout", onPressed: () {})),
         ],
       ),
     ));
