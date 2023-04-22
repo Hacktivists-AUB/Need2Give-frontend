@@ -5,7 +5,7 @@ import 'package:need2give/models/donation_center.dart';
 import 'package:need2give/models/item.dart';
 import 'package:need2give/screens/user/category.dart';
 import 'package:need2give/screens/user/search.dart';
-import 'package:need2give/services/donation_center_service.dart';
+import 'package:need2give/services/account_service.dart';
 import 'package:need2give/services/item_service.dart';
 import 'package:need2give/widgets/item.dart';
 import 'package:need2give/widgets/textfield.dart';
@@ -19,7 +19,7 @@ class Explore extends StatefulWidget {
 
 class _ExploreState extends State<Explore> {
   final ItemService _itemService = ItemService();
-  final DonationCenterService _donationCenterService = DonationCenterService();
+  final AccountService _donationCenterService = AccountService();
   final List<String> _categories = [
     "All",
     "Food",
