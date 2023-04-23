@@ -4,6 +4,7 @@ import 'package:need2give/constants/global.dart';
 import 'package:need2give/models/item.dart';
 import 'package:need2give/screens/donation_center/update_item.dart';
 import 'package:need2give/screens/main_pages_navbar/button_navbar.dart';
+import 'package:need2give/screens/user/donation_center/profile_screen.dart';
 import 'package:need2give/services/item_service.dart';
 import 'package:need2give/widgets/textfield.dart';
 
@@ -114,7 +115,13 @@ class ItemPage extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              DonationScreen.routeName,
+                              arguments: item.donationCenter,
+                            );
+                          },
                           child: Text(
                             item.donationCenter.name,
                             style: const TextStyle(

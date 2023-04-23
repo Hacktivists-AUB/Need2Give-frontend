@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:need2give/models/donation_center.dart';
 import 'package:need2give/models/item.dart';
 import 'package:need2give/screens/auth/login.dart';
 import 'package:need2give/screens/auth/signup.dart';
@@ -7,6 +8,7 @@ import 'package:need2give/screens/donation_center/add_item.dart';
 import 'package:need2give/screens/donation_center/dashboard.dart';
 import 'package:need2give/screens/donation_center/update_item.dart';
 import 'package:need2give/screens/donation_center/view_items.dart';
+import 'package:need2give/screens/user/donation_center/profile_screen.dart';
 import 'package:need2give/screens/user/home.dart';
 import 'package:need2give/screens/user/item.dart';
 import 'package:need2give/screens/user/search.dart';
@@ -86,6 +88,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         settings: settings,
         builder: (_) => const AddItem(),
+      );
+    case DonationScreen.routeName:
+      var donationCenter = settings.arguments as DonationCenter;
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => DonationScreen(donationCenter: donationCenter),
       );
     default:
       return MaterialPageRoute(

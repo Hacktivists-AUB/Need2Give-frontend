@@ -1,6 +1,6 @@
 import 'package:need2give/constants/global.dart';
-import 'package:need2give/screens/user/donation%20center/about_us_donation_center.dart';
-import 'package:need2give/screens/user/donation%20center/inventory.dart';
+// import 'package:need2give/screens/user/donation_center/about_us.dart';
+import 'package:need2give/screens/user/donation_center/inventory.dart';
 
 import 'package:flutter/material.dart';
 import 'package:need2give/widgets/button.dart';
@@ -80,12 +80,12 @@ class _DonationCenterProfile extends State<DonationCenterProfile>
                 Center(
                     child: Padding(
                   padding: EdgeInsets.all(10),
-                  child: AboutUs(),
+                  // child: AboutUs(),
                 )),
                 Center(
                     child: Padding(
                   padding: EdgeInsets.all(10),
-                  child: Inventory(),
+                  child: Inventory(id: 1),
                 )),
               ],
             ),

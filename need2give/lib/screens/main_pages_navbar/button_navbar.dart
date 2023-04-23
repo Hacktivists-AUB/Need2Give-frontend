@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/screens/donation_center/dashboard.dart';
-import 'package:need2give/screens/donation_center/profile.dart';
-import 'package:need2give/screens/user/donation%20center/profile_screen.dart';
-import 'package:need2give/screens/main_pages_navbar/home_page.dart';
 import 'package:need2give/screens/main_pages_navbar/settings_page.dart';
 import 'package:need2give/screens/user/explore.dart';
-import 'package:need2give/screens/user/feed.dart';
 import 'package:need2give/screens/user/profile.dart';
 
 class ButtonNavbar extends StatefulWidget {
