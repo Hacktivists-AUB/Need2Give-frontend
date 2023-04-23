@@ -15,6 +15,7 @@ class UserDTO extends Account {
     required this.birthDate,
     super.type = AccountType.user,
     super.token = "",
+    super.id = 0,
   });
 
   @override
@@ -47,26 +48,19 @@ class UserDTO extends Account {
 }
 
 class User extends UserDTO {
-  final int id;
   final String createdAt;
 
   User({
-    required this.id,
+    required super.id,
     required super.token,
     required this.createdAt,
-    required String username,
-    required String? phoneNumber,
-    required String fullName,
-    required String email,
-    required String birthDate,
-  }) : super(
-          username: username,
-          phoneNumber: phoneNumber,
-          email: email,
-          fullName: fullName,
-          password: "",
-          birthDate: birthDate,
-        );
+    required super.username,
+    required super.phoneNumber,
+    required super.fullName,
+    required super.email,
+    required super.birthDate,
+    super.password = "",
+  });
 
   @override
   Map<String, dynamic> toMap() {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/models/item.dart';
-import 'package:need2give/screens/donation%20center/update_item.dart';
+import 'package:need2give/screens/donation_center/update_item.dart';
 import 'package:need2give/screens/user/item.dart';
 
 class ItemListTile extends StatelessWidget {

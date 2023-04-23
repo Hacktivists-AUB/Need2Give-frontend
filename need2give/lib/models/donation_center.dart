@@ -25,6 +25,7 @@ class DonationCenterDTO extends Account {
     required this.openingDays,
     super.type = AccountType.donationCenter,
     super.token = "",
+    super.id = 0,
   });
 
   @override
@@ -67,38 +68,26 @@ class DonationCenterDTO extends Account {
 }
 
 class DonationCenter extends DonationCenterDTO {
-  final int id;
   final String createdAt;
   final double? distance;
 
   DonationCenter({
-    required this.id,
+    required super.id,
     required super.token,
     required this.createdAt,
-    required String username,
-    required String? phoneNumber,
-    required String email,
-    required String name,
-    required double latitude,
-    required double longitude,
-    required String openingTime,
-    required String closingTime,
-    required String description,
-    required Map<String, dynamic> openingDays,
+    required super.username,
+    required super. phoneNumber,
+    required super.email,
+    required super.name,
+    required super.latitude,
+    required super.longitude,
+    required super.openingTime,
+    required super.closingTime,
+    required super.description,
+    required super.openingDays,
     required this.distance,
-  }) : super(
-          username: username,
-          email: email,
-          phoneNumber: phoneNumber,
-          password: "",
-          name: name,
-          longitude: longitude,
-          latitude: latitude,
-          description: description,
-          openingTime: openingTime,
-          closingTime: closingTime,
-          openingDays: openingDays,
-        );
+    super.password = "",
+  });
 
   @override
   Map<String, dynamic> toMap() {

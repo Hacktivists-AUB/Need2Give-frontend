@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:need2give/services/auth_service.dart';
 
 class Account {
+  final int id;
   final String username;
   final String email;
   final String? phoneNumber;
@@ -16,6 +17,7 @@ class Account {
     required this.password,
     this.type = AccountType.none,
     this.token = "",
+    this.id = 0,
   });
 
   Map<String, dynamic> toMap() {

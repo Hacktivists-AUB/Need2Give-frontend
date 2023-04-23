@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/models/item.dart';
 import 'package:need2give/widgets/textfield.dart';
@@ -60,7 +61,8 @@ class ItemPage extends StatelessWidget {
                           ),
                           padding: const EdgeInsets.all(8),
                           child: Text(
-                            item.category[0].toUpperCase() + item.category.substring(1),
+                            item.category[0].toUpperCase() +
+                                item.category.substring(1),
                             style: const TextStyle(
                               color: Global.white,
                             ),
@@ -68,7 +70,19 @@ class ItemPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 6),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        DateFormat("'Added on 'd MMM ',' yyyy 'at' hh:mm")
+                            .format(DateTime.parse(item.createdAt)),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Global.mediumGrey,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 6),
                     const Divider(),
                     Row(
                       children: [

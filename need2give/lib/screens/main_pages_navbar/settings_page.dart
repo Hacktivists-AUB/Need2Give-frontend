@@ -12,9 +12,14 @@ import 'package:need2give/services/auth_service.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -222,6 +227,7 @@ class SettingsPage extends StatelessWidget {
                   prefs.setString("token", "");
                   // ignore: use_build_context_synchronously
                   Navigator.pushNamed(context, WelcomeScreen.routeName);
+                  setState((){});
                 },
                 child: const Text("Log out"),
               ),
