@@ -3,6 +3,7 @@ import 'package:need2give/models/item.dart';
 import 'package:need2give/screens/auth/login.dart';
 import 'package:need2give/screens/auth/signup.dart';
 import 'package:need2give/screens/auth/welcome.dart';
+import 'package:need2give/screens/donation%20center/update_item.dart';
 import 'package:need2give/screens/user/home.dart';
 import 'package:need2give/screens/user/item.dart';
 import 'package:need2give/screens/user/search.dart';
@@ -58,6 +59,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         settings: settings,
         builder: (_) => ItemPage(item: item),
+      );
+    case UpdateItem.routeName:
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const UpdateItem(),
       );
     default:
       return MaterialPageRoute(
