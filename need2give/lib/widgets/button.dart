@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:flutter/material.dart';
 
@@ -56,66 +55,6 @@ class RedButton extends StatelessWidget {
         text,
         style: const TextStyle(fontSize: 18),
       ),
-    );
-  }
-}
-
-class TransparentButton extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
-
-  const TransparentButton({
-    super.key,
-    required this.text,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Global.backgroundColor,
-        minimumSize: const Size(double.infinity, 50),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-            side: const BorderSide(color: Global.green)),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(fontSize: 18, color: Global.green),
-      ),
-    );
-  }
-}
-
-class NumberInput extends StatelessWidget {
-  final String text;
-  const NumberInput({
-    super.key,
-    required this.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
-      ],
-      decoration: InputDecoration(
-        labelText: text,
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return text;
-        }
-        final number = double.tryParse(value);
-        if (number == null || number <= 0) {
-          return 'Please enter a positive number';
-        }
-        return null;
-      },
     );
   }
 }

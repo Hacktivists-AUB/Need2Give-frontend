@@ -3,17 +3,25 @@ import 'package:intl/intl.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/models/item.dart';
 import 'package:need2give/screens/donation_center/update_item.dart';
+import 'package:need2give/screens/main_pages_navbar/button_navbar.dart';
+import 'package:need2give/services/item_service.dart';
 import 'package:need2give/widgets/textfield.dart';
 
 class ItemPage extends StatelessWidget {
   static const String routeName = '/item';
+  final ItemService _itemService = ItemService();
+
   final Item item;
   final bool editable;
-  const ItemPage({
+  ItemPage({
     super.key,
     required this.item,
     this.editable = false,
   });
+
+  void delete(BuildContext ctx) {
+    _itemService.delete(ctx, item.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +172,37 @@ class ItemPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  showGeneralDialog(
+                    context: ctx,
+                    pageBuilder: (BuildContext buildContext,
+                        Animation animation, Animation secondaryAnimation) {
+                      return AlertDialog(
+                        title: const Text("Delete item"),
+                        content: Text(
+                            "Are you sure you want to delete '${item.name}'?"),
+                        actions: [
+                          TextButton(
+                            child: const Text("Cancel"),
+                            onPressed: () {
+                              Navigator.of(ctx).pop(false);
+                            },
+                          ),
+                          TextButton(
+                            child: const Text(
+                              "Delete",
+                              style: TextStyle(color: Global.markerColor),
+                            ),
+                            onPressed: () {
+                              delete(ctx);
+                              Navigator.pushNamed(ctx, ButtonNavbar.routeName);
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
                 child: const Text(
                   "Delete",
                   style: TextStyle(color: Global.markerColor),
@@ -172,8 +210,11 @@ class ItemPage extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(ctx, UpdateItem.routeName,
-                      arguments: item);
+                  Navigator.pushNamed(
+                    ctx,
+                    UpdateItem.routeName,
+                    arguments: item,
+                  );
                 },
                 child: const Text("Edit"),
               ),
