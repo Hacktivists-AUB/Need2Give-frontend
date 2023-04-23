@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/models/item.dart';
+import 'package:need2give/screens/donation_center/update_item.dart';
 import 'package:need2give/widgets/textfield.dart';
 
 class ItemPage extends StatelessWidget {
   static const String routeName = '/item';
   final Item item;
+  final bool editable;
   const ItemPage({
     super.key,
     required this.item,
+    this.editable = false,
   });
 
   @override
@@ -26,7 +29,7 @@ class ItemPage extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.fromLTRB(20, 20, 20, editable ? 6 : 20),
                 child: Image.asset('assets/cart.png'),
               ),
               Container(
@@ -47,7 +50,9 @@ class ItemPage extends StatelessWidget {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            item.name,
+                            item.name.length > 14
+                                ? "${item.name.substring(0, 14)}..."
+                                : item.name,
                             style: const TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
@@ -70,6 +75,14 @@ class ItemPage extends StatelessWidget {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 6),
+                    if (item.name.length > 14)
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          item.name,
+                        ),
+                      ),
                     const SizedBox(height: 6),
                     Align(
                       alignment: Alignment.centerLeft,
@@ -133,6 +146,7 @@ class ItemPage extends StatelessWidget {
                         ),
                       ),
                     ),
+                    if (editable) _buildEditableButtons(context),
                   ],
                 ),
               ),
@@ -142,4 +156,29 @@ class ItemPage extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildEditableButtons(BuildContext ctx) => Column(
+        children: [
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              TextButton(
+                onPressed: () {},
+                child: const Text(
+                  "Delete",
+                  style: TextStyle(color: Global.markerColor),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(ctx, UpdateItem.routeName,
+                      arguments: item);
+                },
+                child: const Text("Edit"),
+              ),
+            ],
+          ),
+        ],
+      );
 }

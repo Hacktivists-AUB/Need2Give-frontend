@@ -58,10 +58,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         builder: (_) => Category(category: category),
       );
     case ItemPage.routeName:
-      var item = settings.arguments as Item;
+      var args = settings.arguments as Map<String, dynamic>;
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => ItemPage(item: item),
+        builder: (_) => ItemPage(
+          item: args["item"],
+          editable: args["editable"],
+        ),
       );
     case UpdateItem.routeName:
       var item = settings.arguments as Item;

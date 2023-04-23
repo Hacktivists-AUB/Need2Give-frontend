@@ -21,7 +21,7 @@ class ItemListTile extends StatelessWidget {
         Navigator.pushNamed(
           context,
           ItemPage.routeName,
-          arguments: item,
+          arguments: {"item": item, "editable": editable},
         );
       },
       child: Container(
@@ -46,7 +46,9 @@ class ItemListTile extends StatelessWidget {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          item.name,
+                          item.name.length > 20
+                              ? "${item.name.substring(0, 20)}..."
+                              : item.name,
                           style: const TextStyle(
                             fontSize: 16,
                             color: Global.darkGrey,
@@ -158,7 +160,8 @@ class ItemListTile extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(ctx, UpdateItem.routeName, arguments: item);
+                  Navigator.pushNamed(ctx, UpdateItem.routeName,
+                      arguments: item);
                 },
                 child: const Text("Edit"),
               ),
