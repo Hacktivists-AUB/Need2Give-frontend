@@ -158,7 +158,7 @@ class ItemListTile extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(ctx, UpdateItem.routeName);
+                  Navigator.pushNamed(ctx, UpdateItem.routeName, arguments: item);
                 },
                 child: const Text("Edit"),
               ),

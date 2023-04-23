@@ -10,6 +10,7 @@ class Input extends StatefulWidget {
   final bool secret;
   final bool required;
   final int? numberOfLines;
+  final TextInputType keyboardType;
 
   const Input({
     super.key,
@@ -18,6 +19,7 @@ class Input extends StatefulWidget {
     this.secret = false,
     this.required = true,
     this.numberOfLines = 1,
+    this.keyboardType = TextInputType.text,
   });
 
   @override
@@ -33,6 +35,7 @@ class _InputState extends State<Input> {
       obscureText: widget.secret ? !_isVisible : false,
       controller: widget.controller,
       maxLines: widget.numberOfLines,
+      keyboardType: widget.keyboardType,
       decoration: InputDecoration(
         filled: true,
         fillColor: Global.white,

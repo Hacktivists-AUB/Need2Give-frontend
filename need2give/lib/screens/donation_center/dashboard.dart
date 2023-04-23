@@ -46,164 +46,161 @@ class _Dashboard extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Global.backgroundColor,
-        appBar: AppBar(
-          title: const Text("Your Dashboard"),
-          centerTitle: true,
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(18),
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Hi ${Provider.of<AuthProvider>(context, listen: false).profile.username}",
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Global.darkGrey,
-                    ),
+    return Scaffold(
+      backgroundColor: Global.backgroundColor,
+      appBar: AppBar(
+        title: const Text("Your Dashboard"),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(18),
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Hi ${Provider.of<AuthProvider>(context, listen: false).profile.username}",
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Global.darkGrey,
                   ),
                 ),
-                const SizedBox(height: 10),
-                const Divider(),
-                const SizedBox(height: 10),
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Statistics",
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Global.darkGrey,
-                    ),
+              ),
+              const SizedBox(height: 10),
+              const Divider(),
+              const SizedBox(height: 10),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Statistics",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Global.darkGrey,
                   ),
                 ),
-                const SizedBox(height: 10),
-                SfCartesianChart(
-                  primaryXAxis: CategoryAxis(),
-                  title: ChartTitle(text: 'Number of items per month'),
-                  series: <LineSeries<ItemData, String>>[
-                    LineSeries<ItemData, String>(
-                      dataSource: <ItemData>[
-                        ItemData('Jan', 35),
-                        ItemData('Feb', 28),
-                        ItemData('Mar', 34),
-                        ItemData('Apr', 32),
-                        ItemData('May', 40)
-                      ],
-                      xValueMapper: (ItemData amount, _) => amount.month,
-                      yValueMapper: (ItemData amount, _) => amount.amount,
-                      dataLabelSettings:
-                          const DataLabelSettings(isVisible: true),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Summary",
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Global.darkGrey,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.all(18),
-                  decoration: BoxDecoration(
-                    color: Global.white,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(16),
-                    ),
-                    border: Border.all(
-                      color: Global.green,
-                      width: 2,
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      _buildSummaryStat(
-                        FontAwesomeIcons.cubes,
-                        _totalStock,
-                        "Total stock",
-                      ),
-                      const SizedBox(height: 16),
-                      _buildSummaryStat(
-                        FontAwesomeIcons.boxOpen,
-                        _totalDonationsRecieved,
-                        "Donations recieved",
-                      ),
-                      const SizedBox(height: 16),
-                      _buildSummaryStat(
-                        FontAwesomeIcons.handsHelping,
-                        _totalDonationsGiven,
-                        "Donations given",
-                      ),
+              ),
+              const SizedBox(height: 10),
+              SfCartesianChart(
+                primaryXAxis: CategoryAxis(),
+                title: ChartTitle(text: 'Number of items per month'),
+                series: <LineSeries<ItemData, String>>[
+                  LineSeries<ItemData, String>(
+                    dataSource: <ItemData>[
+                      ItemData('Jan', 35),
+                      ItemData('Feb', 28),
+                      ItemData('Mar', 34),
+                      ItemData('Apr', 32),
+                      ItemData('May', 40)
                     ],
+                    xValueMapper: (ItemData amount, _) => amount.month,
+                    yValueMapper: (ItemData amount, _) => amount.amount,
+                    dataLabelSettings: const DataLabelSettings(isVisible: true),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Summary",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Global.darkGrey,
                   ),
                 ),
-                const SizedBox(height: 16),
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Inventory",
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Global.darkGrey,
-                    ),
+              ),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(18),
+                decoration: BoxDecoration(
+                  color: Global.white,
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(16),
+                  ),
+                  border: Border.all(
+                    color: Global.green,
+                    width: 2,
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
                   children: [
-                    const Text(
-                      "Currently in stock",
-                      style: TextStyle(fontSize: 16),
+                    _buildSummaryStat(
+                      FontAwesomeIcons.cubes,
+                      _totalStock,
+                      "Total stock",
                     ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const AddItem(),
-                          ),
-                        );
-                      },
-                      child: const Text(
-                        "Add item",
-                        style: TextStyle(fontSize: 16),
-                      ),
+                    const SizedBox(height: 16),
+                    _buildSummaryStat(
+                      FontAwesomeIcons.boxOpen,
+                      _totalDonationsRecieved,
+                      "Donations recieved",
+                    ),
+                    const SizedBox(height: 16),
+                    _buildSummaryStat(
+                      FontAwesomeIcons.handsHelping,
+                      _totalDonationsGiven,
+                      "Donations given",
                     ),
                   ],
                 ),
-                ..._items
-                    .map((e) => ItemListTile(item: e, editable: true))
-                    .toList(),
-                SizedBox(
-                  width: double.infinity,
-                  child: TextButton(
+              ),
+              const SizedBox(height: 16),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Inventory",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Global.darkGrey,
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Currently in stock",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, ViewAllItems.routeName);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AddItem(),
+                        ),
+                      );
                     },
                     child: const Text(
-                      "See all",
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
+                      "Add item",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                ],
+              ),
+              ..._items
+                  .map((e) => ItemListTile(item: e, editable: true))
+                  .toList(),
+              SizedBox(
+                width: double.infinity,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, ViewAllItems.routeName);
+                  },
+                  child: const Text(
+                    "See all",
+                    style: TextStyle(
+                      fontSize: 16,
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

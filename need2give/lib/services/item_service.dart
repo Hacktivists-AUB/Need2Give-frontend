@@ -72,7 +72,7 @@ class ItemService {
     try {
       http.Response res = await http.patch(
         Uri.parse("${Global.url}/items/$id"),
-        body: item.toJson(),
+        body: item.copyWithoutDonorId().toJson(),
         headers: <String, String>{
           "Content-Type": "application/json; charset=UTF-8",
           "Authorization":

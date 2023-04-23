@@ -15,7 +15,7 @@ class ItemDTO {
     required this.description,
     required this.category,
     required this.quantity,
-    required this.donorID,
+    this.donorID,
     required this.donationCenterID,
   });
 
@@ -30,13 +30,23 @@ class ItemDTO {
     };
   }
 
+  ItemDTO copyWithoutDonorId() {
+    return ItemDTO(
+      name: name,
+      description: description,
+      category: category,
+      donationCenterID: donationCenterID,
+      quantity: quantity,
+    );
+  }
+
   factory ItemDTO.fromMap(Map<String, dynamic> map) {
     return ItemDTO(
       name: map["name"] ?? "",
       description: map["description"] ?? "",
       category: map["category"] ?? "",
       quantity: map["quantity"] ?? 0,
-      donorID: map["donor_id"] ?? 0,
+      donorID: map["donor_id"],
       donationCenterID: map["donation_center_id"] ?? 0,
     );
   }
