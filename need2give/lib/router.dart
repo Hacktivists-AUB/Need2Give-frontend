@@ -4,6 +4,7 @@ import 'package:need2give/screens/auth/login.dart';
 import 'package:need2give/screens/auth/signup.dart';
 import 'package:need2give/screens/auth/welcome.dart';
 import 'package:need2give/screens/donation_center/update_item.dart';
+import 'package:need2give/screens/donation_center/view_items.dart';
 import 'package:need2give/screens/user/home.dart';
 import 'package:need2give/screens/user/item.dart';
 import 'package:need2give/screens/user/search.dart';
@@ -64,6 +65,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         settings: settings,
         builder: (_) => const UpdateItem(),
+      );
+    case ViewAllItems.routeName:
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const ViewAllItems(),
       );
     default:
       return MaterialPageRoute(

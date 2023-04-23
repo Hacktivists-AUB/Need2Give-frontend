@@ -4,6 +4,7 @@ import 'package:need2give/constants/global.dart';
 import 'package:need2give/models/item.dart';
 import 'package:need2give/provider/auth_provider.dart';
 import 'package:need2give/screens/donation_center/add_item.dart';
+import 'package:need2give/screens/donation_center/view_items.dart';
 import 'package:need2give/services/item_service.dart';
 import 'package:need2give/widgets/item.dart';
 import 'package:provider/provider.dart';
@@ -190,7 +191,9 @@ class _Dashboard extends State<Dashboard> {
                 SizedBox(
                   width: double.infinity,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, ViewAllItems.routeName);
+                    },
                     child: const Text(
                       "See all",
                       style: TextStyle(
