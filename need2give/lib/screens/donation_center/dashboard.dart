@@ -169,12 +169,7 @@ class _Dashboard extends State<Dashboard> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AddItem(),
-                        ),
-                      );
+                      Navigator.pushNamed(context, AddItem.routeName);
                     },
                     child: const Text(
                       "Add item",

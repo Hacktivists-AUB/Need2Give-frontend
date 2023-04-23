@@ -1,92 +1,108 @@
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/models/item.dart';
+import 'package:need2give/provider/auth_provider.dart';
+import 'package:need2give/screens/main_pages_navbar/button_navbar.dart';
+import 'package:need2give/services/item_service.dart';
 import 'package:need2give/widgets/button.dart';
 import 'package:need2give/widgets/textfield.dart';
+import 'package:provider/provider.dart';
 
 class AddItem extends StatefulWidget {
+  static const String routeName = "/addItem";
   const AddItem({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
-  _AddItemState createState() => _AddItemState();
+  State<AddItem> createState() => _AddItemState();
 }
 
 class _AddItemState extends State<AddItem> {
-  final TextEditingController _itemNameController = TextEditingController();
-
-  final TextEditingController _itemDesriptionController =
-      TextEditingController();
-
+  final ItemService _itemService = ItemService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String? selectedOption;
-  List<String> options = ['Option 1', 'Option 2', 'Option 3'];
+  final TextEditingController _itemNameController = TextEditingController();
+  final TextEditingController _itemDesriptionController =
+      TextEditingController();
+  final TextEditingController _quantityController = TextEditingController();
+
+  final List<String> _options = ["food", "medication", "clothes", "other"];
+  String? _selectedOption;
+
+  void add(BuildContext ctx) {
+    _itemService.add(
+      ctx,
+      ItemDTO(
+        name: _itemNameController.text,
+        description: _itemDesriptionController.text,
+        category: _selectedOption ?? "other",
+        quantity: int.parse(_quantityController.text),
+        donationCenterID:
+            Provider.of<AuthProvider>(context, listen: false).profile.id,
+      ),
+    );
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Global.backgroundColor,
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          leading: const BackButton(),
-          title: const Text("Add item"),
-          centerTitle: true,
-        ),
-        body: Form(
-          key: _formKey,
-          child: Container(
-            width: double.maxFinite,
-            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 15),
+    return Scaffold(
+      backgroundColor: Global.backgroundColor,
+      appBar: AppBar(
+        leading: const BackButton(),
+        title: const Text("Add item"),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          child: Form(
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: Input(
-                    controller: _itemNameController,
-                    hintText: "name of item",
-                  ),
+                const Label(text: "Name: "),
+                Input(
+                  controller: _itemNameController,
+                  hintText: "Name",
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: Input(
-                    controller: _itemDesriptionController,
-                    hintText: "Description",
-                  ),
+                const Label(text: "Description: "),
+                Input(
+                  controller: _itemDesriptionController,
+                  hintText: "Description",
+                  numberOfLines: 5,
                 ),
-                const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: NumberInput(
-                      text: "Quantity",
-                    )),
-                Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: DropdownButton<String>(
-                      value:
-                          selectedOption,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          selectedOption = newValue;
-                        });
-                      },
-                      items:
-                          options.map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      hint: const Text(
-                          'Select an option'), 
-                    )),
+                const Label(text: "Quantity: "),
+                Input(
+                  controller: _quantityController,
+                  hintText: "Quantity",
+                  keyboardType: TextInputType.number,
+                ),
+                const Label(text: "Category: "),
+                DropdownButton<String>(
+                  value: _selectedOption,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedOption = newValue;
+                    });
+                  },
+                  items: _options.map<DropdownMenuItem<String>>(
+                    (String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    },
+                  ).toList(),
+                  hint: const Text("Select an option"),
+                ),
+                const SizedBox(height: 16),
                 Button(
-                  text: 'Save',
-                  onPressed: () {},
+                  text: "Add",
+                  onPressed: () {
+                    add(context);
+                    Navigator.pushNamed(context, ButtonNavbar.routeName);
+                  },
                 )
               ],
             ),
@@ -94,9 +110,5 @@ class _AddItemState extends State<AddItem> {
         ),
       ),
     );
-  }
-
-  onTapArrowleft3(BuildContext context) {
-    Navigator.pop(context);
   }
 }
