@@ -1,7 +1,10 @@
 import "package:flutter/material.dart";
 import "package:flutter_dotenv/flutter_dotenv.dart";
+import "package:logger/logger.dart";
 
 class Global {
+  static final logger = Logger();
+
   static final url = dotenv.env['BACKEND_URL'];
   static const mapUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
   static const darkGreen = Color.fromARGB(255, 57, 122, 76);
