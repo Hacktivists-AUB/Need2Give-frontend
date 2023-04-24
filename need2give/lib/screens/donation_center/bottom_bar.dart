@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/screens/donation_center/dashboard.dart';
 import 'package:need2give/screens/donation_center/profile.dart';
-import 'package:need2give/screens/main_pages_navbar/settings_page.dart';
-import 'package:need2give/screens/user/explore.dart';
+import 'package:need2give/screens/common/settings_page.dart';
 
 class ButtonNavbar extends StatefulWidget {
-  static const String routeName = '/main';
+  static const String routeName = '/donationCenterMain';
 
   const ButtonNavbar({super.key});
 
@@ -19,7 +18,6 @@ class _ButtonNavbarState extends State<ButtonNavbar> {
 
   final List<Widget> _children = [
     const Dashboard(),
-    const Explore(),
     const DonationCenterProfile(),
     const SettingsPage(),
   ];
@@ -46,10 +44,6 @@ class _ButtonNavbarState extends State<ButtonNavbar> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

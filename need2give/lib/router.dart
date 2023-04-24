@@ -14,7 +14,8 @@ import 'package:need2give/screens/user/item.dart';
 import 'package:need2give/screens/user/search.dart';
 import 'package:need2give/screens/user/map.dart';
 import 'package:need2give/screens/user/category.dart';
-import 'package:need2give/screens/main_pages_navbar/button_navbar.dart';
+import 'package:need2give/screens/user/bottom_bar.dart' as user;
+import 'package:need2give/screens/donation_center/bottom_bar.dart' as dc;
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -48,10 +49,15 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         settings: settings,
         builder: (_) => const MapScreen(),
       );
-    case ButtonNavbar.routeName:
+    case user.ButtonNavbar.routeName:
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => const ButtonNavbar(),
+        builder: (_) => const user.ButtonNavbar(),
+      );
+    case dc.ButtonNavbar.routeName:
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => const dc.ButtonNavbar(),
       );
     case Category.routeName:
       var category = settings.arguments as String;

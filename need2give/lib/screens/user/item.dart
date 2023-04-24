@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/models/item.dart';
 import 'package:need2give/screens/donation_center/update_item.dart';
-import 'package:need2give/screens/main_pages_navbar/button_navbar.dart';
+import 'package:need2give/screens/donation_center/bottom_bar.dart';
 import 'package:need2give/screens/user/donation_center/profile_screen.dart';
 import 'package:need2give/services/item_service.dart';
 import 'package:need2give/widgets/textfield.dart';

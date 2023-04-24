@@ -3,7 +3,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:need2give/provider/auth_provider.dart';
 import 'package:need2give/screens/auth/welcome.dart';
 import 'package:need2give/router.dart';
-import 'package:need2give/screens/main_pages_navbar/button_navbar.dart';
+import 'package:need2give/screens/user/bottom_bar.dart' as user;
+import 'package:need2give/screens/donation_center/bottom_bar.dart' as dc;
 import 'package:need2give/services/auth_service.dart';
 import 'package:provider/provider.dart';
 import 'constants/global.dart';
@@ -36,6 +37,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+
+    final profile = Provider.of<AuthProvider>(context).profile;
+
     return MaterialApp(
       title: 'Need2Give',
       theme: ThemeData(
@@ -56,7 +60,7 @@ class _MyAppState extends State<MyApp> {
       onGenerateRoute: (settings) => generateRoute(settings),
       home: Provider.of<AuthProvider>(context).profile.token.isEmpty
           ? const WelcomeScreen()
-          : const ButtonNavbar(),
+          : Provider.of<AuthProvider>(context).profile.type == AccountType.user? const user.ButtonNavbar() : const dc.ButtonNavbar(),
     );
   }
 }

@@ -9,7 +9,8 @@ import 'package:need2give/constants/utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:need2give/models/account.dart';
 import 'package:need2give/provider/auth_provider.dart';
-import 'package:need2give/screens/main_pages_navbar/button_navbar.dart';
+import 'package:need2give/screens/user/bottom_bar.dart' as user;
+import 'package:need2give/screens/donation_center/bottom_bar.dart' as dc;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -53,7 +54,9 @@ class AuthService {
           await prefs.setString("token", resBody["token"]);
           Navigator.pushNamedAndRemoveUntil(
             context,
-            ButtonNavbar.routeName,
+            _inferAccountType(resBody["profile"]) == AccountType.user
+                ? user.ButtonNavbar.routeName
+                : dc.ButtonNavbar.routeName,
             (route) => false,
           );
         },
@@ -90,12 +93,6 @@ class AuthService {
           await prefs.setString("token", resBody["token"]);
 
           await _setAccountFromToken(context, resBody["token"]);
-
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            ButtonNavbar.routeName,
-            (route) => false,
-          );
         },
       );
     } catch (e) {
@@ -131,10 +128,18 @@ class AuthService {
 
       if (res.statusCode == 200) {
         final resBody = jsonDecode(res.body);
+        final type = _inferAccountType(resBody["profile"]);
 
         Provider.of<AuthProvider>(context, listen: false).setAccount(
           jsonEncode({...resBody["profile"], "token": token}),
-          _inferAccountType({...resBody["profile"]}),
+          type,
+        );
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          type == AccountType.user
+              ? user.ButtonNavbar.routeName
+              : dc.ButtonNavbar.routeName,
+          (route) => false,
         );
       }
     } catch (e) {
@@ -143,6 +148,6 @@ class AuthService {
   }
 
   AccountType _inferAccountType(Map<String, dynamic> obj) {
-    return obj.length > 7 ? AccountType.donationCenter : AccountType.user;
+    return obj.length > 9 ? AccountType.donationCenter : AccountType.user;
   }
 }
