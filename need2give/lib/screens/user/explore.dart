@@ -4,7 +4,7 @@ import 'package:need2give/constants/global.dart';
 import 'package:need2give/models/donation_center.dart';
 import 'package:need2give/models/item.dart';
 import 'package:need2give/screens/user/category.dart';
-import 'package:need2give/screens/user/donation_center/profile_screen.dart';
+import 'package:need2give/screens/user/donation_profile.dart';
 import 'package:need2give/screens/user/search.dart';
 import 'package:need2give/services/account_service.dart';
 import 'package:need2give/services/item_service.dart';

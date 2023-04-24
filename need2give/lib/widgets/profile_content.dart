@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/models/donation_center.dart';
-import 'package:need2give/screens/user/donation_center/about_us.dart';
-import 'package:need2give/screens/user/donation_center/inventory.dart';
+import 'package:need2give/screens/donation_center/about_us.dart';
+import 'package:need2give/screens/donation_center/inventory.dart';
 import 'package:need2give/screens/donation_center/edit_profile.dart' as edit_dc;
 
 enum ViewMode {

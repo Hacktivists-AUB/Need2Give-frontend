@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/models/donation_center.dart';
-import 'package:need2give/screens/user/donation_center/profile_screen.dart';
+import 'package:need2give/screens/user/donation_profile.dart';
 
 class DonationCenterCard extends StatelessWidget {
   final DonationCenter donationCenter;

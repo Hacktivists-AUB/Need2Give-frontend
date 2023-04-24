@@ -8,7 +8,7 @@ import 'package:need2give/screens/donation_center/add_item.dart';
 import 'package:need2give/screens/donation_center/dashboard.dart';
 import 'package:need2give/screens/donation_center/update_item.dart';
 import 'package:need2give/screens/donation_center/view_items.dart';
-import 'package:need2give/screens/user/donation_center/profile_screen.dart';
+import 'package:need2give/screens/user/donation_profile.dart';
 import 'package:need2give/screens/user/home.dart';
 import 'package:need2give/screens/user/item.dart';
 import 'package:need2give/screens/user/search.dart';
