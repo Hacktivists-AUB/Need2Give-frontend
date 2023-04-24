@@ -92,8 +92,7 @@ class _MapScreenState extends State<MapScreen> {
               TileLayer(
                 minZoom: 8,
                 maxZoom: 18.0,
-                urlTemplate:
-                    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                urlTemplate: Global.mapUrl,
                 subdomains: const ['a', 'b', 'c'],
               ),
               MarkerLayer(

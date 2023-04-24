@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/models/donation_center.dart';
 
 class AboutUs extends StatelessWidget {
   final DonationCenter donationCenter;
-  const AboutUs({
+  AboutUs({
     super.key,
     required this.donationCenter,
   });
 
+  final MapController _mapController = MapController();
+
   @override
   Widget build(BuildContext context) {
+    LatLng location = LatLng(donationCenter.latitude, donationCenter.longitude);
+
     return Container(
       padding: const EdgeInsets.all(18),
       child: ListView(
@@ -97,12 +103,15 @@ class AboutUs extends StatelessWidget {
                 color: Global.mediumGrey,
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  _showLocationOnMap(context, location);
+                },
                 child: const Text(
                   "See location on map",
                   style: TextStyle(
-                      color: Global.green,
-                      decoration: TextDecoration.underline),
+                    color: Global.green,
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
               ),
             ],
@@ -140,5 +149,70 @@ class AboutUs extends StatelessWidget {
       res = res.substring(0, res.length - 2);
     }
     return res;
+  }
+
+  void _showLocationOnMap(BuildContext ctx, LatLng location) =>
+      showGeneralDialog(
+        context: ctx,
+        pageBuilder: (BuildContext buildContext, Animation animation,
+            Animation secondaryAnimation) {
+          return AlertDialog(
+            title: const Padding(
+              padding: EdgeInsets.only(bottom: 16),
+              child: Text(
+                "See location",
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+            content: _buildMap(location),
+            actions: [
+              TextButton(
+                child: const Text(
+                  "Close",
+                ),
+                onPressed: () {
+                  Navigator.of(ctx).pop(true);
+                },
+              ),
+            ],
+          );
+        },
+      );
+
+  SizedBox _buildMap(LatLng location) {
+    return SizedBox(
+      height: 420,
+      child: FlutterMap(
+        mapController: _mapController,
+        options: MapOptions(
+          zoom: 13.0,
+          maxZoom: 18.0,
+          center: location,
+        ),
+        children: [
+          TileLayer(
+            minZoom: 8,
+            maxZoom: 18.0,
+            urlTemplate: Global.mapUrl,
+            subdomains: const ['a', 'b', 'c'],
+          ),
+          MarkerLayer(
+            markers: [
+              Marker(
+                width: 40.0,
+                height: 40.0,
+                point: location,
+                builder: (ctx) => const Icon(
+                  Icons.location_pin,
+                  color: Global.markerColor,
+                  size: 42,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

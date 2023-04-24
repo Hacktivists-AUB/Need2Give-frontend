@@ -40,15 +40,6 @@ class _AddItemState extends State<AddItem> {
             Provider.of<AuthProvider>(context, listen: false).profile.id,
       ),
     );
-    setState(() {});
-  }
-
-  @override
-  void dispose() {
-    _quantityController.dispose();
-    _itemDesriptionController.dispose();
-    _itemNameController.dispose();
-    super.dispose();
   }
 
   @override
