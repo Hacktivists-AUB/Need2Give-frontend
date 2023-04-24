@@ -63,6 +63,7 @@ class AuthService {
       );
     } catch (e) {
       showSnackBar(context, e.toString());
+      Global.logger.e("AuthService::signUp ${e.toString()}");
     }
   }
 
@@ -92,11 +93,20 @@ class AuthService {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString("token", resBody["token"]);
 
-          await _setAccountFromToken(context, resBody["token"]);
+          var type = await _setAccountFromToken(context, resBody["token"]);
+
+          Navigator.pushNamedAndRemoveUntil(
+          context,
+          type == AccountType.user
+              ? user.ButtonNavbar.routeName
+              : dc.ButtonNavbar.routeName,
+          (route) => false,
+        );
         },
       );
     } catch (e) {
       showSnackBar(context, e.toString());
+      Global.logger.e("AuthService::login ${e.toString()}");
     }
   }
 
@@ -113,10 +123,12 @@ class AuthService {
       await _setAccountFromToken(context, token);
     } catch (e) {
       showSnackBar(context, e.toString());
+      Global.logger.e("AuthService::getUserData ${e.toString()}");
     }
   }
 
-  Future<void> _setAccountFromToken(BuildContext context, String token) async {
+  Future<AccountType> _setAccountFromToken(BuildContext context, String token) async {
+    AccountType type = AccountType.none;
     try {
       http.Response res = await http.get(
         Uri.parse("${Global.url}/auth/test"),
@@ -128,23 +140,18 @@ class AuthService {
 
       if (res.statusCode == 200) {
         final resBody = jsonDecode(res.body);
-        final type = _inferAccountType(resBody["profile"]);
+        type = _inferAccountType(resBody["profile"]);
 
         Provider.of<AuthProvider>(context, listen: false).setAccount(
           jsonEncode({...resBody["profile"], "token": token}),
           type,
         );
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          type == AccountType.user
-              ? user.ButtonNavbar.routeName
-              : dc.ButtonNavbar.routeName,
-          (route) => false,
-        );
       }
     } catch (e) {
-      showSnackBar(context, e.toString());
+      Global.logger.e("AuthService::_setAccountFromToken ${e.toString()}");
     }
+
+    return type;
   }
 
   AccountType _inferAccountType(Map<String, dynamic> obj) {

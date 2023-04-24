@@ -14,7 +14,7 @@ Future<void> main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => AuthProvider()),
-    ], 
+    ],
     child: const MyApp(),
   ));
 }
@@ -37,7 +37,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-
     final profile = Provider.of<AuthProvider>(context).profile;
 
     return MaterialApp(
@@ -58,9 +57,11 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       onGenerateRoute: (settings) => generateRoute(settings),
-      home: Provider.of<AuthProvider>(context).profile.token.isEmpty
+      home: profile.token.isEmpty
           ? const WelcomeScreen()
-          : Provider.of<AuthProvider>(context).profile.type == AccountType.user? const user.ButtonNavbar() : const dc.ButtonNavbar(),
+          : profile.type == AccountType.user
+              ? const user.ButtonNavbar()
+              : const dc.ButtonNavbar(),
     );
   }
 }
