@@ -34,12 +34,15 @@ class _Inventory extends State<Inventory> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Column(
-          children: _items.map((e) => ItemListTile(item: e)).toList(),
-        ),
-      ],
+    return Container(
+      padding: const EdgeInsets.all(18),
+      child: ListView(
+        children: [
+          Column(
+            children: _items.map((e) => ItemListTile(item: e)).toList(),
+          ),
+        ],
+      ),
     );
   }
 }
