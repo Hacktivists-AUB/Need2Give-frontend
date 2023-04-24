@@ -76,7 +76,7 @@ class DonationCenter extends DonationCenterDTO {
     required super.token,
     required this.createdAt,
     required super.username,
-    required super. phoneNumber,
+    required super.phoneNumber,
     required super.email,
     required super.name,
     required super.latitude,
@@ -90,23 +90,44 @@ class DonationCenter extends DonationCenterDTO {
   });
 
   @override
-  Map<String, dynamic> toMap() {
-    return {
-      "id": id,
-      "username": username,
-      "email": email,
-      "phone_number": phoneNumber,
-      "created_at": createdAt,
-      "name": name,
-      "latitude": latitude,
-      "longitude": longitude,
-      "description": description,
-      "opening_time": openingTime,
-      "closing_time": closingTime,
-      "opening_days": openingDays,
-      "token": token,
-      "distance": distance,
-    };
+  Map<String, dynamic> toMap({bool expanded = true}) {
+    return expanded
+        ? {
+            "id": id,
+            "username": username,
+            "email": email,
+            "phone_number": phoneNumber,
+            "created_at": createdAt,
+            "name": name,
+            "latitude": latitude,
+            "longitude": longitude,
+            "description": description,
+            "opening_time": openingTime,
+            "closing_time": closingTime,
+            "opening_days": openingDays,
+            "token": token,
+            "distance": distance,
+          }
+        : {
+            "account": {
+              "id": id,
+              "username": username,
+              "email": email,
+              "phone_number": phoneNumber,
+              "created_at": createdAt,
+              "token": token,
+            },
+            "profile": {
+              "name": name,
+              "latitude": latitude,
+              "longitude": longitude,
+              "description": description,
+              "opening_time": openingTime,
+              "closing_time": closingTime,
+              "opening_days": openingDays,
+            },
+            "distance": distance,
+          };
   }
 
   @override

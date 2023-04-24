@@ -62,7 +62,6 @@ class _UpdateItemState extends State<UpdateItem> {
     return Scaffold(
       backgroundColor: Global.backgroundColor,
       appBar: AppBar(
-        leading: const BackButton(),
         title: const Text("Update item"),
         centerTitle: true,
       ),

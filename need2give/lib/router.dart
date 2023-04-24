@@ -16,6 +16,7 @@ import 'package:need2give/screens/user/map.dart';
 import 'package:need2give/screens/user/category.dart';
 import 'package:need2give/screens/user/bottom_bar.dart' as user;
 import 'package:need2give/screens/donation_center/bottom_bar.dart' as dc;
+import 'package:need2give/screens/donation_center/edit_profile.dart' as edit_dc;
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -100,6 +101,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         settings: settings,
         builder: (_) => DonationScreen(donationCenter: donationCenter),
+      );
+    case edit_dc.EditProfile.routeName:
+      var donationCenter = settings.arguments as DonationCenter;
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => edit_dc.EditProfile(donationCenter: donationCenter),
       );
     default:
       return MaterialPageRoute(

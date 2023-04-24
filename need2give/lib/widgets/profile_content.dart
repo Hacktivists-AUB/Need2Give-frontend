@@ -4,6 +4,7 @@ import 'package:need2give/constants/global.dart';
 import 'package:need2give/models/donation_center.dart';
 import 'package:need2give/screens/user/donation_center/about_us.dart';
 import 'package:need2give/screens/user/donation_center/inventory.dart';
+import 'package:need2give/screens/donation_center/edit_profile.dart' as edit_dc;
 
 enum ViewMode {
   user,
@@ -159,10 +160,18 @@ class _ProfileContentState extends State<ProfileContent>
                 borderRadius: BorderRadius.circular(12.0),
               ),
               child: TextButton(
+                onPressed: () {
+                  if (widget.viewMode == ViewMode.donationCenter) {
+                    Navigator.pushNamed(
+                      context,
+                      edit_dc.EditProfile.routeName,
+                      arguments: widget.donationCenter,
+                    );
+                  }
+                },
                 child: Text(widget.viewMode == ViewMode.user
                     ? "Follow"
                     : "Edit profile"),
-                onPressed: () {},
               ),
             ),
           ),

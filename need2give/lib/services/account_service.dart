@@ -7,6 +7,7 @@ import 'package:need2give/constants/utils.dart';
 import 'package:need2give/models/donation_center.dart';
 import 'package:http/http.dart' as http;
 import 'package:need2give/provider/auth_provider.dart';
+import 'package:need2give/services/auth_service.dart';
 import 'package:provider/provider.dart';
 
 class AccountService {
@@ -75,7 +76,7 @@ class AccountService {
     try {
       http.Response res = await http.patch(
         Uri.parse("${Global.url}/donation_centers/"),
-        body: donationCenter.toJson(),
+        body: jsonEncode(donationCenter.toMap()["profile"]),
         headers: <String, String>{
           "Content-Type": "application/json; charset=UTF-8",
           "Authorization":
@@ -87,6 +88,18 @@ class AccountService {
         response: res,
         context: ctx,
         onSuccess: () {
+          DonationCenter oldProfile = Provider.of<AuthProvider>(ctx, listen: false)
+              .profile as DonationCenter;
+          DonationCenter newProfile = DonationCenter.fromMap({
+            ...jsonDecode(res.body)["profile"],
+            ...oldProfile.toMap(expanded: false)["account"]
+          });
+
+          Provider.of<AuthProvider>(ctx, listen: false).setAccount(
+            jsonEncode(newProfile.toMap()),
+            AccountType.donationCenter,
+          );
+
           showSnackBar(ctx, "Profile edited successfully");
         },
       );
