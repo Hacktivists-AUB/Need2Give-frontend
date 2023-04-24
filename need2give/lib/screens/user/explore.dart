@@ -4,6 +4,7 @@ import 'package:need2give/constants/global.dart';
 import 'package:need2give/models/donation_center.dart';
 import 'package:need2give/models/item.dart';
 import 'package:need2give/screens/user/category.dart';
+import 'package:need2give/screens/user/donation_center/profile_screen.dart';
 import 'package:need2give/screens/user/search.dart';
 import 'package:need2give/services/account_service.dart';
 import 'package:need2give/services/item_service.dart';
@@ -167,33 +168,43 @@ class _ExploreState extends State<Explore> {
               ),
             ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset(
-                  "assets/donation_center.png",
-                  height: 200,
-                ),
                 Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    center.name,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Global.mediumGrey,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  alignment: Alignment.center,
+                  child: Image.asset(
+                    "assets/donation_center.png",
+                    height: 200,
+                  ),
+                ),
+                Text(
+                  center.name,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Global.mediumGrey,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(
                   height: 8,
                 ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(center.description),
-                ),
+                Text(center.description.length > 28
+                    ? "${center.description.substring(0, 28)}..."
+                    : center.description),
                 Expanded(
-                  child: TextButton(
-                    onPressed: () {},
-                    child: const Text("Donate"),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          DonationScreen.routeName,
+                          arguments: center,
+                        );
+                      },
+                      child: const Text("See more"),
+                    ),
                   ),
                 ),
               ],
