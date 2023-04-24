@@ -115,6 +115,13 @@ class _TimePickerState extends State<TimePicker> {
   String _timeString = "12:00";
 
   @override
+  void dispose() {
+    _minuteController.dispose();
+    _hourController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       children: [

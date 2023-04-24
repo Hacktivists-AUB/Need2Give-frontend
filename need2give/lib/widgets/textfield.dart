@@ -30,6 +30,12 @@ class _InputState extends State<Input> {
   bool _isVisible = false;
 
   @override
+  void dispose() {
+    widget.controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
       obscureText: widget.secret ? !_isVisible : false,

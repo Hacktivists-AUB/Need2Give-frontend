@@ -25,10 +25,17 @@ class _ProfileContentState extends State<ProfileContent>
   late TabController _tabController;
   final double _coverHeight = 140;
   final double _pfpHeight = 108;
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override

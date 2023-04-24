@@ -46,6 +46,14 @@ class _UpdateItemState extends State<UpdateItem> {
   }
 
   @override
+  void dispose() {
+    _quantityController.dispose();
+    _itemDesriptionController.dispose();
+    _itemNameController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _itemNameController.text = widget.item.name;
     _itemDesriptionController.text = widget.item.description ?? "";

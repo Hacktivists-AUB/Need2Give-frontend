@@ -44,6 +44,14 @@ class _AddItemState extends State<AddItem> {
   }
 
   @override
+  void dispose() {
+    _quantityController.dispose();
+    _itemDesriptionController.dispose();
+    _itemNameController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Global.backgroundColor,
