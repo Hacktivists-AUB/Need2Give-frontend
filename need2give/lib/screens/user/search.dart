@@ -23,9 +23,11 @@ enum TabType {
 class Search extends StatefulWidget {
   static const String routeName = '/searchbar';
   final SearchMode searchMode;
+  final Map<String, dynamic> params;
   const Search({
     super.key,
     required this.searchMode,
+    this.params = const {},
   });
 
   @override
@@ -47,8 +49,8 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
   int _currentTabIndex = 0;
 
   _loadData() async {
-    _items = await _itemService.get(context, {});
-    _donationCenters = await _donationCenterService.get(context, {});
+    _items = await _itemService.get(context, widget.params);
+    _donationCenters = await _donationCenterService.get(context, widget.params);
     setState(() {});
   }
 

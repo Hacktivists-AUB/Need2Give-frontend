@@ -49,7 +49,15 @@ class _ViewAllItemsState extends State<ViewAllItems> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              const SearchBar(searchMode: SearchMode.onlyItems),
+              SearchBar(
+                searchMode: SearchMode.onlyItems,
+                params: {
+                  "donation_center_id":
+                      Provider.of<AuthProvider>(context, listen: false)
+                          .profile
+                          .id
+                },
+              ),
               const SizedBox(height: 18),
               Align(
                 alignment: Alignment.centerLeft,

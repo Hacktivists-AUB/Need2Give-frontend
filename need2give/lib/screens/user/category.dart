@@ -46,7 +46,14 @@ class _CategoryState extends State<Category> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              const SearchBar(searchMode: SearchMode.onlyItems),
+              SearchBar(
+                searchMode: SearchMode.onlyItems,
+                params: widget.category == "All"
+                    ? {}
+                    : {
+                        "categories": widget.category.toLowerCase(),
+                      },
+              ),
               const SizedBox(height: 18),
               Align(
                 alignment: Alignment.centerLeft,

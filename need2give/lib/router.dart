@@ -43,10 +43,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         builder: (_) => const Home(),
       );
     case Search.routeName:
-      var searchMode = settings.arguments as SearchMode;
+      var args = settings.arguments as Map<String, dynamic>;
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => Search(searchMode: searchMode),
+        builder: (_) => Search(
+          searchMode: args["mode"],
+          params: args["params"],
+        ),
       );
     case MapScreen.routeName:
       return MaterialPageRoute(
