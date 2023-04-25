@@ -43,9 +43,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         builder: (_) => const Home(),
       );
     case Search.routeName:
+      var searchMode = settings.arguments as SearchMode;
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => const Search(),
+        builder: (_) => Search(searchMode: searchMode),
       );
     case MapScreen.routeName:
       return MaterialPageRoute(

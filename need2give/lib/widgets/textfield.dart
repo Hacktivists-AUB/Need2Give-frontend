@@ -194,7 +194,7 @@ class SearchBar extends StatelessWidget {
         Navigator.pushNamed(
           context,
           Search.routeName,
-          arguments: {'searchMode': searchMode},
+          arguments: searchMode,
         );
       },
     );
