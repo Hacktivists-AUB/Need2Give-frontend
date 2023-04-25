@@ -64,31 +64,21 @@ class User extends UserDTO {
 
   @override
   Map<String, dynamic> toMap({bool expanded = true}) {
-    return expanded
-        ? {
-            "id": id,
-            "username": username,
-            "email": email,
-            "phone_number": phoneNumber,
-            "created_at": createdAt,
-            "full_name": fullName,
-            "birth_date": birthDate,
-            "token": token,
-          }
-        : {
-            "account": {
-              "id": id,
-              "username": username,
-              "email": email,
-              "phone_number": phoneNumber,
-              "created_at": createdAt,
-              "token": token,
-            },
-            "profile": {
-              "full_name": fullName,
-              "birth_date": birthDate,
-            },
-          };
+    Map<String, dynamic> obj = {
+      "account": {
+        "id": id,
+        "username": username,
+        "email": email,
+        "phone_number": phoneNumber,
+        "created_at": createdAt,
+        "token": token,
+      },
+      "profile": {
+        "full_name": fullName,
+        "birth_date": birthDate,
+      },
+    };
+    return expanded ? {...obj["account"], ...obj["profile"]} : obj;
   }
 
   @override

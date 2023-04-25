@@ -91,43 +91,29 @@ class DonationCenter extends DonationCenterDTO {
 
   @override
   Map<String, dynamic> toMap({bool expanded = true}) {
+    Map<String, dynamic> obj = {
+      "account": {
+        "id": id,
+        "username": username,
+        "email": email,
+        "phone_number": phoneNumber,
+        "created_at": createdAt,
+        "token": token,
+      },
+      "profile": {
+        "name": name,
+        "latitude": latitude,
+        "longitude": longitude,
+        "description": description,
+        "opening_time": openingTime,
+        "closing_time": closingTime,
+        "opening_days": openingDays,
+      },
+      "distance": distance,
+    };
     return expanded
-        ? {
-            "id": id,
-            "username": username,
-            "email": email,
-            "phone_number": phoneNumber,
-            "created_at": createdAt,
-            "name": name,
-            "latitude": latitude,
-            "longitude": longitude,
-            "description": description,
-            "opening_time": openingTime,
-            "closing_time": closingTime,
-            "opening_days": openingDays,
-            "token": token,
-            "distance": distance,
-          }
-        : {
-            "account": {
-              "id": id,
-              "username": username,
-              "email": email,
-              "phone_number": phoneNumber,
-              "created_at": createdAt,
-              "token": token,
-            },
-            "profile": {
-              "name": name,
-              "latitude": latitude,
-              "longitude": longitude,
-              "description": description,
-              "opening_time": openingTime,
-              "closing_time": closingTime,
-              "opening_days": openingDays,
-            },
-            "distance": distance,
-          };
+        ? {...obj["account"], ...obj["profile"], ...obj["distance"]}
+        : obj;
   }
 
   @override
