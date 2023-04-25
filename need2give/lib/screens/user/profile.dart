@@ -4,6 +4,7 @@ import 'package:need2give/constants/global.dart';
 import 'package:need2give/models/donation_center.dart';
 import 'package:need2give/models/user.dart';
 import 'package:need2give/provider/auth_provider.dart';
+import 'package:need2give/screens/user/edit_profile.dart';
 import 'package:need2give/services/account_service.dart';
 import 'package:need2give/widgets/donation_center_card.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +56,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildBanner(),
+          _buildBanner(user),
           Container(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -207,7 +208,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _buildBanner() => Stack(
+  Widget _buildBanner(User user) => Stack(
         clipBehavior: Clip.none,
         children: [
           Container(
@@ -248,7 +249,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
               ),
               child: TextButton(
                 child: const Text("Edit profile"),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, EditProfile.routeName, arguments: user,);
+                },
               ),
             ),
           ),

@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:need2give/constants/global.dart';
-import 'package:need2give/models/donation_center.dart';
+import 'package:need2give/models/user.dart';
 import 'package:need2give/services/account_service.dart';
 import 'package:need2give/widgets/button.dart';
-import 'package:need2give/widgets/location_picker.dart';
-import 'package:need2give/widgets/schedule.dart';
 import 'package:need2give/widgets/textfield.dart';
 
 class EditProfile extends StatefulWidget {
-  static const routeName = "/editDonationCenterProfile";
-  final DonationCenter donationCenter;
+  static const routeName = "/editUserProfile";
+  final User user;
   const EditProfile({
     super.key,
-    required this.donationCenter,
+    required this.user,
   });
 
   @override
@@ -25,64 +22,34 @@ class _EditProfileState extends State<EditProfile> {
   final _editFormKey = GlobalKey<FormState>();
 
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-
-  LatLng? _selectedLocation;
-  Map<String, dynamic>? _selectedSchedule;
 
   final AccountService _accountService = AccountService();
-
-  void _onLocationSelected(LatLng loc) {
-    setState(() {
-      _selectedLocation = loc;
-    });
-  }
-
-  void _onScheduleSelected(Map<String, dynamic> schedule) {
-    setState(() {
-      _selectedSchedule = schedule;
-    });
-  }
+  DateTime? _selectedDate;
 
   void edit(BuildContext ctx) {
-    _accountService.edit(
+    _accountService.editUser(
       ctx,
-      DonationCenterDTO(
+      UserDTO(
         username: "",
         email: "",
         password: "",
-        name: _nameController.text,
-        latitude: _selectedLocation != null
-            ? _selectedLocation!.latitude
-            : widget.donationCenter.latitude,
-        longitude: _selectedLocation != null
-            ? _selectedLocation!.longitude
-            : widget.donationCenter.longitude,
-        openingTime: _selectedSchedule != null
-            ? _selectedSchedule!["opening_time"]
-            : widget.donationCenter.openingTime,
-        closingTime: _selectedSchedule != null
-            ? _selectedSchedule!["closing_time"]
-            : widget.donationCenter.closingTime,
-        description: _descriptionController.text,
-        openingDays: _selectedSchedule != null
-            ? _selectedSchedule!["opening_days"]
-            : widget.donationCenter.openingDays,
+        fullName: _nameController.text,
+        birthDate: _selectedDate == null
+            ? widget.user.birthDate
+            : DateFormat('yyyy/MM/dd').format(_selectedDate!),
       ),
     );
   }
 
   @override
   void initState() {
-    _nameController.text = widget.donationCenter.name;
-    _descriptionController.text = widget.donationCenter.description;
+    _nameController.text = widget.user.fullName;
     super.initState();
   }
 
   @override
   void dispose() {
     super.dispose();
-    _descriptionController.dispose();
     _nameController.dispose();
   }
 
@@ -117,10 +84,14 @@ class _EditProfileState extends State<EditProfile> {
                           shape: BoxShape.circle,
                           border: Border.all(color: Global.green, width: 2.0),
                         ),
-                        child: CircleAvatar(
+                        child: const CircleAvatar(
                           radius: 36,
                           backgroundColor: Global.white,
-                          child: Image.asset("assets/donation_center.png"),
+                          child: Icon(
+                            Icons.person,
+                            size: 54,
+                            color: Global.mediumGrey,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -129,7 +100,7 @@ class _EditProfileState extends State<EditProfile> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "@${widget.donationCenter.username}",
+                            "@${widget.user.username}",
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -144,15 +115,17 @@ class _EditProfileState extends State<EditProfile> {
                               ),
                               const SizedBox(width: 8),
                               Text(
-                                widget.donationCenter.email,
+                                widget.user.email.length > 18
+                                    ? "${widget.user.email.substring(0, 18)}..."
+                                    : widget.user.email,
                                 style: const TextStyle(
                                   color: Global.mediumGrey,
                                 ),
                               ),
                             ],
                           ),
-                          if (!(widget.donationCenter.phoneNumber == null ||
-                              widget.donationCenter.phoneNumber == ""))
+                          if (!(widget.user.phoneNumber == null ||
+                              widget.user.phoneNumber == ""))
                             Row(
                               children: [
                                 const Icon(
@@ -161,7 +134,7 @@ class _EditProfileState extends State<EditProfile> {
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  widget.donationCenter.phoneNumber!,
+                                  widget.user.phoneNumber!,
                                   style: const TextStyle(
                                     color: Global.mediumGrey,
                                   ),
@@ -177,8 +150,7 @@ class _EditProfileState extends State<EditProfile> {
                               const SizedBox(width: 4),
                               Text(
                                 DateFormat("'Joined 'MMMM yyyy").format(
-                                  DateTime.parse(
-                                      widget.donationCenter.createdAt),
+                                  DateTime.parse(widget.user.createdAt),
                                 ),
                                 style: const TextStyle(
                                   color: Global.mediumGrey,
@@ -199,47 +171,13 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 const SizedBox(height: 10),
                 TextButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext buildContext) {
-                        return Schedule(onConfirm: _onScheduleSelected);
-                      },
-                    );
+                  onPressed: () async {
+                    await _generateCalendar(context);
                   },
                   child: const IconTextButton(
-                    icon: Icons.schedule,
-                    label: "Select working hours",
+                    icon: Icons.calendar_month,
+                    label: "Select your birthday",
                   ),
-                ),
-                const SizedBox(height: 10),
-                TextButton(
-                  onPressed: () {
-                    showGeneralDialog(
-                      context: context,
-                      barrierDismissible: true,
-                      barrierLabel: MaterialLocalizations.of(context)
-                          .modalBarrierDismissLabel,
-                      barrierColor: Colors.black45,
-                      transitionDuration: const Duration(milliseconds: 200),
-                      pageBuilder: (BuildContext buildContext,
-                          Animation animation, Animation secondaryAnimation) {
-                        return LocationPicker(onConfirm: _onLocationSelected);
-                      },
-                    );
-                  },
-                  child: const IconTextButton(
-                    icon: Icons.location_pin,
-                    label: "Select your location",
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const Label(text: "Description* : "),
-                Input(
-                  controller: _descriptionController,
-                  hintText: "Description",
-                  numberOfLines: 4,
-                  required: false,
                 ),
                 const SizedBox(height: 16),
                 Button(
@@ -255,5 +193,22 @@ class _EditProfileState extends State<EditProfile> {
         ),
       ),
     );
+  }
+
+  Future<void> _generateCalendar(BuildContext context) async {
+    final initialDate = DateTime.now();
+    final newDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.parse(widget.user.birthDate),
+      firstDate: DateTime(initialDate.year - 100),
+      lastDate: initialDate,
+      initialEntryMode: DatePickerEntryMode.calendarOnly,
+    );
+
+    if (newDate != null) {
+      setState(() {
+        _selectedDate = newDate;
+      });
+    }
   }
 }

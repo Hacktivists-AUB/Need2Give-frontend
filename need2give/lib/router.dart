@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:need2give/models/donation_center.dart';
 import 'package:need2give/models/item.dart';
+import 'package:need2give/models/user.dart';
 import 'package:need2give/screens/auth/login.dart';
 import 'package:need2give/screens/auth/signup.dart';
 import 'package:need2give/screens/auth/welcome.dart';
@@ -17,6 +18,7 @@ import 'package:need2give/screens/user/category.dart';
 import 'package:need2give/screens/user/bottom_bar.dart' as user;
 import 'package:need2give/screens/donation_center/bottom_bar.dart' as dc;
 import 'package:need2give/screens/donation_center/edit_profile.dart' as edit_dc;
+import 'package:need2give/screens/user/edit_profile.dart' as edit_user;
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -107,6 +109,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         settings: settings,
         builder: (_) => edit_dc.EditProfile(donationCenter: donationCenter),
+      );
+    case edit_user.EditProfile.routeName:
+      var user = settings.arguments as User;
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => edit_user.EditProfile(user: user),
       );
     default:
       return MaterialPageRoute(

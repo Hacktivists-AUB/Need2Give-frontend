@@ -6,6 +6,7 @@ import 'package:need2give/constants/global.dart';
 import 'package:need2give/constants/utils.dart';
 import 'package:need2give/models/donation_center.dart';
 import 'package:http/http.dart' as http;
+import 'package:need2give/models/user.dart';
 import 'package:need2give/provider/auth_provider.dart';
 import 'package:need2give/services/auth_service.dart';
 import 'package:provider/provider.dart';
@@ -88,8 +89,9 @@ class AccountService {
         response: res,
         context: ctx,
         onSuccess: () {
-          DonationCenter oldProfile = Provider.of<AuthProvider>(ctx, listen: false)
-              .profile as DonationCenter;
+          DonationCenter oldProfile =
+              Provider.of<AuthProvider>(ctx, listen: false).profile
+                  as DonationCenter;
           DonationCenter newProfile = DonationCenter.fromMap({
             ...jsonDecode(res.body)["profile"],
             ...oldProfile.toMap(expanded: false)["account"]
@@ -98,6 +100,43 @@ class AccountService {
           Provider.of<AuthProvider>(ctx, listen: false).setAccount(
             jsonEncode(newProfile.toMap()),
             AccountType.donationCenter,
+          );
+
+          showSnackBar(ctx, "Profile edited successfully");
+        },
+      );
+    } catch (e) {
+      showSnackBar(ctx, e.toString());
+    }
+  }
+
+  Future<void> editUser(BuildContext ctx, UserDTO user) async {
+    try {
+      http.Response res = await http.patch(
+        Uri.parse("${Global.url}/users/"),
+        body: jsonEncode(user.toMap()["profile"]),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization":
+              Provider.of<AuthProvider>(ctx, listen: false).profile.token,
+        },
+      );
+
+      httpErrorHandle(
+        response: res,
+        context: ctx,
+        onSuccess: () {
+          User oldProfile =
+              Provider.of<AuthProvider>(ctx, listen: false).profile
+                  as User;
+          User newProfile = User.fromMap({
+            ...jsonDecode(res.body)["profile"],
+            ...oldProfile.toMap(expanded: false)["account"]
+          });
+
+          Provider.of<AuthProvider>(ctx, listen: false).setAccount(
+            jsonEncode(newProfile.toMap()),
+            AccountType.user,
           );
 
           showSnackBar(ctx, "Profile edited successfully");
