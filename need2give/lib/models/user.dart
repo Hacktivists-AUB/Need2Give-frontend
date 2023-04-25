@@ -1,36 +1,46 @@
 import 'dart:convert';
+import 'package:need2give/models/account.dart';
+import 'package:need2give/services/auth_service.dart';
 
-class UserDTO {
-  String username;
-  String? phoneNumber;
-  String email;
-  String password;
+class UserDTO extends Account {
+  final String fullName;
+  final String birthDate;
 
   UserDTO({
-    required this.username,
-    this.phoneNumber,
-    required this.email,
-    required this.password,
+    required super.username,
+    super.phoneNumber,
+    required super.email,
+    required this.fullName,
+    required super.password,
+    required this.birthDate,
+    super.type = AccountType.user,
+    super.token = "",
+    super.id = 0,
   });
 
+  @override
   Map<String, dynamic> toMap() {
     return {
-      'username': username,
-      'phone_number': phoneNumber,
-      'email': email,
-      'password': password,
+      "account": super.toMap(),
+      "profile": {
+        "full_name": fullName,
+        "birth_date": birthDate,
+      }
     };
   }
 
   factory UserDTO.fromMap(Map<String, dynamic> map) {
     return UserDTO(
-      username: map['username'] ?? '',
-      phoneNumber: map['phone_number'],
-      email: map['email'] ?? '',
-      password: map['password'] ?? '',
+      username: map["username"] ?? "",
+      phoneNumber: map["phone_number"],
+      email: map["email"] ?? "",
+      password: map["password"] ?? "",
+      birthDate: map["birth_date"] ?? "",
+      fullName: map["full_name"] ?? "",
     );
   }
 
+  @override
   String toJson() => json.encode(toMap());
 
   factory UserDTO.fromJson(String source) =>
@@ -38,42 +48,50 @@ class UserDTO {
 }
 
 class User extends UserDTO {
-  final int id;
-  final String token;
+  final String createdAt;
 
   User({
-    required this.id,
-    required this.token,
-    required String username,
-    required String? phoneNumber,
-    required String email,
-  }) : super(
-          username: username,
-          phoneNumber: phoneNumber,
-          email: email,
-          password: "",
-        );
+    required super.id,
+    required super.token,
+    required this.createdAt,
+    required super.username,
+    required super.phoneNumber,
+    required super.fullName,
+    required super.email,
+    required super.birthDate,
+    super.password = "",
+  });
 
   @override
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'username': username,
-      'phone_number': phoneNumber,
-      'email': email,
-      'password': password,
-      'token': token,
+  Map<String, dynamic> toMap({bool expanded = true}) {
+    Map<String, dynamic> obj = {
+      "account": {
+        "id": id,
+        "username": username,
+        "email": email,
+        "phone_number": phoneNumber,
+        "created_at": createdAt,
+        "token": token,
+      },
+      "profile": {
+        "full_name": fullName,
+        "birth_date": birthDate,
+      },
     };
+    return expanded ? {...obj["account"], ...obj["profile"]} : obj;
   }
 
   @override
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      id: map['id'] ?? -1,
-      username: map['username'] ?? '',
-      phoneNumber: map['phone_number'] ?? '',
-      email: map['email'] ?? '',
-      token: map['token'] ?? '',
+      id: map["id"] ?? -1,
+      fullName: map["full_name"] ?? "",
+      createdAt: map["created_at"] ?? "",
+      username: map["username"] ?? "",
+      phoneNumber: map["phone_number"] ?? "",
+      birthDate: map["birth_date"] ?? "",
+      email: map["email"] ?? "",
+      token: map["token"] ?? "",
     );
   }
 

@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/models/item.dart';
+import 'package:need2give/provider/auth_provider.dart';
 import 'package:need2give/screens/user/search.dart';
 import 'package:need2give/services/item_service.dart';
 import 'package:need2give/widgets/item.dart';
 import 'package:need2give/widgets/textfield.dart';
+import 'package:provider/provider.dart';
 
-class Category extends StatefulWidget {
-  static const String routeName = "/category";
-  final String category;
-  const Category({super.key, required this.category});
+class ViewAllItems extends StatefulWidget {
+  static const String routeName = "/viewAll";
+  const ViewAllItems({super.key});
 
   @override
-  State<Category> createState() => _CategoryState();
+  State<ViewAllItems> createState() => _ViewAllItemsState();
 }
 
-class _CategoryState extends State<Category> {
+class _ViewAllItemsState extends State<ViewAllItems> {
   final ItemService _itemService = ItemService();
   List<Item> _items = [];
 
@@ -27,10 +28,12 @@ class _CategoryState extends State<Category> {
 
   _loadItems() async {
     _items = await _itemService.get(
-        context,
-        widget.category == "All"
-            ? {}
-            : {"categories": widget.category.toLowerCase()});
+      context,
+      {
+        "donation_center_id":
+            Provider.of<AuthProvider>(context, listen: false).profile.id
+      },
+    );
     setState(() {});
   }
 
@@ -38,7 +41,7 @@ class _CategoryState extends State<Category> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.category),
+        title: const Text("Inventory"),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -48,11 +51,12 @@ class _CategoryState extends State<Category> {
             children: [
               SearchBar(
                 searchMode: SearchMode.onlyItems,
-                params: widget.category == "All"
-                    ? {}
-                    : {
-                        "categories": widget.category.toLowerCase(),
-                      },
+                params: {
+                  "donation_center_id":
+                      Provider.of<AuthProvider>(context, listen: false)
+                          .profile
+                          .id
+                },
               ),
               const SizedBox(height: 18),
               Align(
@@ -66,13 +70,9 @@ class _CategoryState extends State<Category> {
                 ),
               ),
               const SizedBox(height: 18),
-              Column(
-                children: _items.map((e) => ItemListTile(item: e)).toList(),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text("See more"),
-              ),
+              ..._items
+                  .map((e) => ItemListTile(item: e, editable: true))
+                  .toList(),
             ],
           ),
         ),

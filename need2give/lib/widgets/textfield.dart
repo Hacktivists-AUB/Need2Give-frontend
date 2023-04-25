@@ -10,6 +10,7 @@ class Input extends StatefulWidget {
   final bool secret;
   final bool required;
   final int? numberOfLines;
+  final TextInputType keyboardType;
 
   const Input({
     super.key,
@@ -18,6 +19,7 @@ class Input extends StatefulWidget {
     this.secret = false,
     this.required = true,
     this.numberOfLines = 1,
+    this.keyboardType = TextInputType.text,
   });
 
   @override
@@ -33,6 +35,7 @@ class _InputState extends State<Input> {
       obscureText: widget.secret ? !_isVisible : false,
       controller: widget.controller,
       maxLines: widget.numberOfLines,
+      keyboardType: widget.keyboardType,
       decoration: InputDecoration(
         filled: true,
         fillColor: Global.white,
@@ -101,7 +104,7 @@ class PhoneInputState extends State<PhoneInput> {
         return null;
       },
       selectorConfig: const SelectorConfig(
-        selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+        selectorType: PhoneInputSelectorType.DIALOG,
       ),
       autoValidateMode: AutovalidateMode.disabled,
       selectorTextStyle: const TextStyle(color: Colors.black),
@@ -165,9 +168,11 @@ class Label extends StatelessWidget {
 
 class SearchBar extends StatelessWidget {
   final SearchMode searchMode;
+  final Map<String, dynamic> params;
   const SearchBar({
     super.key,
     required this.searchMode,
+    this.params = const {},
   });
 
   @override
@@ -191,7 +196,10 @@ class SearchBar extends StatelessWidget {
         Navigator.pushNamed(
           context,
           Search.routeName,
-          arguments: {'searchMode': searchMode},
+          arguments: {
+            "mode": searchMode,
+            "params": params,
+          },
         );
       },
     );

@@ -1,7 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/models/donation_center.dart';
+import 'package:need2give/models/item.dart';
 import 'package:need2give/screens/user/category.dart';
+import 'package:need2give/screens/user/donation_profile.dart';
 import 'package:need2give/screens/user/search.dart';
+import 'package:need2give/services/account_service.dart';
+import 'package:need2give/services/item_service.dart';
 import 'package:need2give/widgets/item.dart';
 import 'package:need2give/widgets/textfield.dart';
 
@@ -13,113 +19,31 @@ class Explore extends StatefulWidget {
 }
 
 class _ExploreState extends State<Explore> {
-  final List<Map<String, dynamic>> _categories = [
-    {
-      "id": 1,
-      "name": "All",
-    },
-    {
-      "id": 2,
-      "name": "Food",
-    },
-    {
-      "id": 3,
-      "name": "Medicine",
-    },
-    {
-      "id": 4,
-      "name": "Clothing",
-    },
-    {
-      "id": 5,
-      "name": "Electronics",
-    },
-    {
-      "id": 6,
-      "name": "Other",
-    }
+  final ItemService _itemService = ItemService();
+  final AccountService _donationCenterService = AccountService();
+  final List<String> _categories = [
+    "All",
+    "Food",
+    "Medication",
+    "Clothes",
+    "Electronics",
+    "Other",
   ];
 
-  final List<Map<String, dynamic>> _centers = [
-    {
-      "id": 1,
-      "lat": 33.9301140,
-      "long": 35.5914950,
-      "name": "Sweet tooth pharmacy",
-      "description": "very gud donation center"
-    },
-    {
-      "id": 2,
-      "lat": 33.9302450,
-      "long": 35.5911975,
-      "name": "Ubi's nice donation center",
-      "description": "very gud donation center"
-    },
-    {
-      "id": 3,
-      "lat": 33.9302241,
-      "long": 35.5912971,
-      "name": "Buni's nice donation center",
-      "description": "very gud donation center"
-    },
-    {
-      "id": 4,
-      "lat": 33.9301241,
-      "long": 35.5812971,
-      "name": "Dummy donation center",
-      "description": "very gud donation center"
-    },
-    {
-      "id": 5,
-      "lat": 33.9302541,
-      "long": 35.5902971,
-      "name": "Donation center dummy",
-      "description": "very gud donation center"
-    },
-  ];
+  List<DonationCenter> _donationCenters = [];
+  List<Item> _items = [];
 
-  final List<Map<String, dynamic>> _items = [
-    {
-      "id": 1,
-      "name": "Panadol",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor luctus urna, a efficitur neque placerat eu. Integer dictum tellus id tellus sollicitudin, eu varius nunc auctor.",
-      "center": "Sweet tooth pharmacy",
-      "quantity": 10,
-      "category": "Medicine",
-    },
-    {
-      "id": 2,
-      "name": "Rice",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor luctus urna, a efficitur neque placerat eu. Integer dictum tellus id tellus sollicitudin, eu varius nunc auctor.",
-      "center": "Ubi's charity",
-      "quantity": 11,
-      "category": "Food",
-    },
-    {
-      "id": 3,
-      "name": "Noodles",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor luctus urna, a efficitur neque placerat eu. Integer dictum tellus id tellus sollicitudin, eu varius nunc auctor.",
-      "center": "Ubi's charity",
-      "quantity": 2,
-      "category": "Food",
-    },
-    {
-      "id": 4,
-      "name": "Shirt",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor luctus urna, a efficitur neque placerat eu. Integer dictum tellus id tellus sollicitudin, eu varius nunc auctor.",
-      "center": "Ubi's charity",
-      "quantity": 100,
-      "category": "Clothing",
-    },
-    {
-      "id": 5,
-      "name": "Candy",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor luctus urna, a efficitur neque placerat eu. Integer dictum tellus id tellus sollicitudin, eu varius nunc auctor.",
-      "center": "Ubi's charity",
-      "quantity": 31,
-      "category": "Food",
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  _loadData() async {
+    _items = await _itemService.get(context, {});
+    _donationCenters = await _donationCenterService.get(context, {});
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +90,7 @@ class _ExploreState extends State<Explore> {
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Discover donation centers',
+                  "Discover donation centers",
                   style: TextStyle(
                     fontSize: 20,
                     color: Global.darkGrey,
@@ -179,15 +103,16 @@ class _ExploreState extends State<Explore> {
                 height: 300.0,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
-                  children:
-                      _centers.map((e) => _buildDonationCenterCard(e)).toList(),
+                  children: _donationCenters
+                      .map((e) => _buildDonationCenterCard(e))
+                      .toList(),
                 ),
               ),
               const SizedBox(height: 20),
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'See our newest items',
+                  "See our newest items",
                   style: TextStyle(
                     fontSize: 20,
                     color: Global.darkGrey,
@@ -206,7 +131,7 @@ class _ExploreState extends State<Explore> {
     );
   }
 
-  Widget _buildCategoryTag(Map<String, dynamic> category) => Container(
+  Widget _buildCategoryTag(String category) => Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Global.lightGreen,
@@ -222,14 +147,14 @@ class _ExploreState extends State<Explore> {
             );
           },
           child: Text(
-            category["name"],
+            category,
             style: const TextStyle(color: Global.white),
           ),
         ),
       );
 
-  Widget _buildDonationCenterCard(Map<String, dynamic> center) => Hero(
-        tag: "center/${center["id"]}",
+  Widget _buildDonationCenterCard(DonationCenter center) => Hero(
+        tag: "center/${center.id}",
         child: GestureDetector(
           onTap: () {},
           child: Container(
@@ -243,33 +168,43 @@ class _ExploreState extends State<Explore> {
               ),
             ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset(
-                  "assets/donation_center.png",
-                  height: 200,
-                ),
                 Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    center["name"],
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Global.mediumGrey,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  alignment: Alignment.center,
+                  child: Image.asset(
+                    "assets/donation_center.png",
+                    height: 200,
+                  ),
+                ),
+                Text(
+                  center.name,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Global.mediumGrey,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(
                   height: 8,
                 ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(center["description"]),
-                ),
+                Text(center.description.length > 28
+                    ? "${center.description.substring(0, 28)}..."
+                    : center.description),
                 Expanded(
-                  child: TextButton(
-                    onPressed: () {},
-                    child: const Text("Donate"),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          DonationScreen.routeName,
+                          arguments: center,
+                        );
+                      },
+                      child: const Text("See more"),
+                    ),
                   ),
                 ),
               ],

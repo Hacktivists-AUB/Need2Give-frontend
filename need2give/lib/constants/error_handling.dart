@@ -19,8 +19,14 @@ void httpErrorHandle({
     case 404:
       showSnackBar(context, jsonDecode(response.body)["message"]);
       break;
-    case 500:
+    case 406:
       showSnackBar(context, jsonDecode(response.body)["message"]);
+      break;
+    case 409:
+      showSnackBar(context, jsonDecode(response.body)["message"]);
+      break;
+    case 500:
+      showSnackBar(context, "Oops! Something went wrong.");
       break;
     default:
       showSnackBar(context, "Oops! Something went wrong.");

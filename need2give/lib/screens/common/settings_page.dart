@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
-import 'package:need2give/screens/common/edit_Profile.dart';
-import 'package:need2give/screens/common/change_Password.dart';
-import 'package:need2give/screens/common/contact_Us.dart';
-import 'package:need2give/screens/common/forget_Password.dart';
-import 'package:need2give/screens/common/notification_Settings.dart';
+import 'package:need2give/provider/auth_provider.dart';
+import 'package:need2give/screens/auth/welcome.dart';
+import 'package:need2give/screens/common/edit_profile.dart';
+import 'package:need2give/screens/common/change_password.dart';
+import 'package:need2give/screens/common/contact_us.dart';
+import 'package:need2give/screens/common/forget_password.dart';
+import 'package:need2give/screens/common/notification_settings.dart';
 import 'package:need2give/screens/common/terms.dart';
+import 'package:need2give/services/auth_service.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -207,6 +217,19 @@ class SettingsPage extends StatelessWidget {
                     ],
                   ),
                 ),
+              ),
+              TextButton(
+                onPressed: () async {
+                  Provider.of<AuthProvider>(context, listen: false)
+                      .setAccount("", AccountType.none);
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setString("token", "");
+                  // ignore: use_build_context_synchronously
+                  Navigator.pushNamed(context, WelcomeScreen.routeName);
+                  setState((){});
+                },
+                child: const Text("Log out"),
               ),
             ],
           ),

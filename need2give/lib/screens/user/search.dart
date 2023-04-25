@@ -1,6 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/models/donation_center.dart';
+import 'package:need2give/models/item.dart';
+import 'package:need2give/screens/user/donation_profile.dart';
+import 'package:need2give/screens/user/item.dart';
+import 'package:need2give/services/account_service.dart';
+import 'package:need2give/services/item_service.dart';
 
 enum SearchMode {
   all,
@@ -15,7 +22,13 @@ enum TabType {
 
 class Search extends StatefulWidget {
   static const String routeName = '/searchbar';
-  const Search({super.key});
+  final SearchMode searchMode;
+  final Map<String, dynamic> params;
+  const Search({
+    super.key,
+    required this.searchMode,
+    this.params = const {},
+  });
 
   @override
   State<Search> createState() => _SearchState();
@@ -23,84 +36,31 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> with TickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
-  SearchMode _searchMode = SearchMode.all;
   late TabController _tabController;
 
-  final List<Map<String, dynamic>> _items = [
-    {"id": 1, "name": "Panadol", "description": "very gud item"},
-    {"id": 2, "name": "Rice", "description": "very gud item"},
-    {"id": 3, "name": "Noodles", "description": "very gud item"},
-    {"id": 4, "name": "Shirt", "description": "very gud item"},
-    {"id": 5, "name": "Candy", "description": "very gud item"},
-    {"id": 6, "name": "Oil", "description": "very gud item"},
-    {"id": 7, "name": "Dress", "description": "very gud item"},
-    {"id": 8, "name": "Advil", "description": "very gud item"},
-    {"id": 9, "name": "Cough syrup", "description": "very gud item"},
-    {"id": 10, "name": "Stuffed animal", "description": "very gud item"},
-  ];
+  final ItemService _itemService = ItemService();
+  final AccountService _donationCenterService = AccountService();
 
-  final List<Map<String, dynamic>> _donationCenters = [
-    {
-      "id": 1,
-      "name": "Sweet tooth pharmacy",
-      "description": "very gud donation center"
-    },
-    {
-      "id": 2,
-      "name": "Ubi's nice donation center",
-      "description": "very gud donation center"
-    },
-    {
-      "id": 3,
-      "name": "Buni's nice donation center",
-      "description": "very gud donation center"
-    },
-    {
-      "id": 4,
-      "name": "Dummy donation center",
-      "description": "very gud donation center"
-    },
-    {
-      "id": 5,
-      "name": "Donation center dummy",
-      "description": "very gud donation center"
-    },
-    {
-      "id": 6,
-      "name": "Very good NGO",
-      "description": "very gud donation center"
-    },
-    {
-      "id": 7,
-      "name": "Not that gud but still gud NGO",
-      "description": "very gud donation center"
-    },
-    {
-      "id": 8,
-      "name": "Lorem ispum center",
-      "description": "very gud donation center"
-    },
-    {
-      "id": 9,
-      "name": "Doloris center",
-      "description": "very gud donation center"
-    },
-    {
-      "id": 10,
-      "name": "Stuffed animal",
-      "description": "very gud donation center"
-    },
-  ];
-
-  List<Map<String, dynamic>> _foundItems = [];
-  List<Map<String, dynamic>> _foundDonationCenters = [];
+  List<Item> _items = [];
+  List<Item> _foundItems = [];
+  List<DonationCenter> _donationCenters = [];
+  List<DonationCenter> _foundDonationCenters = [];
 
   int _currentTabIndex = 0;
+
+  _loadData() async {
+    _items = await _itemService.get(context, widget.params);
+    _donationCenters = await _donationCenterService.get(context, widget.params);
+    setState(() {});
+  }
 
   @override
   void initState() {
     super.initState();
-    switch (_searchMode) {
+
+    _loadData();
+
+    switch (widget.searchMode) {
       case SearchMode.onlyItems:
         _foundItems = _items;
         break;
@@ -113,7 +73,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
         break;
     }
     _tabController = TabController(
-      length: _searchMode == SearchMode.all ? 2 : 1,
+      length: widget.searchMode == SearchMode.all ? 2 : 1,
       vsync: this,
       initialIndex: 0,
     );
@@ -129,18 +89,16 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  List<Map<String, dynamic>> _getSimilarResults(
-      List<Map<String, dynamic>> list, String keyword) {
+  List<dynamic> _getSimilarResults(List<dynamic> list, String str) {
     return list
-        .where((object) =>
-            object["name"].toLowerCase().contains(keyword.toLowerCase()))
+        .where((e) => e.name.toLowerCase().contains(str.toLowerCase()))
         .toList();
   }
 
   void _filter(String enteredKeyword) {
-    List<Map<String, dynamic>> results = [];
+    List<dynamic> results = [];
     if (enteredKeyword.isEmpty || enteredKeyword == "") {
-      switch (_searchMode) {
+      switch (widget.searchMode) {
         case SearchMode.onlyItems:
           results = _items;
           break;
@@ -158,7 +116,7 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
           }
       }
     } else {
-      switch (_searchMode) {
+      switch (widget.searchMode) {
         case SearchMode.onlyItems:
           results = _getSimilarResults(_items, enteredKeyword);
           break;
@@ -178,17 +136,17 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
     }
 
     setState(() {
-      if (_searchMode == SearchMode.onlyItems) {
-        _foundItems = results;
-      } else if (_searchMode == SearchMode.onlyDonationCenters) {
-        _foundDonationCenters = results;
+      if (widget.searchMode == SearchMode.onlyItems) {
+        _foundItems = results as List<Item>;
+      } else if (widget.searchMode == SearchMode.onlyDonationCenters) {
+        _foundDonationCenters = results as List<DonationCenter>;
       } else {
         switch (_currentTabIndex) {
           case 0:
-            _foundItems = results;
+            _foundItems = results as List<Item>;
             break;
           case 1:
-            _foundDonationCenters = results;
+            _foundDonationCenters = results as List<DonationCenter>;
             break;
         }
       }
@@ -197,9 +155,6 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    _searchMode = (ModalRoute.of(context)!.settings.arguments
-        as Map<String, dynamic>)['searchMode'];
-
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 8,
@@ -237,12 +192,12 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: Global.darkGreen,
-          tabs: _generateTabs(_searchMode),
+          tabs: _generateTabs(widget.searchMode),
         ),
       ),
       body: TabBarView(
         controller: _tabController,
-        children: _generateTabView(_searchMode),
+        children: _generateTabView(widget.searchMode),
       ),
     );
   }
@@ -302,20 +257,62 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
     }
   }
 
-  Widget _buildListView(List<Map<String, dynamic>> objects,
-          {bool withSubtitle = true}) =>
-      ListView.builder(
-        itemCount: objects.length,
-        itemBuilder: (BuildContext context, int index) => Card(
-          margin: const EdgeInsets.symmetric(vertical: 4),
-          child: withSubtitle
-              ? ListTile(
-                  title: Text(objects[index]["name"]),
-                  subtitle: Text(objects[index]["description"]),
-                )
-              : ListTile(
-                  title: Text(objects[index]["name"]),
+  Widget _buildListView(List<dynamic> objects) => Container(
+        padding: const EdgeInsets.all(12),
+        child: ListView.builder(
+          itemCount: objects.length,
+          itemBuilder: (BuildContext context, int index) => Card(
+            margin: const EdgeInsets.symmetric(vertical: 4),
+            child: GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+                switch (widget.searchMode) {
+                  case SearchMode.onlyItems:
+                    Navigator.pushNamed(
+                      context,
+                      ItemPage.routeName,
+                      arguments: {"item": objects[index], "editable": false},
+                    );
+                    break;
+                  case SearchMode.onlyDonationCenters:
+                    Navigator.pushNamed(
+                      context,
+                      DonationScreen.routeName,
+                      arguments: objects[index],
+                    );
+                    break;
+                  case SearchMode.all:
+                    switch (_currentTabIndex) {
+                      case 0:
+                        Navigator.pushNamed(
+                          context,
+                          ItemPage.routeName,
+                          arguments: {
+                            "item": objects[index],
+                            "editable": false
+                          },
+                        );
+                        break;
+                      case 1:
+                        Navigator.pushNamed(
+                          context,
+                          DonationScreen.routeName,
+                          arguments: objects[index],
+                        );
+                        break;
+                    }
+                }
+              },
+              child: ListTile(
+                title: Text(objects[index].name),
+                subtitle: Text(
+                  objects[index].description.length > 42
+                      ? "${objects[index].description.substring(0, 42)}..."
+                      : objects[index].description,
                 ),
+              ),
+            ),
+          ),
         ),
       );
 }
