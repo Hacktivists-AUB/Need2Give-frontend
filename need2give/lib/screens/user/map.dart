@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/constants/utils.dart';
+import 'package:need2give/models/donation_center.dart';
+import 'package:need2give/screens/user/donation_profile.dart';
 import 'package:need2give/screens/user/search.dart';
+import 'package:need2give/services/account_service.dart';
 import 'package:need2give/widgets/textfield.dart';
 
 class MapScreen extends StatefulWidget {
@@ -17,54 +21,16 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   final MapController _mapController = MapController();
-  final LatLng _initialPosition = LatLng(33.9009165, 35.4793445);
-  bool _currentPositionActivated = false;
-  late final List<Marker> _markers = [
-    Marker(
-      point: _initialPosition,
-      width: 80,
-      height: 80,
-      builder: (context) => _buildMarkerIcon(),
-    ),
-  ];
+  final AccountService _accountService = AccountService();
 
-  final List<Map<String, dynamic>> _centers = [
-    {
-      "id": 1,
-      "lat": 33.9301140,
-      "long": 35.5914950,
-      "name": "Sweet tooth pharmacy",
-      "description": "very gud donation center"
-    },
-    {
-      "id": 2,
-      "lat": 33.9302450,
-      "long": 35.5911975,
-      "name": "Ubi's nice donation center",
-      "description": "very gud donation center"
-    },
-    {
-      "id": 3,
-      "lat": 33.9302241,
-      "long": 35.5912971,
-      "name": "Buni's nice donation center",
-      "description": "very gud donation center"
-    },
-    {
-      "id": 4,
-      "lat": 33.9301241,
-      "long": 35.5812971,
-      "name": "Dummy donation center",
-      "description": "very gud donation center"
-    },
-    {
-      "id": 5,
-      "lat": 33.9302541,
-      "long": 35.5902971,
-      "name": "Donation center dummy",
-      "description": "very gud donation center"
-    },
-  ];
+  final LatLng _initialPosition = LatLng(33.9009165, 35.4793445);
+  final int _radius = 500;
+
+  late LatLng _currentPosition;
+  late final List<Marker> _markers = [];
+
+  bool _currentPositionActivated = false;
+  List<DonationCenter> _centers = [];
 
   @override
   void dispose() {
@@ -118,15 +84,20 @@ class _MapScreenState extends State<MapScreen> {
               determinePosition(context).then(
                 (value) {
                   final LatLng coords = LatLng(value.latitude, value.longitude);
-                  _mapController.move(coords, 17.0);
+                  _mapController.move(coords, 14.0);
                   setState(() {
                     _currentPositionActivated = true;
+                    _currentPosition = coords;
                     _markers.add(
                       Marker(
                         point: coords,
                         width: 80.0,
                         height: 80.0,
-                        builder: (context) => _buildMarkerIcon(),
+                        builder: (context) => const Icon(
+                          Icons.home,
+                          size: 42.0,
+                          color: Global.darkGreen,
+                        ),
                       ),
                     );
                   });
@@ -144,7 +115,8 @@ class _MapScreenState extends State<MapScreen> {
             backgroundColor: Global.mediumGreen,
             onPressed: () {
               if (_currentPositionActivated) {
-                _addNearbyDonationCenters();
+                _mapController.move(_mapController.center, 12.0);
+                _addNearbyDonationCenters(context);
               } else {
                 showSnackBar(context, 'Select your current location');
               }
@@ -159,22 +131,168 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  void _addNearbyDonationCenters() => setState(() {
-        for (var e in _centers) {
-          _markers.add(
-            Marker(
-              point: LatLng(e["lat"], e["long"]),
-              width: 80.0,
-              height: 80.0,
-              builder: (context) => _buildMarkerIcon(),
-            ),
-          );
-        }
-      });
+  _loadNearbyDonationCenters(BuildContext ctx) async {
+    _centers = await _accountService.get(
+      ctx,
+      {
+        "latitude": _currentPosition.latitude,
+        "longitude": _currentPosition.longitude,
+        "radius": _radius,
+      },
+    );
+    setState(() {});
+  }
 
-  Widget _buildMarkerIcon() => const Icon(
-        Icons.location_pin,
-        color: Global.markerColor,
-        size: 42,
+  void _addNearbyDonationCenters(BuildContext ctx) {
+    _loadNearbyDonationCenters(ctx);
+    setState(() {
+      for (var e in _centers) {
+        _markers.add(
+          Marker(
+            point: LatLng(e.latitude, e.longitude),
+            width: 80.0,
+            height: 80.0,
+            builder: (context) => _buildMarkerIcon(
+              ctx,
+              responsive: true,
+              center: e,
+            ),
+          ),
+        );
+      }
+    });
+  }
+
+  Widget _buildMarkerIcon(
+    BuildContext ctx, {
+    bool responsive = true,
+    DonationCenter? center,
+  }) =>
+      GestureDetector(
+        onTap: () {
+          if (!responsive) {
+            return;
+          }
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text(
+                  center!.name.length > 16
+                      ? center.name.substring(0, 16)
+                      : center.name,
+                ),
+                content: SizedBox(
+                  height: 200,
+                  child: _buildDialogContent(center),
+                ),
+                actions: [
+                  TextButton(
+                    child: const Text("Close"),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                  TextButton(
+                    child: const Text("See more"),
+                    onPressed: () => Navigator.pushNamed(
+                      context,
+                      DonationScreen.routeName,
+                      arguments: center,
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        child: const Icon(
+          Icons.location_pin,
+          size: 42.0,
+          color: Global.markerColor,
+        ),
       );
+
+  ListView _buildDialogContent(DonationCenter center) {
+    return ListView(
+      children: [
+        Row(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Global.green, width: 2.0),
+              ),
+              child: CircleAvatar(
+                radius: 36,
+                backgroundColor: Global.white,
+                child: Image.asset("assets/donation_center.png"),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Text(
+              "@${center.username}",
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            const Icon(
+              Icons.mail,
+              color: Global.mediumGrey,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              center.email.length > 18
+                  ? "${center.email.substring(0, 18)}..."
+                  : center.email,
+              style: const TextStyle(
+                color: Global.mediumGrey,
+              ),
+            ),
+          ],
+        ),
+        if (!(center.phoneNumber == null || center.phoneNumber == ""))
+          Row(
+            children: [
+              const Icon(
+                Icons.phone,
+                color: Global.mediumGrey,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                center.phoneNumber!,
+                style: const TextStyle(
+                  color: Global.mediumGrey,
+                ),
+              ),
+            ],
+          ),
+        Row(
+          children: [
+            const Icon(
+              Icons.calendar_month,
+              color: Global.mediumGrey,
+            ),
+            const SizedBox(width: 4),
+            Text(
+              DateFormat("'Joined 'MMMM yyyy").format(
+                DateTime.parse(center.createdAt),
+              ),
+              style: const TextStyle(
+                color: Global.mediumGrey,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        const Divider(),
+        const SizedBox(height: 8),
+        Text(center.description),
+      ],
+    );
+  }
 }
