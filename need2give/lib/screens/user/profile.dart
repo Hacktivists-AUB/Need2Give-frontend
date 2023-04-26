@@ -197,7 +197,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
           const SizedBox(height: 8),
           Text(
             DateFormat("'Birthday: 'MMMM dd, yyyy").format(
-              DateTime.parse(user.createdAt),
+              DateTime.parse(user.birthDate),
             ),
             style: const TextStyle(
               color: Global.mediumGrey,

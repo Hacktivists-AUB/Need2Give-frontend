@@ -60,18 +60,15 @@ class _CategoryState extends State<Category> {
                 child: Text(
                   "Found ${_items.length} items",
                   style: const TextStyle(
-                      color: Global.mediumGrey,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
+                    color: Global.mediumGrey,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               const SizedBox(height: 18),
               Column(
                 children: _items.map((e) => ItemListTile(item: e)).toList(),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text("See more"),
               ),
             ],
           ),

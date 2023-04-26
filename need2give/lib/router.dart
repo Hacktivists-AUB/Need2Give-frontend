@@ -19,6 +19,7 @@ import 'package:need2give/screens/user/bottom_bar.dart' as user;
 import 'package:need2give/screens/donation_center/bottom_bar.dart' as dc;
 import 'package:need2give/screens/donation_center/edit_profile.dart' as edit_dc;
 import 'package:need2give/screens/user/edit_profile.dart' as edit_user;
+import 'package:need2give/screens/user/search_results.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -119,6 +120,15 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         settings: settings,
         builder: (_) => edit_user.EditProfile(user: user),
+      );
+    case SearchResult.routeName:
+      var args = settings.arguments as Map<String, dynamic>;
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => SearchResult(
+          searchStr: args["searchStr"],
+          searchMode: args["searchMode"],
+        ),
       );
     default:
       return MaterialPageRoute(
