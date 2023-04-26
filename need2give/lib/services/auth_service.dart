@@ -49,12 +49,12 @@ class AuthService {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           final resBody = jsonDecode(res.body);
           Provider.of<AuthProvider>(context, listen: false).setAccount(
-              jsonEncode({...resBody["profile"], "token": resBody["token"]}),
+              res.body,
               profile.type);
           await prefs.setString("token", resBody["token"]);
           Navigator.pushNamedAndRemoveUntil(
             context,
-            _inferAccountType(resBody["profile"]) == AccountType.user
+            _inferAccountType(resBody) == AccountType.user
                 ? user.ButtonNavbar.routeName
                 : dc.ButtonNavbar.routeName,
             (route) => false,
