@@ -40,7 +40,7 @@ class ItemPage extends StatelessWidget {
             children: [
               Container(
                 padding: EdgeInsets.fromLTRB(20, 20, 20, editable ? 6 : 20),
-                child: Image.asset('assets/cart.png'),
+                child: Image.asset('assets/${item.category}.png'),
               ),
               Container(
                 width: double.infinity,

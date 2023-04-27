@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/provider/auth_provider.dart';
 import 'package:need2give/screens/auth/welcome.dart';
+import 'package:need2give/screens/common/delete_account.dart';
 import 'package:need2give/screens/common/edit_phone.dart';
 import 'package:need2give/screens/common/about_us.dart';
 import 'package:need2give/screens/common/terms.dart';
@@ -106,7 +107,26 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton(
+                onPressed: () async {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const DeleteAccount(),
+                    ),
+                  );
+                },
+                child: const Text(
+                  "Delete Account",
+                  style: TextStyle(
+                    color: Global.markerColor,
+                  ),
+                ),
+              ),
+            ),
             Align(
               alignment: Alignment.centerLeft,
               child: TextButton(

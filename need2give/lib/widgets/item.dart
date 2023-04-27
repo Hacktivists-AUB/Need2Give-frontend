@@ -53,7 +53,7 @@ class _ItemListTileState extends State<ItemListTile> {
           children: [
             Row(
               children: [
-                Image.asset("assets/cart.png", height: 54),
+                Image.asset("assets/${widget.item.category}.png", height: 54),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Column(

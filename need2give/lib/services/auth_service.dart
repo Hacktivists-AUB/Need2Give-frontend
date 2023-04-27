@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:need2give/models/account.dart';
 import 'package:need2give/provider/auth_provider.dart';
 import 'package:need2give/screens/auth/pending.dart';
+import 'package:need2give/screens/auth/welcome.dart';
 import 'package:need2give/screens/user/bottom_bar.dart' as user;
 import 'package:need2give/screens/donation_center/bottom_bar.dart' as dc;
 import 'package:provider/provider.dart';
@@ -170,6 +171,47 @@ class AuthService {
     } catch (e) {
       showSnackBar(context, e.toString());
       Global.logger.e("AuthService::editPhoneNumber ${e.toString()}");
+    }
+    return success;
+  }
+
+  Future<bool> delete({
+    required BuildContext context,
+    required String email,
+    required String password,
+  }) async {
+    bool success = false;
+    try {
+      Map<String, dynamic> req = {
+        "email": email,
+        "password": password,
+      };
+      http.Response res = await http.delete(
+        Uri.parse(
+          "${Global.url}/auth/",
+        ),
+        body: json.encode(req),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization":
+              Provider.of<AuthProvider>(context, listen: false).profile.token,
+        },
+      );
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () async {
+          Provider.of<AuthProvider>(context, listen: false)
+              .setAccount("", AccountType.none);
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString("token", "");
+          Navigator.pushNamed(context, WelcomeScreen.routeName);
+          showSnackBar(context, "Account deleted successfully");
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+      Global.logger.e("AuthService::delete ${e.toString()}");
     }
     return success;
   }

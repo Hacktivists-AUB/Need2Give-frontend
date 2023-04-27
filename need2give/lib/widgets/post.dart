@@ -111,7 +111,7 @@ class PostComponent extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Image.asset(
-                    "assets/cart.png",
+                    "assets/${item.category}.png",
                     scale: 5,
                     height: 150,
                   ),
