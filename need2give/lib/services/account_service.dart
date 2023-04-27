@@ -38,8 +38,10 @@ class AccountService {
         context: ctx,
         onSuccess: () {
           donationCenters = List<DonationCenter>.from(
-              jsonDecode(res.body)["donation_centers"]
-                  .map((x) => DonationCenter.fromMap(x)));
+            jsonDecode(res.body)["donation_centers"].map(
+              (x) => DonationCenter.fromMap(x),
+            ),
+          );
         },
       );
     } catch (e) {
@@ -194,5 +196,33 @@ class AccountService {
       Global.logger.i(e.toString());
     }
     return success;
+  }
+
+  Future<List<DonationCenter>> getFollowingList(BuildContext ctx) async {
+    List<DonationCenter> donationCenters = [];
+    try {
+      http.Response res = await http.get(
+        Uri.parse("${Global.url}/follow/"),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization":
+              Provider.of<AuthProvider>(ctx, listen: false).profile.token,
+        },
+      );
+      httpErrorHandle(
+        response: res,
+        context: ctx,
+        onSuccess: () {
+          donationCenters = List<DonationCenter>.from(
+            jsonDecode(res.body)["donation_centers"].map(
+              (x) => DonationCenter.fromMap(x),
+            ),
+          );
+        },
+      );
+    } catch (e) {
+      showSnackBar(ctx, e.toString());
+    }
+    return donationCenters;
   }
 }

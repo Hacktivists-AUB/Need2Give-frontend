@@ -72,6 +72,7 @@ class DonationCenter extends DonationCenterDTO {
   final double distance;
   final bool open;
   bool following;
+  int followerCount;
 
   DonationCenter({
     required super.id,
@@ -90,6 +91,7 @@ class DonationCenter extends DonationCenterDTO {
     this.distance = 0,
     this.open = false,
     this.following = false,
+    this.followerCount = 0,
     super.password = "",
   });
 
@@ -117,6 +119,7 @@ class DonationCenter extends DonationCenterDTO {
         "distance": distance,
         "following": following,
         "open": open,
+        "followerCount": followerCount,
       },
     };
     return expanded
@@ -143,6 +146,8 @@ class DonationCenter extends DonationCenterDTO {
       distance: map["distance"] ?? -1.0,
       following: map["following"] ?? false,
       open: map["open"] ?? false,
+      followerCount:
+          map["follower_count"] == null ? 0 : int.parse(map["follower_count"]),
     );
   }
 
