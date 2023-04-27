@@ -114,4 +114,33 @@ class ItemService {
       showSnackBar(ctx, e.toString());
     }
   }
+
+  Future<Map<String, int>> getStats(BuildContext ctx) async {
+    Map<String, int> res = {};
+    try {
+      http.Response response = await http.get(
+        Uri.parse("${Global.url}/items/stats"),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization":
+              Provider.of<AuthProvider>(ctx, listen: false).profile.token,
+        },
+      );
+
+      httpErrorHandle(
+        response: response,
+        context: ctx,
+        onSuccess: () {
+          res = json
+              .decode(response.body)
+              .map((key, value) => MapEntry(key, int.parse(value.toString())))
+              .cast<String, int>();
+        },
+      );
+    } catch (e) {
+      showSnackBar(ctx, e.toString());
+      Global.logger.w(e.toString());
+    }
+    return res;
+  }
 }

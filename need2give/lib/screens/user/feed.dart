@@ -36,21 +36,31 @@ class _FeedState extends State<Feed> {
       ),
       body: Container(
         padding: const EdgeInsets.all(16),
-        child: ListView(
-          children: [
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: _items.length,
-              itemBuilder: (BuildContext context, int index) {
-                return PostComponent(
-                  item: _items[index],
-                );
-              },
-            ),
-          ],
-        ),
+        child: _buildBody(),
       ),
     );
+  }
+
+  Widget _buildBody() {
+    return _items.isNotEmpty
+        ? ListView(
+            children: [
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: _items.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return PostComponent(
+                    item: _items[index],
+                  );
+                },
+              ),
+            ],
+          )
+        : _showMessage();
+  }
+
+  Widget _showMessage() {
+    return Column(children: const []);
   }
 }
