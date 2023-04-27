@@ -9,6 +9,7 @@ import 'package:need2give/constants/utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:need2give/models/account.dart';
 import 'package:need2give/provider/auth_provider.dart';
+import 'package:need2give/screens/auth/pending.dart';
 import 'package:need2give/screens/user/bottom_bar.dart' as user;
 import 'package:need2give/screens/donation_center/bottom_bar.dart' as dc;
 import 'package:provider/provider.dart';
@@ -36,7 +37,8 @@ class AuthService {
     try {
       http.Response res = await http.post(
         Uri.parse(
-            "${Global.url}/auth/signup?role=${(profile.type == AccountType.user ? 'user' : 'donation_center')}"),
+          "${Global.url}/auth/signup?role=${(profile.type == AccountType.user ? 'user' : 'donation_center')}",
+        ),
         body: profile.toJson(),
         headers: <String, String>{
           "Content-Type": "application/json; charset=UTF-8",
@@ -46,19 +48,20 @@ class AuthService {
         response: res,
         context: context,
         onSuccess: () async {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          final resBody = jsonDecode(res.body);
-          Provider.of<AuthProvider>(context, listen: false).setAccount(
-              res.body,
-              profile.type);
-          await prefs.setString("token", resBody["token"]);
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            _inferAccountType(resBody) == AccountType.user
-                ? user.ButtonNavbar.routeName
-                : dc.ButtonNavbar.routeName,
-            (route) => false,
-          );
+          if (profile.type == AccountType.user) {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            final resBody = jsonDecode(res.body);
+            Provider.of<AuthProvider>(context, listen: false)
+                .setAccount(res.body, profile.type);
+            await prefs.setString("token", resBody["token"]);
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              user.ButtonNavbar.routeName,
+              (route) => false,
+            );
+          } else {
+            Navigator.pushNamed(context, PendingPage.routeName);
+          }
         },
       );
     } catch (e) {
@@ -96,12 +99,12 @@ class AuthService {
           var type = await _setAccountFromToken(context, resBody["token"]);
 
           Navigator.pushNamedAndRemoveUntil(
-          context,
-          type == AccountType.user
-              ? user.ButtonNavbar.routeName
-              : dc.ButtonNavbar.routeName,
-          (route) => false,
-        );
+            context,
+            type == AccountType.user
+                ? user.ButtonNavbar.routeName
+                : dc.ButtonNavbar.routeName,
+            (route) => false,
+          );
         },
       );
     } catch (e) {
@@ -127,7 +130,8 @@ class AuthService {
     }
   }
 
-  Future<AccountType> _setAccountFromToken(BuildContext context, String token) async {
+  Future<AccountType> _setAccountFromToken(
+      BuildContext context, String token) async {
     AccountType type = AccountType.none;
     try {
       http.Response res = await http.get(
