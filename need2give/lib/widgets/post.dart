@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/constants/utils.dart';
 import 'package:need2give/models/item.dart';
 import 'package:need2give/screens/user/donation_profile.dart';
 import 'package:need2give/screens/user/item.dart';
@@ -44,19 +45,19 @@ class PostComponent extends StatelessWidget {
                     child: ClipOval(
                       child: Image.asset(
                         "assets/donation_center.png",
-                        width: 50,
-                        height: 50,
+                        width: 42,
+                        height: 42,
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 8),
                   Text(
-                    item.donationCenter.name.length > 18
-                        ? "${item.donationCenter.name.substring(0, 18)}..."
+                    item.donationCenter.name.length > 28
+                        ? "${item.donationCenter.name.substring(0, 28)}..."
                         : item.donationCenter.name,
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -94,7 +95,7 @@ class PostComponent extends StatelessWidget {
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(6),
-                          color: Global.lightGreen,
+                          color: getCategoryColor(item.category),
                         ),
                         padding: const EdgeInsets.all(8),
                         child: Text(
@@ -122,7 +123,7 @@ class PostComponent extends StatelessWidget {
                     DateFormat("'Posted on 'd MMM ',' yyyy 'at' hh:mm")
                         .format(DateTime.parse(item.createdAt)),
                     style: const TextStyle(
-                      color: Global.lightGrey,
+                      color: Global.mediumGrey,
                       fontStyle: FontStyle.italic,
                     ),
                   ),

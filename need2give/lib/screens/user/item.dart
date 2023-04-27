@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/constants/utils.dart';
 import 'package:need2give/models/item.dart';
 import 'package:need2give/screens/donation_center/update_item.dart';
 import 'package:need2give/screens/donation_center/bottom_bar.dart';
@@ -71,7 +72,7 @@ class ItemPage extends StatelessWidget {
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(6),
-                            color: Global.lightGreen,
+                            color: getCategoryColor(item.category),
                           ),
                           padding: const EdgeInsets.all(8),
                           child: Text(

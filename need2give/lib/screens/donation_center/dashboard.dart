@@ -23,10 +23,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class _Dashboard extends State<Dashboard> {
-  final int _totalStock = 150;
-  final int _totalDonationsRecieved = 68;
-  final int _totalDonationsGiven = 72;
-
   final ItemService _itemService = ItemService();
   List<Item> _items = [];
   Map<String, int> _stats = {};
@@ -131,26 +127,10 @@ class _Dashboard extends State<Dashboard> {
                     width: 2,
                   ),
                 ),
-                child: Column(
-                  children: [
-                    _buildSummaryStat(
-                      FontAwesomeIcons.cubes,
-                      _totalStock,
-                      "Total stock",
-                    ),
-                    const SizedBox(height: 16),
-                    _buildSummaryStat(
-                      FontAwesomeIcons.boxOpen,
-                      _totalDonationsRecieved,
-                      "Donations recieved",
-                    ),
-                    const SizedBox(height: 16),
-                    _buildSummaryStat(
-                      FontAwesomeIcons.handsHelping,
-                      _totalDonationsGiven,
-                      "Donations given",
-                    ),
-                  ],
+                child: _buildSummaryStat(
+                  FontAwesomeIcons.cubes,
+                  _items.length,
+                  "Total stock",
                 ),
               ),
               const SizedBox(height: 16),

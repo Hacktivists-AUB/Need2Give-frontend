@@ -53,6 +53,6 @@ Color getCategoryColor(String category) {
   } else if (category == "other") {
     return Global.other;
   } else {
-    return const Color.fromARGB(255, 252, 205, 134);
+    return const Color.fromARGB(255, 159, 207, 235);
   }
 }

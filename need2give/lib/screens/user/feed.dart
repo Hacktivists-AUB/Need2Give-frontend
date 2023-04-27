@@ -61,6 +61,32 @@ class _FeedState extends State<Feed> {
   }
 
   Widget _showMessage() {
-    return Column(children: const []);
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.asset("assets/logo_100.png"),
+          const SizedBox(height: 24),
+          const Text(
+            "Welcome to Need2Give!",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            "Follow donation centers to stay updated.",
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 4),
+          const Text(
+            "Find items you need or donation centers to donate to.",
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
   }
 }

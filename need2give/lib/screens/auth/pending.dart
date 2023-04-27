@@ -17,16 +17,8 @@ class PendingPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                "Need2Give",
-                style: TextStyle(
-                  color: Color.fromARGB(255, 0, 0, 0),
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.none,
-                  fontSize: 30,
-                ),
-              ),
-              const SizedBox(height: 24),
+              Image.asset("assets/logo_100.png"),
+              const SizedBox(height: 36),
               const Text("Thanks for joining Need2Give!"),
               const SizedBox(height: 4),
               const Text("Your request is under review by our team."),
