@@ -17,7 +17,7 @@ class PostComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(top: 16),
       child: Container(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -89,6 +89,7 @@ class PostComponent extends StatelessWidget {
                               : item.name,
                           style: const TextStyle(
                             fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),

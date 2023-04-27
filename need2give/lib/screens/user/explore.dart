@@ -170,7 +170,7 @@ class _ExploreState extends State<Explore> {
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Align(
                   alignment: Alignment.center,
@@ -182,7 +182,7 @@ class _ExploreState extends State<Explore> {
                 Text(
                   center.name,
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 18,
                     color: Global.mediumGrey,
                     fontWeight: FontWeight.bold,
                   ),

@@ -82,15 +82,15 @@ class _DonationCenterProfile extends State<DonationCenterProfile>
                         color: Global.mediumGrey,
                       ),
                     ),
-                    const SizedBox(height: 6),
-                    Text(
-                      "${donationCenter.followerCount} Followers",
-                      style: const TextStyle(
-                        color: Global.mediumGrey,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                   ],
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  "${donationCenter.followerCount} Followers",
+                  style: const TextStyle(
+                    color: Global.mediumGrey,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),

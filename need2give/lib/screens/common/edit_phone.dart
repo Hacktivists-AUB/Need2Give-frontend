@@ -3,7 +3,7 @@ import 'package:need2give/constants/global.dart';
 import 'package:need2give/widgets/button.dart';
 import 'package:need2give/widgets/textfield.dart';
 
-class EditProfile extends StatelessWidget {
+class EditPhone extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
 
   final TextEditingController _emailController = TextEditingController();
@@ -12,7 +12,7 @@ class EditProfile extends StatelessWidget {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  EditProfile({super.key});
+  EditPhone({super.key});
 
   @override
   Widget build(BuildContext context) {

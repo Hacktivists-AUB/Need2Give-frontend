@@ -45,6 +45,10 @@ class _FeedState extends State<Feed> {
     return _items.isNotEmpty
         ? ListView(
             children: [
+              SizedBox(
+                height: 64,
+                child: Image.asset("assets/logo_64.png"),
+              ),
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),

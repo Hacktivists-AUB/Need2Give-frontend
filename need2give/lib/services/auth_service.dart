@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-// TODO: check if context is mounted
 
 import 'dart:convert';
 import 'package:flutter/material.dart';

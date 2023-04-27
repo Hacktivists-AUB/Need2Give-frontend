@@ -70,7 +70,7 @@ class _MapScreenState extends State<MapScreen> {
             child: SearchBar(
               searchMode: SearchMode.onlyDonationCenters,
             ),
-          )
+          ),
         ],
       ),
       floatingActionButton: Column(
@@ -93,7 +93,7 @@ class _MapScreenState extends State<MapScreen> {
                         width: 80.0,
                         height: 80.0,
                         builder: (context) => const Icon(
-                          Icons.home,
+                          Icons.crisis_alert,
                           size: 42.0,
                           color: Global.darkGreen,
                         ),
