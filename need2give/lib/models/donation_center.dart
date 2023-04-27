@@ -69,7 +69,9 @@ class DonationCenterDTO extends Account {
 
 class DonationCenter extends DonationCenterDTO {
   final String createdAt;
-  final double? distance;
+  final double distance;
+  final bool open;
+  final bool following;
 
   DonationCenter({
     required super.id,
@@ -85,7 +87,9 @@ class DonationCenter extends DonationCenterDTO {
     required super.closingTime,
     required super.description,
     required super.openingDays,
-    required this.distance,
+    this.distance = 0,
+    this.open = false,
+    this.following = false,
     super.password = "",
   });
 
@@ -109,10 +113,14 @@ class DonationCenter extends DonationCenterDTO {
         "closing_time": closingTime,
         "opening_days": openingDays,
       },
-      "distance": distance,
+      "additional": {
+        "distance": distance,
+        "following": following,
+        "open": open,
+      },
     };
     return expanded
-        ? {...obj["account"], ...obj["profile"], ...obj["distance"]}
+        ? {...obj["account"], ...obj["profile"], ...obj["additional"]}
         : obj;
   }
 
@@ -133,6 +141,8 @@ class DonationCenter extends DonationCenterDTO {
       openingDays: map["opening_days"] ?? {},
       token: map["token"] ?? "",
       distance: map["distance"] ?? -1.0,
+      following: map["following"] ?? false,
+      open: map["open"] ?? false,
     );
   }
 

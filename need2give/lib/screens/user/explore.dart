@@ -200,7 +200,7 @@ class _ExploreState extends State<Explore> {
                         Navigator.pushNamed(
                           context,
                           DonationScreen.routeName,
-                          arguments: center,
+                          arguments: center.id,
                         );
                       },
                       child: const Text("See more"),

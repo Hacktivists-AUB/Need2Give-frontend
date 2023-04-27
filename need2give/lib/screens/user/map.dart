@@ -196,7 +196,7 @@ class _MapScreenState extends State<MapScreen> {
                     onPressed: () => Navigator.pushNamed(
                       context,
                       DonationScreen.routeName,
-                      arguments: center,
+                      arguments: center.id,
                     ),
                   ),
                 ],

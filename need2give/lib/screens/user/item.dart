@@ -119,7 +119,7 @@ class ItemPage extends StatelessWidget {
                             Navigator.pushNamed(
                               context,
                               DonationScreen.routeName,
-                              arguments: item.donationCenter,
+                              arguments: item.donationCenter.id,
                             );
                           },
                           child: Text(

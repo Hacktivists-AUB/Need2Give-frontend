@@ -104,10 +104,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         builder: (_) => const AddItem(),
       );
     case DonationScreen.routeName:
-      var donationCenter = settings.arguments as DonationCenter;
+      var id = settings.arguments as int;
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => DonationScreen(donationCenter: donationCenter),
+        builder: (_) => DonationScreen(id: id),
       );
     case edit_dc.EditProfile.routeName:
       var donationCenter = settings.arguments as DonationCenter;

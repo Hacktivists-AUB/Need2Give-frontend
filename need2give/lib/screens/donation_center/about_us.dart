@@ -75,6 +75,14 @@ class AboutUs extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
+            donationCenter.open ? "Open now" : "Closed now",
+            style: TextStyle(
+              color:
+                  donationCenter.open ? Global.darkGreen : Global.markerColor,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
             "We are open every ${_parseOpeningDays(donationCenter.openingDays)}",
             style: const TextStyle(
               color: Global.mediumGrey,
@@ -116,7 +124,6 @@ class AboutUs extends StatelessWidget {
               ),
             ],
           ),
-          const Divider(),
           const SizedBox(height: 8),
           const Text(
             "A bit about us",

@@ -169,9 +169,11 @@ class _ProfileContentState extends State<ProfileContent>
                     );
                   }
                 },
-                child: Text(widget.viewMode == ViewMode.user
-                    ? "Follow"
-                    : "Edit profile"),
+                child: Text(widget.viewMode == ViewMode.donationCenter
+                    ? "Edit profile"
+                    : widget.donationCenter.following
+                        ? "Following"
+                        : "Follow"),
               ),
             ),
           ),
