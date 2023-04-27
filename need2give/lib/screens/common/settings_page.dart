@@ -220,14 +220,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               TextButton(
                 onPressed: () async {
-                  Provider.of<AuthProvider>(context, listen: false)
-                      .setAccount("", AccountType.none);
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  prefs.setString("token", "");
-                  // ignore: use_build_context_synchronously
-                  Navigator.pushNamed(context, WelcomeScreen.routeName);
-                  setState((){});
+                  _confirmLogout(context);
                 },
                 child: const Text("Log out"),
               ),
@@ -235,6 +228,36 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<dynamic> _confirmLogout(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Log out"),
+          content: const Text("Are you sure you want to log out?"),
+          actions: [
+            TextButton(
+              child: const Text("Close"),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: const Text("Log out"),
+              onPressed: () async {
+                Provider.of<AuthProvider>(context, listen: false)
+                    .setAccount("", AccountType.none);
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setString("token", "");
+                // ignore: use_build_context_synchronously
+                Navigator.pushNamed(context, WelcomeScreen.routeName);
+                setState(() {});
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
