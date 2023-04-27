@@ -26,7 +26,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   List<DonationCenter> _donationCenters = [];
 
   _loadFollowingAccounts() async {
-    _donationCenters = await _accountService.get(context, {});
+    _donationCenters = await _accountService.get(context, {"following": true});
     setState(() {});
   }
 
@@ -250,7 +250,11 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
               child: TextButton(
                 child: const Text("Edit profile"),
                 onPressed: () {
-                  Navigator.pushNamed(context, EditProfile.routeName, arguments: user,);
+                  Navigator.pushNamed(
+                    context,
+                    EditProfile.routeName,
+                    arguments: user,
+                  );
                 },
               ),
             ),

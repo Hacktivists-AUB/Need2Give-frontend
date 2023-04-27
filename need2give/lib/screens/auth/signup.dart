@@ -365,15 +365,6 @@ class _SignUpState extends State<SignUp> {
             },
           ),
           const SizedBox(height: 10),
-          SizedBox(
-            width: double.infinity,
-            child: SignInButton(
-              Buttons.Google,
-              text: "Sign up with Google",
-              onPressed: () {},
-            ),
-          ),
-          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

@@ -103,7 +103,9 @@ class _LoginState extends State<Login> {
                           const SizedBox(height: 10),
                           const Label(text: "Email: "),
                           Input(
-                              controller: _emailController, hintText: 'Email'),
+                            controller: _emailController,
+                            hintText: 'Email',
+                          ),
                           const SizedBox(height: 10),
                           const Label(text: "Password: "),
                           Input(
@@ -120,15 +122,6 @@ class _LoginState extends State<Login> {
                                 }
                               }),
                           const SizedBox(height: 10),
-                          SizedBox(
-                            width: double.infinity,
-                            child: SignInButton(
-                              Buttons.Google,
-                              text: "Log in with Google",
-                              onPressed: () {},
-                            ),
-                          ),
-                          const SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -141,7 +134,9 @@ class _LoginState extends State<Login> {
                               TextButton(
                                 onPressed: () {
                                   Navigator.pushNamed(
-                                      context, SignUp.routeName);
+                                    context,
+                                    SignUp.routeName,
+                                  );
                                 },
                                 child: const Text(
                                   'Sign up',
