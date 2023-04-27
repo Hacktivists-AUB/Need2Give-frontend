@@ -127,8 +127,7 @@ class AccountService {
         context: ctx,
         onSuccess: () {
           User oldProfile =
-              Provider.of<AuthProvider>(ctx, listen: false).profile
-                  as User;
+              Provider.of<AuthProvider>(ctx, listen: false).profile as User;
           User newProfile = User.fromMap({
             ...jsonDecode(res.body)["profile"],
             ...oldProfile.toMap(expanded: false)["account"]
@@ -145,5 +144,55 @@ class AccountService {
     } catch (e) {
       showSnackBar(ctx, e.toString());
     }
+  }
+
+  Future<bool> follow(BuildContext ctx, int id) async {
+    bool success = false;
+    try {
+      http.Response res = await http.post(
+        Uri.parse("${Global.url}/follow/$id"),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization":
+              Provider.of<AuthProvider>(ctx, listen: false).profile.token,
+        },
+      );
+      httpErrorHandle(
+        response: res,
+        context: ctx,
+        onSuccess: () {
+          success = true;
+        },
+      );
+    } catch (e) {
+      showSnackBar(ctx, e.toString());
+      Global.logger.i(e.toString());
+    }
+    return success;
+  }
+
+  Future<bool> unfollow(BuildContext ctx, int id) async {
+    bool success = false;
+    try {
+      http.Response res = await http.delete(
+        Uri.parse("${Global.url}/follow/$id"),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization":
+              Provider.of<AuthProvider>(ctx, listen: false).profile.token,
+        },
+      );
+      httpErrorHandle(
+        response: res,
+        context: ctx,
+        onSuccess: () {
+          success = true;
+        },
+      );
+    } catch (e) {
+      showSnackBar(ctx, e.toString());
+      Global.logger.i(e.toString());
+    }
+    return success;
   }
 }

@@ -71,7 +71,7 @@ class DonationCenter extends DonationCenterDTO {
   final String createdAt;
   final double distance;
   final bool open;
-  final bool following;
+  bool following;
 
   DonationCenter({
     required super.id,
