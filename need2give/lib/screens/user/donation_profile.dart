@@ -38,6 +38,7 @@ class _DonationScreen extends State<DonationScreen>
     description: "",
     openingDays: {},
     distance: 0,
+    followerCount: 0,
   );
   final double _coverHeight = 140;
   final double _pfpHeight = 108;
@@ -121,6 +122,14 @@ class _DonationScreen extends State<DonationScreen>
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  "${_donationCenter.followerCount} Followers",
+                  style: const TextStyle(
+                    color: Global.mediumGrey,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
