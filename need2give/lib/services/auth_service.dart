@@ -129,6 +129,51 @@ class AuthService {
     }
   }
 
+  Future<bool> editPhoneNumber({
+    required BuildContext context,
+    required String email,
+    required String password,
+    required String phoneNumber,
+  }) async {
+    bool success = false;
+    try {
+      Map<String, dynamic> req = {
+        "email": email,
+        "phone_number": phoneNumber,
+        "password": password,
+      };
+      http.Response res = await http.patch(
+        Uri.parse(
+          "${Global.url}/auth/",
+        ),
+        body: json.encode(req),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization":
+              Provider.of<AuthProvider>(context, listen: false).profile.token,
+        },
+      );
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () async {
+          success = true;
+          Account profile =
+              Provider.of<AuthProvider>(context, listen: false).profile;
+          profile.phoneNumber = jsonDecode(res.body)["account"]["phone_number"];
+
+          Provider.of<AuthProvider>(context, listen: false)
+              .setAccount(profile.toJson(), profile.type);
+          showSnackBar(context, "Phone number edited successfully");
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+      Global.logger.e("AuthService::editPhoneNumber ${e.toString()}");
+    }
+    return success;
+  }
+
   Future<AccountType> _setAccountFromToken(
       BuildContext context, String token) async {
     AccountType type = AccountType.none;

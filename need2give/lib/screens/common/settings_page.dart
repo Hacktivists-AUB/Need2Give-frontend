@@ -34,7 +34,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => EditPhone(),
+                    builder: (context) => const EditPhone(),
                   ),
                 );
               },
@@ -86,7 +86,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AboutUs(),
+                    builder: (context) => const AboutUs(),
                   ),
                 );
               },

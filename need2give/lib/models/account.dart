@@ -5,7 +5,7 @@ class Account {
   final int id;
   final String username;
   final String email;
-  final String? phoneNumber;
+  String? phoneNumber;
   final String password;
   final AccountType type;
   final String token;

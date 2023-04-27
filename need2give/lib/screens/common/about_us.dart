@@ -1,25 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:need2give/widgets/button.dart';
-import 'package:need2give/widgets/textfield.dart';
+import 'package:need2give/constants/global.dart';
 
 class AboutUs extends StatelessWidget {
-  final TextEditingController _nameController = TextEditingController();
-
-  final TextEditingController _emailController = TextEditingController();
-
-  final TextEditingController _mobileNoController = TextEditingController();
-
-  final TextEditingController _messageController = TextEditingController();
-
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  AboutUs({super.key});
+  const AboutUs({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: false,
+      backgroundColor: Global.backgroundColor,
       appBar: AppBar(
         leading: const BackButton(),
         title: const Text("Contact us"),

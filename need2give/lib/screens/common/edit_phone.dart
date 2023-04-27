@@ -1,63 +1,76 @@
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/provider/auth_provider.dart';
+import 'package:need2give/services/auth_service.dart';
 import 'package:need2give/widgets/button.dart';
 import 'package:need2give/widgets/textfield.dart';
+import 'package:provider/provider.dart';
 
-class EditPhone extends StatelessWidget {
-  final TextEditingController _usernameController = TextEditingController();
+class EditPhone extends StatefulWidget {
+  const EditPhone({super.key});
 
-  final TextEditingController _emailController = TextEditingController();
+  @override
+  State<EditPhone> createState() => _EditPhoneState();
+}
 
-  final TextEditingController _mobileNoController = TextEditingController();
-
+class _EditPhoneState extends State<EditPhone> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final AuthService _authService = AuthService();
 
-  EditPhone({super.key});
+  void editPhone(BuildContext ctx) async {
+    await _authService.editPhoneNumber(
+      context: ctx,
+      email: _emailController.text,
+      password: _passwordController.text,
+      phoneNumber: _phoneController.text,
+    );
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Global.backgroundColor,
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          leading: const BackButton(),
-          title: const Text("Edit Profile"),
-          centerTitle: true,
-        ),
-        body: Form(
+    final account = Provider.of<AuthProvider>(context).profile;
+    _emailController.text = account.email;
+    _phoneController.text = account.phoneNumber ?? "";
+    return Scaffold(
+      backgroundColor: Global.backgroundColor,
+      appBar: AppBar(
+        title: const Text("Edit phone number"),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Form(
           key: _formKey,
           child: Container(
-            width: double.maxFinite,
-            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 15),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: Input(
-                    controller: _usernameController,
-                    hintText: "Username",
-                  ),
+                const Label(text: "Email: "),
+                Input(
+                  controller: _emailController,
+                  hintText: "Email",
+                  required: true,
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: Input(
-                    controller: _emailController,
-                    hintText: "Email",
-                  ),
+                const SizedBox(height: 12),
+                const Label(text: "Phone number: "),
+                PhoneInput(controller: _phoneController),
+                const Label(text: "Password: "),
+                Input(
+                  controller: _passwordController,
+                  hintText: "Password",
+                  secret: true,
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: PhoneInput(controller: _mobileNoController),
-                ),
+                const SizedBox(height: 18),
                 Button(
-                  text: 'Save',
-                  onPressed: () {},
+                  text: "Save",
+                  onPressed: () {
+                    editPhone(context);
+                  },
                 )
               ],
             ),
@@ -65,9 +78,5 @@ class EditPhone extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  onTapArrowleft3(BuildContext context) {
-    Navigator.pop(context);
   }
 }
