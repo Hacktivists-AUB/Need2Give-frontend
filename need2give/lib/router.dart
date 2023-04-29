@@ -3,6 +3,7 @@ import 'package:need2give/models/donation_center.dart';
 import 'package:need2give/models/item.dart';
 import 'package:need2give/models/user.dart';
 import 'package:need2give/screens/auth/login.dart';
+import 'package:need2give/screens/auth/pending.dart';
 import 'package:need2give/screens/auth/signup.dart';
 import 'package:need2give/screens/auth/welcome.dart';
 import 'package:need2give/screens/donation_center/add_item.dart';
@@ -19,6 +20,7 @@ import 'package:need2give/screens/user/bottom_bar.dart' as user;
 import 'package:need2give/screens/donation_center/bottom_bar.dart' as dc;
 import 'package:need2give/screens/donation_center/edit_profile.dart' as edit_dc;
 import 'package:need2give/screens/user/edit_profile.dart' as edit_user;
+import 'package:need2give/screens/user/search_results.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -103,10 +105,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         builder: (_) => const AddItem(),
       );
     case DonationScreen.routeName:
-      var donationCenter = settings.arguments as DonationCenter;
+      var id = settings.arguments as int;
       return MaterialPageRoute(
         settings: settings,
-        builder: (_) => DonationScreen(donationCenter: donationCenter),
+        builder: (_) => DonationScreen(id: id),
       );
     case edit_dc.EditProfile.routeName:
       var donationCenter = settings.arguments as DonationCenter;
@@ -119,6 +121,19 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         settings: settings,
         builder: (_) => edit_user.EditProfile(user: user),
+      );
+    case SearchResult.routeName:
+      var args = settings.arguments as Map<String, dynamic>;
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => SearchResult(
+          searchStr: args["searchStr"],
+          searchMode: args["searchMode"],
+        ),
+      );
+    case PendingPage.routeName:
+      return MaterialPageRoute(
+        builder: (_) => const PendingPage(),
       );
     default:
       return MaterialPageRoute(

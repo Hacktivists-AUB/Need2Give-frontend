@@ -1,6 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/constants/utils.dart';
 import 'package:need2give/models/item.dart';
 import 'package:need2give/provider/auth_provider.dart';
 import 'package:need2give/screens/donation_center/add_item.dart';
@@ -20,20 +23,17 @@ class Dashboard extends StatefulWidget {
 }
 
 class _Dashboard extends State<Dashboard> {
-  final int _totalStock = 150;
-  final int _totalDonationsRecieved = 68;
-  final int _totalDonationsGiven = 72;
-
   final ItemService _itemService = ItemService();
   List<Item> _items = [];
+  Map<String, int> _stats = {};
 
   @override
   void initState() {
     super.initState();
-    _loadItems();
+    _loadData();
   }
 
-  _loadItems() async {
+  _loadData() async {
     _items = await _itemService.get(
       context,
       {
@@ -41,6 +41,7 @@ class _Dashboard extends State<Dashboard> {
             Provider.of<AuthProvider>(context, listen: false).profile.id
       },
     );
+    _stats = await _itemService.getStats(context);
     setState(() {});
   }
 
@@ -82,26 +83,26 @@ class _Dashboard extends State<Dashboard> {
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
-              SfCartesianChart(
-                primaryXAxis: CategoryAxis(),
-                title: ChartTitle(text: 'Number of items per month'),
-                series: <LineSeries<ItemData, String>>[
-                  LineSeries<ItemData, String>(
-                    dataSource: <ItemData>[
-                      ItemData('Jan', 35),
-                      ItemData('Feb', 28),
-                      ItemData('Mar', 34),
-                      ItemData('Apr', 32),
-                      ItemData('May', 40)
-                    ],
-                    xValueMapper: (ItemData amount, _) => amount.month,
-                    yValueMapper: (ItemData amount, _) => amount.amount,
-                    dataLabelSettings: const DataLabelSettings(isVisible: true),
-                  ),
-                ],
+              SizedBox(
+                height: 200,
+                child: SfCircularChart(
+                  legend: Legend(isVisible: true),
+                  series: <CircularSeries>[
+                    DoughnutSeries<MapEntry<String, int>, String>(
+                      dataSource: _stats.entries.toList(),
+                      xValueMapper: (entry, _) => entry.key,
+                      yValueMapper: (entry, _) => entry.value,
+                      dataLabelMapper: (entry, _) =>
+                          "${entry.key}: ${entry.value}",
+                      radius: "80%",
+                      innerRadius: "60%",
+                      pointColorMapper: (entry, _) {
+                        return getCategoryColor(entry.key);
+                      },
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 10),
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -126,26 +127,10 @@ class _Dashboard extends State<Dashboard> {
                     width: 2,
                   ),
                 ),
-                child: Column(
-                  children: [
-                    _buildSummaryStat(
-                      FontAwesomeIcons.cubes,
-                      _totalStock,
-                      "Total stock",
-                    ),
-                    const SizedBox(height: 16),
-                    _buildSummaryStat(
-                      FontAwesomeIcons.boxOpen,
-                      _totalDonationsRecieved,
-                      "Donations recieved",
-                    ),
-                    const SizedBox(height: 16),
-                    _buildSummaryStat(
-                      FontAwesomeIcons.handsHelping,
-                      _totalDonationsGiven,
-                      "Donations given",
-                    ),
-                  ],
+                child: _buildSummaryStat(
+                  FontAwesomeIcons.cubes,
+                  _items.length,
+                  "Total stock",
                 ),
               ),
               const SizedBox(height: 16),
@@ -245,10 +230,4 @@ class _Dashboard extends State<Dashboard> {
           ),
         ],
       );
-}
-
-class ItemData {
-  ItemData(this.month, this.amount);
-  final String month;
-  final double amount;
 }

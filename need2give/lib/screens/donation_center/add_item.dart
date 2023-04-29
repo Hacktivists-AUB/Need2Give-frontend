@@ -25,7 +25,13 @@ class _AddItemState extends State<AddItem> {
       TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
 
-  final List<String> _options = ["food", "medication", "clothes", "other"];
+  final List<String> _options = [
+    "food",
+    "medication",
+    "clothes",
+    "electronics",
+    "other"
+  ];
   String? _selectedOption;
 
   void add(BuildContext ctx) {

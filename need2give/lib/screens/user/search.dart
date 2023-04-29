@@ -6,6 +6,7 @@ import 'package:need2give/models/donation_center.dart';
 import 'package:need2give/models/item.dart';
 import 'package:need2give/screens/user/donation_profile.dart';
 import 'package:need2give/screens/user/item.dart';
+import 'package:need2give/screens/user/search_results.dart';
 import 'package:need2give/services/account_service.dart';
 import 'package:need2give/services/item_service.dart';
 
@@ -197,25 +198,25 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
       ),
       body: TabBarView(
         controller: _tabController,
-        children: _generateTabView(widget.searchMode),
+        children: _generateTabView(widget.searchMode, context),
       ),
     );
   }
 
-  List<Widget> _generateTabView(SearchMode mode) {
+  List<Widget> _generateTabView(SearchMode mode, BuildContext ctx) {
     switch (mode) {
       case SearchMode.all:
         return [
-          _buildListView(_foundItems),
-          _buildListView(_foundDonationCenters),
+          _buildListView(_foundItems, ctx),
+          _buildListView(_foundDonationCenters, ctx),
         ];
       case SearchMode.onlyDonationCenters:
         return [
-          _buildListView(_foundDonationCenters),
+          _buildListView(_foundDonationCenters, ctx),
         ];
       case SearchMode.onlyItems:
         return [
-          _buildListView(_foundItems),
+          _buildListView(_foundItems, ctx),
         ];
     }
   }
@@ -257,60 +258,83 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
     }
   }
 
-  Widget _buildListView(List<dynamic> objects) => Container(
-        padding: const EdgeInsets.all(12),
-        child: ListView.builder(
-          itemCount: objects.length,
-          itemBuilder: (BuildContext context, int index) => Card(
-            margin: const EdgeInsets.symmetric(vertical: 4),
-            child: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-                switch (widget.searchMode) {
-                  case SearchMode.onlyItems:
+  Widget _buildListView(List<dynamic> objects, BuildContext ctx) {
+    SearchMode mode = widget.searchMode;
+
+    if (widget.searchMode == SearchMode.all) {
+      mode = _currentTabIndex == 0
+          ? SearchMode.onlyItems
+          : SearchMode.onlyDonationCenters;
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(12),
+      child: ListView(
+        children: [
+          ...objects.map((e) => _buildTile(e)).toList(),
+          TextButton(
+            onPressed: () {
+              Navigator.pushNamed(
+                ctx,
+                SearchResult.routeName,
+                arguments: {
+                  "searchStr": _searchController.text,
+                  "searchMode": mode,
+                },
+              );
+            },
+            child: const Text("See all"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTile(dynamic obj) => Card(
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+            switch (widget.searchMode) {
+              case SearchMode.onlyItems:
+                Navigator.pushNamed(
+                  context,
+                  ItemPage.routeName,
+                  arguments: {"item": obj, "editable": false},
+                );
+                break;
+              case SearchMode.onlyDonationCenters:
+                Navigator.pushNamed(
+                  context,
+                  DonationScreen.routeName,
+                  arguments: obj,
+                );
+                break;
+              case SearchMode.all:
+                switch (_currentTabIndex) {
+                  case 0:
                     Navigator.pushNamed(
                       context,
                       ItemPage.routeName,
-                      arguments: {"item": objects[index], "editable": false},
+                      arguments: {"item": obj, "editable": false},
                     );
                     break;
-                  case SearchMode.onlyDonationCenters:
+                  case 1:
                     Navigator.pushNamed(
                       context,
                       DonationScreen.routeName,
-                      arguments: objects[index],
+                      arguments: obj,
                     );
                     break;
-                  case SearchMode.all:
-                    switch (_currentTabIndex) {
-                      case 0:
-                        Navigator.pushNamed(
-                          context,
-                          ItemPage.routeName,
-                          arguments: {
-                            "item": objects[index],
-                            "editable": false
-                          },
-                        );
-                        break;
-                      case 1:
-                        Navigator.pushNamed(
-                          context,
-                          DonationScreen.routeName,
-                          arguments: objects[index],
-                        );
-                        break;
-                    }
                 }
-              },
-              child: ListTile(
-                title: Text(objects[index].name),
-                subtitle: Text(
-                  objects[index].description.length > 42
-                      ? "${objects[index].description.substring(0, 42)}..."
-                      : objects[index].description,
-                ),
-              ),
+            }
+          },
+          child: ListTile(
+            title: Text(obj.name),
+            subtitle: Text(
+              obj.description.length > 42
+                  ? "${obj.description.substring(0, 42)}..."
+                  : obj.description,
             ),
           ),
         ),

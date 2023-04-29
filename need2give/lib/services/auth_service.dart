@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-// TODO: check if context is mounted
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -9,6 +8,8 @@ import 'package:need2give/constants/utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:need2give/models/account.dart';
 import 'package:need2give/provider/auth_provider.dart';
+import 'package:need2give/screens/auth/pending.dart';
+import 'package:need2give/screens/auth/welcome.dart';
 import 'package:need2give/screens/user/bottom_bar.dart' as user;
 import 'package:need2give/screens/donation_center/bottom_bar.dart' as dc;
 import 'package:provider/provider.dart';
@@ -36,7 +37,8 @@ class AuthService {
     try {
       http.Response res = await http.post(
         Uri.parse(
-            "${Global.url}/auth/signup?role=${(profile.type == AccountType.user ? 'user' : 'donation_center')}"),
+          "${Global.url}/auth/signup?role=${(profile.type == AccountType.user ? 'user' : 'donation_center')}",
+        ),
         body: profile.toJson(),
         headers: <String, String>{
           "Content-Type": "application/json; charset=UTF-8",
@@ -46,19 +48,20 @@ class AuthService {
         response: res,
         context: context,
         onSuccess: () async {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          final resBody = jsonDecode(res.body);
-          Provider.of<AuthProvider>(context, listen: false).setAccount(
-              jsonEncode({...resBody["profile"], "token": resBody["token"]}),
-              profile.type);
-          await prefs.setString("token", resBody["token"]);
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            _inferAccountType(resBody["profile"]) == AccountType.user
-                ? user.ButtonNavbar.routeName
-                : dc.ButtonNavbar.routeName,
-            (route) => false,
-          );
+          if (profile.type == AccountType.user) {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            final resBody = jsonDecode(res.body);
+            Provider.of<AuthProvider>(context, listen: false)
+                .setAccount(res.body, profile.type);
+            await prefs.setString("token", resBody["token"]);
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              user.ButtonNavbar.routeName,
+              (route) => false,
+            );
+          } else {
+            Navigator.pushNamed(context, PendingPage.routeName);
+          }
         },
       );
     } catch (e) {
@@ -96,12 +99,12 @@ class AuthService {
           var type = await _setAccountFromToken(context, resBody["token"]);
 
           Navigator.pushNamedAndRemoveUntil(
-          context,
-          type == AccountType.user
-              ? user.ButtonNavbar.routeName
-              : dc.ButtonNavbar.routeName,
-          (route) => false,
-        );
+            context,
+            type == AccountType.user
+                ? user.ButtonNavbar.routeName
+                : dc.ButtonNavbar.routeName,
+            (route) => false,
+          );
         },
       );
     } catch (e) {
@@ -127,7 +130,94 @@ class AuthService {
     }
   }
 
-  Future<AccountType> _setAccountFromToken(BuildContext context, String token) async {
+  Future<bool> editPhoneNumber({
+    required BuildContext context,
+    required String email,
+    required String password,
+    required String phoneNumber,
+  }) async {
+    bool success = false;
+    try {
+      Map<String, dynamic> req = {
+        "email": email,
+        "phone_number": phoneNumber,
+        "password": password,
+      };
+      http.Response res = await http.patch(
+        Uri.parse(
+          "${Global.url}/auth/",
+        ),
+        body: json.encode(req),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization":
+              Provider.of<AuthProvider>(context, listen: false).profile.token,
+        },
+      );
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () async {
+          success = true;
+          Account profile =
+              Provider.of<AuthProvider>(context, listen: false).profile;
+          profile.phoneNumber = jsonDecode(res.body)["account"]["phone_number"];
+
+          Provider.of<AuthProvider>(context, listen: false)
+              .setAccount(profile.toJson(), profile.type);
+          showSnackBar(context, "Phone number edited successfully");
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+      Global.logger.e("AuthService::editPhoneNumber ${e.toString()}");
+    }
+    return success;
+  }
+
+  Future<bool> delete({
+    required BuildContext context,
+    required String email,
+    required String password,
+  }) async {
+    bool success = false;
+    try {
+      Map<String, dynamic> req = {
+        "email": email,
+        "password": password,
+      };
+      http.Response res = await http.delete(
+        Uri.parse(
+          "${Global.url}/auth/",
+        ),
+        body: json.encode(req),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization":
+              Provider.of<AuthProvider>(context, listen: false).profile.token,
+        },
+      );
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () async {
+          Provider.of<AuthProvider>(context, listen: false)
+              .setAccount("", AccountType.none);
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString("token", "");
+          Navigator.pushNamed(context, WelcomeScreen.routeName);
+          showSnackBar(context, "Account deleted successfully");
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+      Global.logger.e("AuthService::delete ${e.toString()}");
+    }
+    return success;
+  }
+
+  Future<AccountType> _setAccountFromToken(
+      BuildContext context, String token) async {
     AccountType type = AccountType.none;
     try {
       http.Response res = await http.get(

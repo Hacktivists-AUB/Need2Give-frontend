@@ -17,7 +17,7 @@ class DonationCenterCard extends StatelessWidget {
         Navigator.pushNamed(
           context,
           DonationScreen.routeName,
-          arguments: donationCenter,
+          arguments: donationCenter.id,
         );
       },
       child: Container(

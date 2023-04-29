@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/constants/utils.dart';
@@ -71,7 +70,7 @@ class _MapScreenState extends State<MapScreen> {
             child: SearchBar(
               searchMode: SearchMode.onlyDonationCenters,
             ),
-          )
+          ),
         ],
       ),
       floatingActionButton: Column(
@@ -94,7 +93,7 @@ class _MapScreenState extends State<MapScreen> {
                         width: 80.0,
                         height: 80.0,
                         builder: (context) => const Icon(
-                          Icons.home,
+                          Icons.crisis_alert,
                           size: 42.0,
                           color: Global.darkGreen,
                         ),
@@ -178,12 +177,13 @@ class _MapScreenState extends State<MapScreen> {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text(
-                  center!.name.length > 16
-                      ? center.name.substring(0, 16)
+                  center!.name.length > 24
+                      ? center.name.substring(0, 24)
                       : center.name,
+                  style: const TextStyle(fontSize: 18),
                 ),
                 content: SizedBox(
-                  height: 200,
+                  height: 220,
                   child: _buildDialogContent(center),
                 ),
                 actions: [
@@ -196,7 +196,7 @@ class _MapScreenState extends State<MapScreen> {
                     onPressed: () => Navigator.pushNamed(
                       context,
                       DonationScreen.routeName,
-                      arguments: center,
+                      arguments: center.id,
                     ),
                   ),
                 ],
@@ -222,7 +222,7 @@ class _MapScreenState extends State<MapScreen> {
                 border: Border.all(color: Global.green, width: 2.0),
               ),
               child: CircleAvatar(
-                radius: 36,
+                radius: 24,
                 backgroundColor: Global.white,
                 child: Image.asset("assets/donation_center.png"),
               ),
@@ -256,32 +256,33 @@ class _MapScreenState extends State<MapScreen> {
           ],
         ),
         if (!(center.phoneNumber == null || center.phoneNumber == ""))
-          Row(
-            children: [
-              const Icon(
-                Icons.phone,
-                color: Global.mediumGrey,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                center.phoneNumber!,
-                style: const TextStyle(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.phone,
                   color: Global.mediumGrey,
                 ),
-              ),
-            ],
+                const SizedBox(width: 12),
+                Text(
+                  center.phoneNumber!,
+                  style: const TextStyle(
+                    color: Global.mediumGrey,
+                  ),
+                ),
+              ],
+            ),
           ),
         Row(
           children: [
             const Icon(
-              Icons.calendar_month,
+              Icons.roundabout_right,
               color: Global.mediumGrey,
             ),
             const SizedBox(width: 4),
             Text(
-              DateFormat("'Joined 'MMMM yyyy").format(
-                DateTime.parse(center.createdAt),
-              ),
+              "Distance: ${center.distance.toStringAsFixed(2)} ml",
               style: const TextStyle(
                 color: Global.mediumGrey,
               ),

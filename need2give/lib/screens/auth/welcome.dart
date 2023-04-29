@@ -47,46 +47,30 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         child: Stack(
           children: [
             Positioned(
-              top: 40,
+              top: 50,
               left: 0,
               right: 0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text(
-                    'Need2Give',
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.none,
-                      fontSize: 30,
-                    ),
-                  ),
-                ],
-              ),
+              child: Image.asset("assets/logo_100.png"),
             ),
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CarouselSlider.builder(
-                    carouselController: _controller,
-                    itemCount: _cards.length,
-                    itemBuilder: (context, index, realIndex) =>
-                        buildImage(index),
-                    options: CarouselOptions(
-                      autoPlay: true,
-                      enlargeCenterPage: true,
-                      viewportFraction: 0.9,
-                      initialPage: 0,
-                      enableInfiniteScroll: true,
-                      onPageChanged: (index, reason) =>
-                          setState(() => _activeIndex = index),
-                      aspectRatio: 1,
-                    ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CarouselSlider.builder(
+                  carouselController: _controller,
+                  itemCount: _cards.length,
+                  itemBuilder: (context, index, realIndex) => buildImage(index),
+                  options: CarouselOptions(
+                    autoPlay: true,
+                    enlargeCenterPage: true,
+                    viewportFraction: 0.9,
+                    initialPage: 0,
+                    enableInfiniteScroll: true,
+                    onPageChanged: (index, reason) =>
+                        setState(() => _activeIndex = index),
+                    aspectRatio: 1,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             Positioned(
               bottom: 16,

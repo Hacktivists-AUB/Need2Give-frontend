@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:need2give/constants/global.dart';
 
 void showSnackBar(BuildContext context, String text) {
   ScaffoldMessenger.of(context).showSnackBar(
@@ -38,4 +39,20 @@ Future<Position> determinePosition(BuildContext context) async {
 
 String parseParams(Map<String, dynamic> params) {
   return "?${params.entries.map((entry) => "${entry.key}=${entry.value}").join("&")}";
+}
+
+Color getCategoryColor(String category) {
+  if (category == "food") {
+    return Global.food;
+  } else if (category == "medication") {
+    return Global.medication;
+  } else if (category == "electronics") {
+    return Global.electronics;
+  } else if (category == "clothes") {
+    return Global.clothes;
+  } else if (category == "other") {
+    return Global.other;
+  } else {
+    return const Color.fromARGB(255, 159, 207, 235);
+  }
 }

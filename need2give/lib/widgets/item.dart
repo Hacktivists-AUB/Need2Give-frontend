@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/constants/utils.dart';
 import 'package:need2give/models/item.dart';
 import 'package:need2give/screens/donation_center/update_item.dart';
 import 'package:need2give/screens/donation_center/bottom_bar.dart';
@@ -52,7 +53,7 @@ class _ItemListTileState extends State<ItemListTile> {
           children: [
             Row(
               children: [
-                Image.asset("assets/cart.png", height: 54),
+                Image.asset("assets/${widget.item.category}.png", height: 54),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Column(
@@ -126,7 +127,7 @@ class _ItemListTileState extends State<ItemListTile> {
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(6),
-                              color: Global.lightGreen,
+                              color: getCategoryColor(widget.item.category),
                             ),
                             padding: const EdgeInsets.all(6),
                             child: Text(

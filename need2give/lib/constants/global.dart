@@ -18,4 +18,9 @@ class Global {
   static const darkGrey = Color.fromARGB(255, 32, 32, 31);
   static const markerColor = Color.fromARGB(255, 185, 20, 20);
   static const transparent = Colors.transparent;
+  static const food = Color.fromARGB(255, 236, 221, 152);
+  static const medication = Color.fromARGB(255, 163, 216, 175);
+  static const clothes = Color.fromARGB(255, 226, 142, 170);
+  static const electronics = Color.fromARGB(255, 113, 176, 228);
+  static const other = Color.fromARGB(255, 166, 130, 196);
 }

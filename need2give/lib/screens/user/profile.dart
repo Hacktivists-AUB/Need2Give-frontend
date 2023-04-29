@@ -26,7 +26,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   List<DonationCenter> _donationCenters = [];
 
   _loadFollowingAccounts() async {
-    _donationCenters = await _accountService.get(context, {});
+    _donationCenters = await _accountService.getFollowingList(context);
     setState(() {});
   }
 
@@ -139,12 +139,10 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   Widget _buildUserInfo(User user) {
     return Container(
       padding: const EdgeInsets.all(16),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
         children: [
           const Text(
-            "Conact info",
+            "Contact info",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
@@ -197,7 +195,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
           const SizedBox(height: 8),
           Text(
             DateFormat("'Birthday: 'MMMM dd, yyyy").format(
-              DateTime.parse(user.createdAt),
+              DateTime.parse(user.birthDate),
             ),
             style: const TextStyle(
               color: Global.mediumGrey,
@@ -250,7 +248,11 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
               child: TextButton(
                 child: const Text("Edit profile"),
                 onPressed: () {
-                  Navigator.pushNamed(context, EditProfile.routeName, arguments: user,);
+                  Navigator.pushNamed(
+                    context,
+                    EditProfile.routeName,
+                    arguments: user,
+                  );
                 },
               ),
             ),

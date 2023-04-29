@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_signin_button/button_list.dart';
-import 'package:flutter_signin_button/button_view.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:need2give/constants/global.dart';
 import 'package:need2give/constants/utils.dart';
@@ -363,15 +361,6 @@ class _SignUpState extends State<SignUp> {
                 signUp();
               }
             },
-          ),
-          const SizedBox(height: 10),
-          SizedBox(
-            width: double.infinity,
-            child: SignInButton(
-              Buttons.Google,
-              text: "Sign up with Google",
-              onPressed: () {},
-            ),
           ),
           const SizedBox(height: 10),
           Row(

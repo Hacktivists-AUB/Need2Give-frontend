@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
+import 'package:need2give/constants/utils.dart';
 import 'package:need2give/models/donation_center.dart';
 import 'package:need2give/models/item.dart';
 import 'package:need2give/screens/user/category.dart';
@@ -23,8 +24,8 @@ class _ExploreState extends State<Explore> {
   final AccountService _donationCenterService = AccountService();
   final List<String> _categories = [
     "All",
-    "Food",
     "Medication",
+    "Food",
     "Clothes",
     "Electronics",
     "Other",
@@ -134,7 +135,7 @@ class _ExploreState extends State<Explore> {
   Widget _buildCategoryTag(String category) => Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Global.lightGreen,
+          color: getCategoryColor(category.toLowerCase()),
         ),
         margin: const EdgeInsets.only(right: 12),
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -169,7 +170,7 @@ class _ExploreState extends State<Explore> {
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Align(
                   alignment: Alignment.center,
@@ -181,7 +182,7 @@ class _ExploreState extends State<Explore> {
                 Text(
                   center.name,
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 18,
                     color: Global.mediumGrey,
                     fontWeight: FontWeight.bold,
                   ),
@@ -200,7 +201,7 @@ class _ExploreState extends State<Explore> {
                         Navigator.pushNamed(
                           context,
                           DonationScreen.routeName,
-                          arguments: center,
+                          arguments: center.id,
                         );
                       },
                       child: const Text("See more"),
