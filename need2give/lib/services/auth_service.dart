@@ -8,7 +8,8 @@ import 'package:need2give/constants/utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:need2give/models/account.dart';
 import 'package:need2give/provider/auth_provider.dart';
-import 'package:need2give/screens/auth/pending.dart';
+import 'package:need2give/screens/donation_center/pending.dart' as pending_dc;
+import 'package:need2give/screens/user/pending.dart' as pending_user;
 import 'package:need2give/screens/auth/welcome.dart';
 import 'package:need2give/screens/user/bottom_bar.dart' as user;
 import 'package:need2give/screens/donation_center/bottom_bar.dart' as dc;
@@ -48,20 +49,13 @@ class AuthService {
         response: res,
         context: context,
         onSuccess: () async {
-          if (profile.type == AccountType.user) {
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            final resBody = jsonDecode(res.body);
-            Provider.of<AuthProvider>(context, listen: false)
-                .setAccount(res.body, profile.type);
-            await prefs.setString("token", resBody["token"]);
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              user.ButtonNavbar.routeName,
-              (route) => false,
-            );
-          } else {
-            Navigator.pushNamed(context, PendingPage.routeName);
-          }
+          Navigator.pushNamed(
+            context,
+            profile.type == AccountType.user
+                ? pending_user.PendingPage.routeName
+                : pending_dc.PendingPage.routeName,
+            arguments: profile.email,
+          );
         },
       );
     } catch (e) {

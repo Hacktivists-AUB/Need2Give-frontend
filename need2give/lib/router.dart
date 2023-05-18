@@ -3,7 +3,8 @@ import 'package:need2give/models/donation_center.dart';
 import 'package:need2give/models/item.dart';
 import 'package:need2give/models/user.dart';
 import 'package:need2give/screens/auth/login.dart';
-import 'package:need2give/screens/auth/pending.dart';
+import 'package:need2give/screens/donation_center/pending.dart' as pending_dc;
+import 'package:need2give/screens/user/pending.dart' as pending_user;
 import 'package:need2give/screens/auth/signup.dart';
 import 'package:need2give/screens/auth/welcome.dart';
 import 'package:need2give/screens/donation_center/add_item.dart';
@@ -131,9 +132,16 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           searchMode: args["searchMode"],
         ),
       );
-    case PendingPage.routeName:
+    case pending_dc.PendingPage.routeName:
+      var email = settings.arguments as String;
       return MaterialPageRoute(
-        builder: (_) => const PendingPage(),
+        builder: (_) => pending_dc.PendingPage(email: email),
+      );
+    case pending_user.PendingPage.routeName:
+      var email = settings.arguments as String;
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (_) => pending_user.PendingPage(email: email),
       );
     default:
       return MaterialPageRoute(
