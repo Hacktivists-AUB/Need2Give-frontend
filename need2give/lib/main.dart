@@ -41,6 +41,7 @@ class _MyAppState extends State<MyApp> {
 
     return MaterialApp(
       title: 'Need2Give',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: Global.green,

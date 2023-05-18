@@ -19,22 +19,22 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   final _controller = CarouselController();
   final List<Map<String, dynamic>> _cards = [
     {
-      'image': 'assets/image1.jpg',
-      'title': 'World domination',
-      'description':
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod felis et ligula interdum, at efficitur orci gravida. '
+      "image": "assets/image1.jpg",
+      "title": "Find donation centers",
+      "description":
+          "Help Those in Need Today! Make a Donation to Support Our Cause."
     },
     {
-      'image': 'assets/image2.jpg',
-      'title': 'Complete usurpation',
-      'description':
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod felis et ligula interdum, at efficitur orci gravida. '
+      "image": "assets/image2.jpg",
+      "title": "Search for items you need",
+      "description":
+          "Make a Difference Today! Your donation can provide hope and resources."
     },
     {
-      'image': 'assets/image3.jpg',
-      'title': 'Inciniration',
-      'description':
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod felis et ligula interdum, at efficitur orci gravida. '
+      "image": "assets/image3.jpg",
+      "title": "Manage your inventory",
+      "description":
+          "Be the Change You Wish to See! Give to our cause and make a lasting impact."
     },
   ];
 

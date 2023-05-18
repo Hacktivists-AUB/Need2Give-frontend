@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:need2give/constants/global.dart';
-import 'package:need2give/widgets/back_button.dart' as widgets;
 
 class Terms extends StatelessWidget {
   const Terms({super.key});
@@ -10,7 +9,6 @@ class Terms extends StatelessWidget {
     return Scaffold(
       backgroundColor: Global.backgroundColor,
       appBar: AppBar(
-        leading: const widgets.BackButton(),
         centerTitle: true,
         title: const Text("Terms And Conditions"),
       ),

@@ -3,8 +3,12 @@ import 'package:need2give/constants/global.dart';
 import 'package:need2give/screens/auth/login.dart';
 
 class PendingPage extends StatelessWidget {
-  static const routeName = "/pendingPage";
-  const PendingPage({super.key});
+  static const routeName = "/pendingPageDonationCenter";
+  final String email;
+  const PendingPage({
+    super.key,
+    required this.email,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +24,17 @@ class PendingPage extends StatelessWidget {
               Image.asset("assets/logo_100.png"),
               const SizedBox(height: 36),
               const Text("Thanks for joining Need2Give!"),
-              const SizedBox(height: 4),
-              const Text("Your request is under review by our team."),
-              const SizedBox(height: 4),
+              const SizedBox(height: 8),
+              Text(
+                "An email has been sent to $email",
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                "Please verify your email so that our admins review your application.",
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
               const Text("Expect an email that confirms your registration."),
               const SizedBox(height: 24),
               Row(
